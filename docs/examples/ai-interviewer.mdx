@@ -1,0 +1,86 @@
+---
+sidebarTitle: "AI Interview"
+title: "AI Interview"
+---
+
+Ideal for structured interviews, candidate screening, and role-based assessments.
+
+- Conducting initial HR screening interviews
+- Role-specific behavioral or technical questions
+- Standardized interview flows across locations
+
+### Example System Prompt
+
+```txt
+You are an AI Interviewer conducting structured, professional interviews.
+
+Your goals:
+- Ask clear, role-relevant questions one at a time.
+- Listen carefully and ask follow-up questions when needed.
+- Maintain a neutral, respectful tone at all times.
+- Summarize the candidate’s strengths and areas to explore further.
+- Avoid making hiring decisions; instead, gather insights for human recruiters.
+
+If the candidate seems nervous, briefly reassure them and keep the conversation calm and focused.
+```
+<Steps>
+  <Step title="Step 1 - Create an Agent">
+  Use the **Create Agent API** to programmatically spin up a new video agent.
+
+  <Note>Replace `<api-key>` with your actual API key generated from our [Portal](https://app.trugen.ai).</Note>
+
+<CodeGroup>
+
+  ```bash Request
+  curl --request POST \
+    --url https://api.trugen.ai/v1/agent/api \
+    --header 'Content-Type: application/json' \
+    --header 'x-api-key: <api-key>' \
+    --data '{
+    "avatar_ids": [
+      "1e4ea106",
+      "45e3f732"
+    ],
+    "name": "AI Interviewer",
+    "system_prompt": "You are an AI Interviewer conducting structured, professional interviews.\n\nYour goals:\n- Ask clear, role-relevant questions one at a time.\n- Listen carefully and ask follow-up questions when needed.\n- Maintain a neutral, respectful tone at all times.\n- Summarize the candidate\u2019s strengths and areas to explore further.\n- Avoid making hiring decisions; instead, gather insights for human recruiters.\n\nIf the candidate seems nervous, briefly reassure them and keep the conversation calm and focused.",
+    "config": {
+      "timeout": 240
+    },
+    "knowledge_base": null,
+    "record": true,
+    "callback_url":null,
+    "callback_events": null
+  }'
+  ````
+
+</CodeGroup>
+
+  The API will return the newly created agent object, including an `id` like:
+  <CodeGroup>
+  ```json Response
+  {
+    "id": "51ed8d70-9379-422f-aed4-f9f2b293ba4a",
+    "name": "AI Interviewer"
+  }
+  ```
+  </CodeGroup>
+  </Step>
+  <Step title="Step 2 - Embed the Agent">
+  Use the agent `id` to embed a fully interactive video agent via **iframe**.
+
+  <CodeGroup>
+  ```html Your App
+  <iframe
+    src="https://app.trugen.ai/embed?agentId=<agent-id>"
+    width="100%"
+    height="600"
+    frameborder="0"
+    allow="camera; microphone; autoplay"
+  ></iframe>
+  ```
+  </CodeGroup>
+
+  <Note>Replace `<agent-id>` with the value returned from previous step.</Note>
+
+  </Step>
+</Steps>

@@ -1,0 +1,77 @@
+---
+title: "Livekit Integration"
+---
+
+Give a face to your Livekit agents with our TruGen Avatars, using our official Livekit Agents plugin.
+
+## Get started
+<Steps>
+  <Step title="Install the plugin">
+    Install the TruGen plugin from Livekit registry, using the following command.
+    ```bash
+    uv add "livekit-agents[trugen]~=1.3" # When using UV
+    ```
+    ```bash
+    pip install "livekit-agents[trugen]~=1.3" # When using PIP
+    ```
+  </Step>
+  <Step title="Generate an API key">
+    1. Using TruGen.AI [Developer Platform](https://app.trugen.ai), generate an API key from our developers page.
+    2. Set the newly generated API key as `TRUGEN_API_KEY` environment variable in your `.env` file.
+  </Step>
+  <Step title="Adding Avatar session to Livekit Agent">
+    1. To your existing Livekit agent, import the `trugen` plugin from `livekit.plugins`.
+    ```python
+    from livekit.plugins import trugen
+    ```
+    2. Instantiate a new instance of `AvatarSession` from the `trugen` plugin and set the avatar id.
+    ```python
+    avatar_id = os.getenv("TRUGEN_AVATAR_ID") or "45e3f732"
+    trugen_avatar = trugen.AvatarSession(avatar_id=avatar_id)
+    ```
+    3. Start the `trugen_avatar` session using the start method, while passing the current agent session and room context.
+    ```python
+    await trugen_avatar.start(session, room=ctx.room)
+    ```
+    #### Complete Example
+    <CodeGroup>
+    ```python Python highlight={1-2,8-10}
+    from livekit.plugins import trugen
+
+    async def entrypoint(ctx: JobContext):
+        session = AgentSession(
+          # Your existing configuration
+        )
+
+        avatar_id = os.getenv("TRUGEN_AVATAR_ID") or "45e3f732"
+        trugen_avatar = trugen.AvatarSession(avatar_id=avatar_id)
+        await trugen_avatar.start(session, room=ctx.room)
+
+        await session.start(
+          # Start agent session as usual
+        )
+    ```
+    </CodeGroup>
+    4. Gracefully shutdown Livekit agent; use `ctx.room.disconnect()` to close the room connection or use `ctx.shutdown()` to end the ` JobContext`.
+    <Tip>This step is ensures that your TruGen Avatar session shuts down correctly. We automatically stop the session when the room is disconnected or when the primary participant is disconnected</Tip>
+  </Step>
+</Steps>
+
+### More Resourcess
+
+<CardGroup cols={2}>
+
+<Card title="Available Avatars" icon="user" href="/docs/avatars/overview#livekit-ready-avatars">
+    Explore the list of all our ready to use avatars.
+</Card>
+<Card title="Our Examples" icon="github" href="https://github.com/trugenai/trugen-examples/tree/main/voice-to-video/livekit">
+    Explore our official Github Repo for more examples
+</Card>
+<Card title="Livekit Plugin Examples" icon="robot" href="https://github.com/livekit/agents/tree/main/examples/avatar_agents">
+    Explore Livekit Agent plugin examples.
+</Card>
+<Card title="Livekit Documentation" icon="book" href="https://docs.livekit.io/agents/">
+    Explore the Livekit documentation.
+</Card>
+
+</CardGroup>

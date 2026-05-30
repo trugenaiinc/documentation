@@ -1,0 +1,72 @@
+The TruGen platform integrates with multiple **industry-leading AI providers** to power speech recognition (STT), language reasoning (LLM), and voice synthesis (TTS).
+Using the Providers API, you can retrieve a list of all supported external providers and determine which options are available for your agents.
+
+A **provider** is an external engine that powers one capability in the conversational pipeline. Each provider entry includes a `provider_type` property that identifies whether it supports **STT**, **LLM**, or **TTS**.
+
+---
+
+## Supported Providers
+
+| Provider | Capability | Description |
+|----------|-------------|--------------|
+| **Groq** | LLM | Ultra-low latency reasoning and response generation. |
+| **OpenAI** | LLM | High-quality reasoning and multi-modal language intelligence. |
+| **Deepgram** | STT | Streaming, low-latency speech-to-text transcription. |
+| **ElevenLabs** | TTS | Realistic expressive voice synthesis in multiple languages & voices. |
+
+<Note>We are adding more providers and model configurations constantly.</Note>
+
+---
+
+## Use Cases
+
+- Determine which LLM or voice engine is active for a deployed agent
+- Allow users to choose preferred voice or reasoning engines dynamically
+- Build UI selection menus inside dashboards
+- Validate that a region supports a specific vendor or capability
+
+---
+
+## Retrieve All Providers
+
+Use this endpoint to fetch the list of currently available providers:
+
+### **GET** `/v1/providers`
+
+### Example Request
+
+<CodeGroup>
+```bash List Providers
+curl --request GET \
+  --url https://api.trugen.ai/v1/providers \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: <api-key>'
+````
+
+</CodeGroup>
+
+<Note>Replace `<api-key>` with your actual API key from the **Developer Portal**.</Note>
+
+## Provider Types
+
+| Type  | Meaning                                                                |
+| ----- | ---------------------------------------------------------------------- |
+| `llm` | Large Language Model provider used for reasoning & response generation |
+| `stt` | Speech-to-Text provider used for realtime transcription                |
+| `tts` | Text-to-Speech provider used for voice rendering                       |
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="Create Agent" icon="robot" href="/api-reference/endpoint/agentcreate">
+Assign provider selections while creating a new agent.
+</Card>
+
+<Card title="API Reference: Providers" icon="book" href="/api-reference/endpoint/providerget">
+Full endpoint documentation for retrieving provider information.
+</Card>
+
+</CardGroup>

@@ -1,0 +1,71 @@
+Customize your conversation experience by selecting specific speech-to-text (STT) and text-to-speech (TTS) settings. Our platform is powered by **Deepgram** for high-accuracy transcription and **ElevenLabs** for life-like vocal synthesis.
+
+### Supported Languages
+
+We support a wide range of global languages. Spoken interactions are processed through a dual-engine pipeline:
+
+1. **Deepgram (STT):** Transcribes your participant's audio into text.
+2. **ElevenLabs (TTS):** Converts the agent's response into natural-sounding speech.
+
+Below is a sample list of the primary languages supported across our standard models:
+
+| Language | STT Code (Deepgram) | TTS Support (ElevenLabs) |
+| --- | --- | --- |
+| **English** | `en` | Yes |
+| **Spanish** | `es` | Yes |
+| **French** | `fr` | Yes |
+| **German** | `de` | Yes |
+| **Hindi** | `hi` | Yes |
+| **Portuguese** | `pt` | Yes |
+| **Chinese** | `zh` | Yes |
+| **Japanese** | `ja` | Yes |
+| **Korean** | `ko` | Yes |
+
+<CardGroup cols={2}>
+
+<Card title="Deepgram STT" href="https://developers.deepgram.com/docs/models-languages-overview#nova-3">
+Models and supported languages
+</Card>
+
+<Card title="Elevenlabs TTS" href="https://elevenlabs.io/docs/overview/capabilities/text-to-speech#supported-languages">
+Models and supported languages
+</Card>
+
+</CardGroup>
+
+### Setting the Conversation Language for your agent
+
+While creating an agent you have the ability to set the STT provider and select the desired language.
+<CodeGroup>
+```bash Create new Agent
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/agent \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data @- <<EOF
+{
+  "agent_name": "AI Agent",
+  "config": { "timeout": 240 },
+  "avatars": [
+    {
+      "config": {
+        "llm": {
+          "provider": "openai",
+          "model": "gpt-4.1-mini",
+        },
+        "stt": { "provider": "deepgram", "model": "nova-3", language: "multi" },
+        "tts": { "provider": "elevenlabs", "voice_id": "ZUrEGyu8GFMwnHbvLhv2" }
+      },
+      "persona_name": "Sample AI Agent",
+      "persona_prompt": "You're a helpful AI agent."
+    }
+  ]
+}
+EOF
+```
+</CodeGroup>
+
+---
+
+> [!TIP]
+> When using `multi` mode, the ElevenLabs TTS engine will automatically adjust its output to match the detected language of the participant for a seamless localized experience.

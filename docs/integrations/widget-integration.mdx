@@ -1,0 +1,83 @@
+---
+title: "Embed via Widget"
+---
+
+Let your customers learn about your prodcut and services while having fun and informative chat with TruGen video agents.
+
+## Get started
+
+<Steps>
+  <Step title="Import the script">
+    To your existing `index.html` file import the trugen widget java script file as follows
+    ```bash
+    <script src="https://dist.trugen.ai/trugen-chat.js"></script>
+    ```
+  </Step>
+  <Step title="Generate an API key">
+    1. Using TruGen.AI [Developer Platform](https://app.trugen.ai), generate an API key from our developers page.
+    2. Set the newly generated API key as `apiKey`  variable in the widget script configuration.
+    ```bash
+    apiKey: "x-api-key,
+    ```
+  </Step>
+  <Step title="Configuring your widget">
+    Just above the imported js file script tag, you can configure widget as follows
+    ```javascript
+    <script>
+      window.TrugenWidget = {
+        agentName: "Your agent name", // This is the agent name thats displayed in the widget
+        agentId: "Your agent id", // copy your agent id from agents library or create a new agent and copy the id
+        apiKey: "x-api-key",
+        heading: "Main heading of widget",
+        subHeading: "Sub heading of widget",
+        logoUrl: "logo_url_to_display",
+        displayAvatarUrl: "avatar image url to dispaly in widget bubble"
+      };
+  </script>
+  <script src="https://dist.trugen.ai/trugen-chat.js"></script>
+    ```
+  
+    #### Complete Example
+    <CodeGroup>
+    ```html html highlight={21,11-19}
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Widget Integrations</title>
+</head>
+<body>
+    <script>
+      window.TrugenWidget = {
+        agentName: 'Lisa',
+        agentId: "your agent id",
+        apiKey: "x-api-key",
+        heading: "Lisa AI Sales Agent",
+        subHeading: "Your AI sales agent",
+        logoUrl: "https://trugen.ai/_next/static/media/trugen-logo2.d572f903.svg",
+        displayAvatarUrl: "https://trugen.ai/_next/static/media/trugen-logo2.d572f903.svg"
+      };
+  </script>
+  <script src="https://dist.trugen.ai/trugen-chat.js"></script>
+</body>
+</html>
+    ```
+    </CodeGroup>
+  </Step>
+</Steps>
+
+### More Resourcess
+
+<CardGroup cols={2}>
+
+<Card
+  title="Our Examples"
+  icon="github"
+  href="https://github.com/trugenai/trugen-examples/tree/main/embed_via_widget"
+>
+  Explore our official Github Repo for more examples
+</Card>
+
+</CardGroup>

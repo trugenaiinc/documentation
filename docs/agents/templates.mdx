@@ -1,0 +1,135 @@
+Templates define the **persona, behavior, and conversational structure** of your AI agents.
+Rather than configuring every setting manually for each agent, templates allow you to **standardize personality, tone, rules, knowledge source bindings, and interaction style**-making it easy to deploy consistent agent experiences at scale.
+
+Templates act as reusable blueprints that multiple agents can inherit and override, enabling fast iteration, A/B testing, version control, and brand governance.
+
+---
+
+## What Can a Template Include?
+
+A template may consist of the following configurable components:
+
+- **System Prompt** - Defines the agent’s role, tone, and knowledge scope. This is the core directive that shapes reasoning and personality.
+- **Entry Message** - A greeting or onboarding message that triggers when the session begins.
+- **Exit Message** - A closing or farewell message when the conversation ends or disconnects.
+- **Idle Timeout** - Specifies how the agent responds when user silence or inactivity occurs.
+- **Knowledge Base Attachments** - Bind knowledge sources such as documents, products, FAQs, or APIs.
+- **Behavior & Safety Settings** - Control boundaries, compliance rules, escalation, and maximum session length.
+- **Callback Events & Webhooks** - Trigger external workflows or UI updates.
+
+> Templates ensure that every agent deployed by your organization shares consistent brand voice, intelligence grounding, and conversation workflow - whether you have 1 agent or thousands.
+
+---
+
+## Getting Started
+
+Documents and web pages are indexed and made available to agents through the **Knowledge Base** component.
+Once your Knowledge Base is created, upload documents and tag them to your template so all agents derived from it automatically inherit that intelligence.
+
+<Note>Template creation and management can be performed using the API or visually through our Developer Platform.</Note>
+
+---
+
+## Create & Use a Template
+
+<Steps>
+  <Step title="Step 1 - Create a New Template">
+
+Create a conversational template using the API. This example shows a minimal configuration.
+
+<CodeGroup>
+```bash Create New Template
+curl --request POST \
+  --url https://api.trugen.ai/v1/template \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: <api-key>' \
+  --data '
+{
+  "template_name": "Sales Assistant Template",
+  "template_system_prompt": "You are a friendly AI sales assistant that guides users through product selection and answers detailed product questions clearly.",
+  "config": {
+    "systemPrompt": "Respond in a conversational tone and always ask follow-up questions.",
+    "conversationalContext": "sales",
+    "maxCallDuration": 300
+  },
+  "knowledge_base": [
+    {
+      "id": "15b12908-309f-4e0f-bcb0-a4e23d45169a",
+      "name": "Product Catalog"
+    }
+  ],
+  "is_active": true,
+  "record": true,
+  "callback_url": "",
+  "callback_events": []
+}'
+````
+
+</CodeGroup>
+
+<Note>Replace `<api-key>` with your actual API key generated from our [Developer Portal](https://app.trugen.ai).</Note>
+
+<CodeGroup>
+```json Sample Template Creation Response
+{
+  "id": "d65a4f92-44b1-4fe6-b2ac-a1cb66366ddc",
+  "message": "Template created successfully"
+}
+```
+</CodeGroup>
+
+  </Step>
+
+  <Step title="Step 2 - Create an Agent Using This Template">
+
+Now use the created template to spin up a fully configured agent automatically.
+
+<CodeGroup>
+```bash Create New Agent with Template
+curl --request POST \
+  --url https://api.trugen.ai/v1/agent/bytemplate \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: <api-key>' \
+  --data '
+{
+  "avatar_ids": [
+    "ava_ed3a666dc5",
+    "ava_ae61c9e28b"
+  ],
+  "template_id": "76d9ff1d-b1d5-4dee-9b9a-d4c4d58c9c55",
+  "email": "demo@trugen.ai"
+}'
+```
+</CodeGroup>
+
+<Note>Replace `template_id` with the actual template `id` returned in Step 1.</Note>
+
+<CodeGroup>
+```json Sample Agent Creation Response
+{
+  "id": "51ed8d70-9379-422f-aed4-f9f2b293ba4a",
+  "message": "Agent created successfully"
+}
+```
+</CodeGroup>
+
+  </Step>
+</Steps>
+
+---
+
+## Why Use Templates?
+
+* **Faster Deployment** - Clone-ready configurations let you launch new agents in seconds.
+* **Consistency & Brand Control** - Centralized personality and tone definition.
+* **Scalable to Thousands of Agents** - Ideal for enterprise teams or multi-location rollouts.
+* **Easy Experimentation** - Modify templates without rebuilding agents from scratch.
+* **Best for Real-World Use Cases** - Interview agents, onboarding assistants, customer support, AI sales reps, teacher/coach personas, and more.
+
+---
+
+### Know More
+
+<Card title="Templates - API Reference" icon="book" href="/api-reference/endpoint/templatecreate">
+Explore the full API set for creating, updating, retrieving, and deleting templates.
+</Card>

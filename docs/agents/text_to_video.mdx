@@ -1,0 +1,172 @@
+---
+title: Text-To-Video(TTV)
+---
+
+Revolutionize Your Content Strategy with Our New **Text-to-Video** Generator
+
+In the fast-paced world of digital communication, video is king—but producing it has always been a
+bottleneck. Whether it’s the cost of equipment, the nerves of being on camera, or the endless hours
+spent in post-production, high-quality video has traditionally been a luxury.
+
+Today, we are changing the game. We are thrilled to announce the launch of our latest
+feature: **Text-to-Video service**.
+
+This tool allows you to transform simple text into professional, engaging video content in minutes,
+powered by our cutting-edge video generator models.
+
+**How It Works**: Your Digital Spokesperson,
+Our Text-to-Video generator is designed to be intuitive, powerful, and, most importantly, human.
+
+## Here is how you can create your next masterpiece:
+
+<Steps>
+
+<Step title="Generate an API key">
+    1. Using TruGen.AI [Developer Platform](https://app.trugen.ai), generate an API key from our developers page.
+    2. Set the newly generated API key as `x-api-key` in header.
+    ```bash
+    apiKey: "x-api-key"
+    ```
+  </Step>
+  <Step title="Select your avatar">
+    Choose from our diverse library of hyper-realistic digital human avatars.
+    Whether you need a corporate professional for a B2B presentation or a
+    friendly face for a customer welcome video, we have the perfect match for
+    your brand.
+
+    You can select the avatar of your choice from the link and copy the avatar_id and paste it in your payload
+
+    https://docs.trugen.ai/docs/avatars/overview
+
+    ```bash
+    "avatar_id" : "c5b563de"
+    ```
+
+  </Step>
+  <Step title="Pick a Voice ID">
+    Match your avatar with a high-fidelity voice. From warm and conversational
+    to authoritative and bold, our voice IDs use advanced synthesis to ensure
+    the tone matches your message perfectly.
+
+    You can pick any voice id from the list below
+
+    | Name | Voice ID |
+    | :--- | :--- |
+    | **Rachel** | `21m00Tcm4TlvDq8ikWAM` |
+    | **Laura** | `FGY2WhTYpPnrIDTdsKH5` |
+    | **Chris** | `iP95p4xoKVk53GoZ742B` |
+    | **Will** | `bIHbv24MWmeRgasZH58o` |
+    | **Luca** | `4JVOFy4SLQs9my0OLhEw` |
+    | **Sean** | `ztnpYzQJyWffPj1VC5Uw` |
+    | **Hope** | `uYXf8XasLslADfZ2MB4u` |
+    | **Jess** | `ys3XeJJA4ArWMhRpcX1D` |
+    | **Loral** | `bP6y87KyX5lwNEi7xOkX` |
+    | **Yatin** | `rFzjTA9NFWPsUdx39OwG` |
+    | **Monika Sogam** | `ZUrEGyu8GFMwnHbvLhv2` |
+    | **Evan** | `TWutjvRaJqAX89preB4e` |
+    | **Sameer** | `SV61h9yhBg4i91KIBwdz` |
+    | **Laura (Alt)** | `FGLJyeekUzxl8M3CTG9M` |
+    | **Omar** | `xvhpbk8otnNHtT3fjCpr` |
+
+Please give the provider_name as `elevenlabs` and model_name as `eleven_turbo_v2_5`
+
+```bash
+"voice_id" : "FGY2WhTYpPnrIDTdsKH5",
+"provider_name" : "elevenlabs",
+"model_name" : "eleven_turbo_v2_5"
+```
+
+  </Step>
+  <Step title="Input Your Script">
+    Simply type or paste your text. Our AI takes over from there, perfectly
+    syncing the avatar’s lip movements, facial expressions to the rhythm of the
+    speech.
+    ```bash
+    "script": "Hello, This is team trugen"
+    ```
+
+  </Step>
+  <Step title="Give your callbak URL">
+    This is important step, Please give a callback URL.
+    You will recieve the link to your video to this callback URL
+    ```bash
+    "callback_url": "https://paste-your-callback-url.com"
+    ```
+
+  </Step>
+  <Step title="POST request">
+Finally, choose the terminal or platform of your choice and send the post request to the following endpoint and example payload.
+
+    ```bash
+    https://api.trugen.ai/v1/script-to-video/createVideo
+
+    {
+      "avatar_id": "c5b563de",
+      "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+      "provider_name": "elevenlabs",
+      "model_name": "eleven_turbo_v2_5",
+      "script": "Hello, This is team trugen",
+      "callback_url": "https://paste-your-callback-url.com"
+    }
+
+    ```
+
+  </Step>
+  <Step title="Example payload">
+      Send a `POST` request to `https://api.trugen.ai/v1/script-to-video/createVideo`.
+
+      <CodeGroup>
+        ```bash cURL
+        curl --request POST \
+          --url https://api.trugen.ai/v1/script-to-video/createVideo \
+          --header 'x-api-key: <your-api-key>' \
+          --data '{
+            "avatar_id": "c5b563de",
+            "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+            "provider_name": "elevenlabs",
+            "model_name": "eleven_turbo_v2_5",
+            "script": "Hello, This is team trugen",
+            "callback_url": "https://paste-your-callback-url.com"
+          }'
+        ```
+
+        ```python Python
+        import requests
+
+        url = "https://api.trugen.ai/v1/script-to-video/createVideo"
+
+        payload = {
+            "avatar_id": "c5b563de",
+            "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+            "provider_name": "elevenlabs",
+            "model_name": "eleven_turbo_v2_5",
+            "script": "Hello, This is team trugen",
+            "callback_url": "https://paste-your-callback-url.com"
+        }
+
+        headers = {
+            "x-api-key": "<your-api-key>"
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+        print(response.json())
+        ```
+      </CodeGroup>
+
+    </Step>
+
+</Steps>
+
+### Know More
+
+Our API References sections have several endpoints to create and manage Knowledge Base.
+
+<Columns cols={1}>
+  <Card
+    title="Text to Video - API Reference"
+    icon="book"
+    href="/api-reference/endpoint/texttovideo"
+  >
+    Explore full set of supported APIs to create and manage Knowledge Base.
+  </Card>
+</Columns>

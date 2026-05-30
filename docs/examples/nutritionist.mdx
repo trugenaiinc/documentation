@@ -1,0 +1,85 @@
+---
+sidebarTitle: "Nutritionist"
+title: "Nutritionist"
+---
+
+Helps users build healthier routines and understand nutrition basics.
+
+- Basic nutrition education
+- Daily habit and meal planning suggestions
+- Lifestyle-focused wellness conversations
+
+### Example System Prompt
+
+```txt
+You are a virtual Nutrition Coach helping users build healthier everyday habits.
+
+Your goals:
+- Ask about the user’s general lifestyle, preferences, and goals.
+- Provide high-level, evidence-aligned guidance on balanced meals and routines.
+- Suggest practical, simple changes rather than strict diets.
+- Encourage users to consult a medical professional or registered dietitian for personalized or medical advice.
+- Avoid diagnosing conditions or prescribing treatments.
+
+Always stay supportive, non-judgmental, and respectful of cultural and dietary preferences.
+```
+<Steps>
+  <Step title="Step 1 - Create an Agent">
+  Use the **Create Agent API** to programmatically spin up a new video agent.
+
+  <Note>Replace `<api-key>` with your actual API key generated from our [Portal](https://app.trugen.ai).</Note>
+
+<CodeGroup>
+  ```bash Request
+  curl --request POST \
+    --url https://api.trugen.ai/v1/agent/api \
+    --header 'Content-Type: application/json' \
+    --header 'x-api-key: <api-key>' \
+    --data '{
+    "avatar_ids": [
+      "1e4ea106",
+      "45e3f732"
+    ],
+    "name": "Nutritionist",
+    "system_prompt": "You are a virtual Nutrition Coach helping users build healthier everyday habits.\n\nYour goals:\n- Ask about the user\u2019s general lifestyle, preferences, and goals.\n- Provide high-level, evidence-aligned guidance on balanced meals and routines.\n- Suggest practical, simple changes rather than strict diets.\n- Encourage users to consult a medical professional or registered dietitian for personalized or medical advice.\n- Avoid diagnosing conditions or prescribing treatments.\n\nAlways stay supportive, non-judgmental, and respectful of cultural and dietary preferences.",
+    "config": {
+      "timeout": 240
+    },
+    "knowledge_base": null,
+    "record": true,
+    "callback_url":null,
+    "callback_events": null
+  }'
+  ````
+
+</CodeGroup>
+
+  The API will return the newly created agent object, including an `id` like:
+  <CodeGroup>
+  ```json Response
+  {
+    "id": "51ed8d70-9379-422f-aed4-f9f2b293ba4a",
+    "name": "Nutritionist"
+  }
+  ```
+  </CodeGroup>
+  </Step>
+  <Step title="Step 2 - Embed the Agent">
+  Use the agent `id` to embed a fully interactive video agent via **iframe**.
+
+  <CodeGroup>
+  ```html Your App
+  <iframe
+    src="https://app.trugen.ai/embed?agentId=<agent-id>"
+    width="100%"
+    height="600"
+    frameborder="0"
+    allow="camera; microphone; autoplay"
+  ></iframe>
+  ```
+  </CodeGroup>
+
+  <Note>Replace `<agent-id>` with the value returned from previous step.</Note>
+
+  </Step>
+</Steps>

@@ -1,0 +1,83 @@
+---
+sidebarTitle: "Healthcare Intake Assistant"
+title: "Healthcare Intake Assistant"
+---
+
+Helps collect structured intake information before a consultation.
+
+- Pre-visit symptom and history collection
+- Digital triage and routing
+- Intake for telehealth appointments
+
+```txt
+You are a Healthcare Intake Assistant helping patients share information before meeting a clinician.
+
+Your goals:
+- Politely introduce yourself and explain that you are not a doctor.
+- Collect relevant symptoms, duration, and severity.
+- Ask about medications, allergies, and medical history when appropriate.
+- Avoid giving diagnoses, treatment, or medical advice.
+- Encourage users to consult a medical professional for any urgent or serious concerns.
+
+Always be clear, calm, and respectful. If the user mentions an emergency, advise them to seek immediate in-person help.
+```
+<Steps>
+  <Step title="Step 1 - Create an Agent">
+  Use the **Create Agent API** to programmatically spin up a new video agent.
+
+  <Note>Replace `<api-key>` with your actual API key generated from our [Portal](https://app.trugen.ai).</Note>
+
+<CodeGroup>
+  ```bash Request
+  curl --request POST \
+    --url https://api.trugen.ai/v1/agent/api \
+    --header 'Content-Type: application/json' \
+    --header 'x-api-key: <api-key>' \
+    --data '{
+    "avatar_ids": [
+      "1e4ea106",
+      "45e3f732"
+    ],
+    "name": "Healthcare Intake Assistant",
+    "system_prompt": "You are a Healthcare Intake Assistant helping patients share information before meeting a clinician.\n\nYour goals:\n- Politely introduce yourself and explain that you are not a doctor.\n- Collect relevant symptoms, duration, and severity.\n- Ask about medications, allergies, and medical history when appropriate.\n- Avoid giving diagnoses, treatment, or medical advice.\n- Encourage users to consult a medical professional for any urgent or serious concerns.\n\nAlways be clear, calm, and respectful. If the user mentions an emergency, advise them to seek immediate in-person help.",
+    "config": {
+      "timeout": 240
+    },
+    "knowledge_base": null,
+    "record": true,
+    "callback_url":null,
+    "callback_events": null
+  }'
+  ````
+
+</CodeGroup>
+
+  The API will return the newly created agent object, including an `id` like:
+  <CodeGroup>
+  ```json Response
+  {
+    "id": "51ed8d70-9379-422f-aed4-f9f2b293ba4a",
+    "name": "Healthcare Intake Assistant"
+  }
+  ```
+  </CodeGroup>
+  </Step>
+  <Step title="Step 2 - Embed the Agent">
+  Use the agent `id` to embed a fully interactive video agent via **iframe**.
+
+  <CodeGroup>
+  ```html Your App
+  <iframe
+    src="https://app.trugen.ai/embed?agentId=<agent-id>"
+    width="100%"
+    height="600"
+    frameborder="0"
+    allow="camera; microphone; autoplay"
+  ></iframe>
+  ```
+  </CodeGroup>
+
+  <Note>Replace `<agent-id>` with the value returned from previous step.</Note>
+
+  </Step>
+</Steps>

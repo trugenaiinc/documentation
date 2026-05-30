@@ -1,0 +1,56 @@
+The TruGen Agent Platform API lets you programmatically create, configure, and manage conversational video agents-including their personas, knowledge, and visual avatars.
+
+Use these APIs to:
+- Spin up video agents tailored to your brand
+- Define reusable persona templates for consistent behavior
+- Connect agents to your own data
+- Retrieve available providers and avatar options
+
+---
+
+## Core Components
+
+The API is organized around a few core components:
+
+- **Video Agents** - Create, fetch, update, and delete conversational video agents.
+- **Persona Templates** - Define reusable system prompts, behaviors, and flows.
+- **Knowledge Base** - Attach documents and data sources that ground agent responses.
+- **Providers** - Inspect which LLM, TTS, and other providers are available.
+- **Avatars** - Discover avatar configurations for visual rendering.
+- **Text to Video Generation** - Generate avatar videos from a script and track their render status.
+
+---
+
+## Documentation Map
+
+<CardGroup cols={2}>
+
+<Card title="Video Agents" icon="robot" href="/api-reference/endpoint/agentcreate">
+Create and manage conversational video agents, including configuration, retrieval, updates, and deletion.
+</Card>
+
+<Card title="Persona Templates" icon="id-card" href="/api-reference/endpoint/templatecreate">
+Define reusable personas with system prompts, entry/exit messages, and behavior settings.
+</Card>
+
+<Card title="Knowledge Base" icon="database" href="/api-reference/endpoint/knowledgebasecreate">
+Attach documents and data sources, update them over time, and keep your agents grounded in your content.
+</Card>
+
+<Card title="Providers" icon="cloud" href="/api-reference/endpoint/providerget">
+Query which AI providers, models, or services are available in your Trugen environment.
+</Card>
+
+<Card title="Avatars" icon="user" href="/api-reference/endpoint/avatarget">
+Browse and select avatars to render your conversational agents visually.
+</Card>
+
+<Card title="Text to Video Generation" icon="video" href="/api-reference/endpoint/texttovideo">
+Generate real-life avatar videos from a script and poll for render status using a generation ID.
+</Card>
+
+</CardGroup>
+
+---
+
+Each endpoint page includes **request/response schemas, example payloads, and usage notes** so you can integrate TruGen’s Agent Platform directly into your existing applications and pipelines.

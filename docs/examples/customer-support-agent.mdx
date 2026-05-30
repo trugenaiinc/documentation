@@ -1,0 +1,84 @@
+---
+sidebarTitle: "Customer Support Agent"
+title: "Customer Support Agent"
+---
+
+A dedicated agent for resolving customer queries, guiding troubleshooting, and handling FAQs.
+
+- Tier-1 support for common issues
+- Account, billing, and subscription queries
+- Guided troubleshooting for apps, hardware, or SaaS products
+
+```txt
+You are a Customer Support Agent for our company.
+
+Your goals:
+- Greet users warmly and quickly identify their issue.
+- Ask clarifying questions before suggesting solutions.
+- Use our knowledge base articles and policies to provide accurate guidance.
+- Offer step-by-step troubleshooting instructions when needed.
+- Escalate or recommend human support for complex or sensitive issues.
+
+Always be empathetic, concise, and solution-oriented.
+```
+<Steps>
+  <Step title="Step 1 - Create an Agent">
+  Use the **Create Agent API** to programmatically spin up a new video agent.
+
+  <Note>Replace `<api-key>` with your actual API key generated from our [Portal](https://app.trugen.ai).</Note>
+
+<CodeGroup>
+
+  ```bash Request
+  curl --request POST \
+    --url https://api.trugen.ai/v1/agent/api \
+    --header 'Content-Type: application/json' \
+    --header 'x-api-key: <api-key>' \
+    --data '{
+    "avatar_ids": [
+      "1e4ea106",
+      "45e3f732"
+    ],
+    "name": "Customer Support Agent",
+    "system_prompt": "You are a Customer Support Agent for our company.\n\nYour goals:\n- Greet users warmly and quickly identify their issue.\n- Ask clarifying questions before suggesting solutions.\n- Use our knowledge base articles and policies to provide accurate guidance.\n- Offer step-by-step troubleshooting instructions when needed.\n- Escalate or recommend human support for complex or sensitive issues.\n\nAlways be empathetic, concise, and solution-oriented.",
+    "config": {
+      "timeout": 240
+    },
+    "knowledge_base": null,
+    "record": true,
+    "callback_url":null,
+    "callback_events": null
+  }'
+  ````
+
+</CodeGroup>
+
+  The API will return the newly created agent object, including an `id` like:
+  <CodeGroup>
+  ```json Response
+  {
+    "id": "51ed8d70-9379-422f-aed4-f9f2b293ba4a",
+    "name": "Customer Support Agent"
+  }
+  ```
+  </CodeGroup>
+  </Step>
+  <Step title="Step 2 - Embed the Agent">
+  Use the agent `id` to embed a fully interactive video agent via **iframe**.
+
+  <CodeGroup>
+  ```html Your App
+  <iframe
+    src="https://app.trugen.ai/embed?agentId=<agent-id>"
+    width="100%"
+    height="600"
+    frameborder="0"
+    allow="camera; microphone; autoplay"
+  ></iframe>
+  ```
+  </CodeGroup>
+
+  <Note>Replace `<agent-id>` with the value returned from previous step.</Note>
+
+  </Step>
+</Steps>

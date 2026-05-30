@@ -1,0 +1,91 @@
+Get up and running with TruGen’s **Conversational Video Agents** in just a few steps.
+You’ll create your first agent via API and embed it in your application using an iframe.
+
+---
+<Steps>
+  <Step title="Step 1 - Create an Agent">
+  Use the **Create Agent API** to programmatically spin up a new video agent.
+
+  <Note>Replace `<api-key>` with your actual API key generated from our [Portal](https://app.trugen.ai).</Note>
+
+<CodeGroup>
+
+  ```bash Request
+  curl --request POST \
+    --url https://api.trugen.ai/v1/agent/api \
+    --header 'Content-Type: application/json' \
+    --header 'x-api-key: <api-key>' \
+    --data '{
+    "avatar_ids": [
+      "ava_ae61c9e28b",
+      "ava_ed3a666dc5"
+    ],
+    "name": "New Agent",
+    "system_prompt": "You are a helpful assistant",
+    "email": "test@test.com",
+    "config": {
+      "timeout": 240
+    },
+    "is_active": true,
+    "knowledge_base": [
+      {
+        "id": "4a0365e4-ced5-42f0-8933-b6880a0ce044",
+        "name": "new kb 123"
+      }
+    ],
+    "record": true,
+    "callback_url": "https://play.svix.com/in/e_pBuXcpDaVzRzwn3L5El4xFFlKnD/",
+    "callback_events": [
+      "participant_left",
+      "max_call_duration_warning",
+      "max_call_duration_timeout",
+      "action_found"
+    ]
+  }'
+  ````
+
+</CodeGroup>
+
+  The API will return the newly created agent object, including an `id` like:
+  <CodeGroup>
+  ```json Response
+  {
+    "id": "agt_12345example",
+    "name": "New Agent"
+  }
+  ```
+  </CodeGroup>
+  </Step>
+  <Step title="Step 2 - Embed the Agent">
+  Use the agent `id` to embed a fully interactive video agent via **iframe**.
+
+  <CodeGroup>
+  ```html Your App
+  <iframe
+    src="https://app.trugen.ai/embed?agentId=<agent-id>"
+    width="100%"
+    height="600"
+    frameborder="0"
+    allow="camera; microphone; autoplay"
+  ></iframe>
+  ```
+  </CodeGroup>
+
+  <Note>Replace `<agent-id>` with the value returned from previous step.</Note>
+
+  </Step>
+</Steps>
+
+You’re now ready to create and deploy fully interactive video AI agents using TruGen’s platform.
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="API Reference" icon="book" href="/api-reference">
+Explore all available API endpoints for agents, templates, tools, and knowledge base.
+</Card>
+
+</CardGroup>

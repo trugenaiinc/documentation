@@ -1,0 +1,89 @@
+---
+title: Bring Your Own LLM
+---
+
+This guide explains how to connect any **OpenAI-compatible LLM API** to your agents. This allows you to leverage your preferred models while maintaining a consistent experience across your avatar and agent stack.
+
+---
+
+## What is an External LLM?
+
+An external LLM allows you to redirect all language processing requests to a service outside of the default provider. This includes:
+
+* **Self-hosted models** (e.g., vLLM, Ollama, TGI).
+* **Fine-tuned or private models** tailored to your specific business logic.
+* **Third-party providers** that support the OpenAI Chat Completions standard (e.g., Together AI, Fireworks, Groq, Anthropic via proxy).
+
+---
+
+## Why Use an External LLM?
+
+| Benefit | Description |
+| --- | --- |
+| **Customization** | Use domain-specific or fine-tuned models for better accuracy. |
+| **Data Privacy** | Keep sensitive data within your own infrastructure or private cloud. |
+| **Compliance** | Meet strict regulatory requirements regarding data residency and auditing. |
+| **Cost Control** | Optimize expenses by choosing providers with competitive pricing or using your own hardware. |
+
+## Requirements
+
+To ensure compatibility, your LLM API must implement the **OpenAI Chat Completions** specification.
+
+### Core Compatibility
+
+* **Endpoint:** `POST /chat/completions`
+* **Payload:** Must accept a `messages: []` array.
+* **Streaming:** Must support Server-Sent Events (SSE) for real-time interaction.
+
+### Optional Features
+
+* **Function Calling:** Required if your agent needs to trigger external tools.
+* **Vision:** Required for multimodal inputs (e.g., analyzing images).
+
+---
+
+## Setup Options
+
+### Option 1: Via Developer Studio
+
+1. Navigate to **Create New Agent**.
+2. Locate the **LLM** configuration section.
+3. Select `Bring your own LLM` from the **Provider** dropdown.
+4. Enter your **API URL**, **Model Name**, and **API Token**.
+
+![Alt text](/images/byo-llm.png)
+
+### Option 2: Via API
+
+You can define an external LLM by setting the `provider` to `"custom"` within the `avatars.config.llm` object.
+
+<CodeGroup>
+```bash Create new Agent
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/agent \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data @- <<EOF
+{
+  "agent_name": "AI Agent",
+  "config": { "timeout": 240 },
+  "avatars": [
+    {
+      "config": {
+        "llm": {
+          "provider": "custom",
+          "model": "MODEL_NAME",
+          "url": "API_BASE_URL",
+          "token": "YOUR_EXTERNAL_TOKEN"
+        },
+        "stt": { "provider": "deepgram", "model": "nova-3" },
+        "tts": { "provider": "elevenlabs", "voice_id": "ZUrEGyu8GFMwnHbvLhv2" }
+      },
+      "persona_name": "Sample AI Agent",
+      "persona_prompt": "You're a helpful AI agent."
+    }
+  ]
+}
+EOF
+```
+</CodeGroup>

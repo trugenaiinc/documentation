@@ -1,0 +1,117 @@
+---
+title: Memory
+---
+
+Memory helps agents save important user details **across multiple conversations**. **Custom Instructions** help the agent with guidelines to what needs to be remembered, and the amount of detail depends on the configured **memory depth**.
+
+# Getting Started
+
+<Steps>
+  <Step title="Step 1 - Open the Developer Platform">
+    Go to [app.trugen.ai](https://app.trugen.ai).
+  </Step>
+  <Step title="Step 2 - Create a new agent">
+    Click **Create New Agent** and fill in the basic agent details.
+  </Step>
+  <Step title="Step 3 - Configure Memory (Custom Instruction)">
+    Open the **Memory** tab and enable the **Custom Instruction** toggle. Update the instruction to specify what details should be saved.
+  </Step>
+  <Step title="Step 4 - Start conversations">
+    Talk to the agent. It will save memory entries based on your instruction and use them in future conversations with the same user.
+  </Step>
+</Steps>
+
+### How Memory Works
+
+Memory in an agent works as a continuous loop. When the agent starts, it first loads the user’s previous chat history. From this history, it selects and adds the most relevant context to the current session. As the conversation progresses, the updated interaction is stored, making it available for future calls by the same user.
+
+<Note>Ensure privacy settings and user consent before storing sensitive details.</Note>
+
+### Example Custom Instruction for a Sales Agent
+```
+1. Personal Profile
+
+   • Capture user’s full name, preferred name, date of birth or age, relationship status, family members and pets.
+
+   • Record context and source (“User mentioned on 2024-05-10”) and update whenever changes occur.
+
+2. Life Events & Memories
+
+   • Log notable experiences—vacations, celebrations, milestones—with date, location, participants, and user-expressed significance.
+
+   • Tag memories by theme (e.g., travel, accomplishment) and mark emotional valence (positive/negative/neutral).
+
+3. Emotional & Mental Wellbeing
+
+   • Track expressed moods, feelings, stressors, sources of joy or concern.
+
+   • Note changes over time (e.g., “User felt anxious on 2024-04-22 due to exam stress”) to identify patterns.
+
+4. Preferences & Interests
+
+   • Store likes/dislikes across food, music, movies, hobbies, travel destinations, routines.
+
+   • For each preference, include specificity (e.g., “Prefers jazz over classical”; “Loves Thai cuisine—especially pad Thai”).
+
+5. Goals, Plans & Tasks
+
+   • Record short- and long-term objectives, project steps, resolutions, and scheduled events with deadlines.
+
+   • Track progress updates and completed items; flag overdue tasks and send reminders as appropriate.
+
+6. Social Network & Communication
+
+   • Note close friends, mentors, colleagues, and their preferred contact methods.
+
+   • Include relationship context (“College roommate,” “Work manager”) and frequency of interaction.
+
+7. Feedback & Reflections
+
+   • Store user’s evaluations of recent experiences, lessons learned, aspirations for growth.
+
+   • Link reflections to related goals or events to facilitate follow-up discussions.
+
+8. Health & Wellness Routines
+
+   • Log exercise habits, dietary preferences, sleep patterns, relaxation practices in a personal (non-clinical) context.
+
+   • Include frequency, duration, and user satisfaction levels to spot improvements or challenges.
+
+
+Implementation Guidelines
+
+• Timestamp every entry and note the context in which information was shared.
+• Update or archive entries as details evolve; avoid duplication by merging overlapping data.
+• Enable retrieval by keyword, category, date range, and emotional tag to support personalized, context-aware interactions.
+```
+
+### Example Custom Instruction for a Educational Mentor
+```
+Types of Information to Remember:
+
+1. Personal & Academic Profile
+   • User’s name, institution, grade or year, major or area of study, enrolled courses
+
+2. Academic Goals & Aspirations
+   • Target GPA, study-abroad plans, scholarship or internship applications, career objectives
+
+3. Assignments, Exams & Deadlines
+   • Upcoming homework, projects, tests, exam dates, assignment requirements, study schedules
+
+4. Learning Preferences & Styles
+   • Preferred media (visual, auditory, kinesthetic), class format (online/in-person), study environment, group vs. solo learning
+
+5. Extracurricular & Research Activities
+   • Clubs, organizations, sports, competitions, volunteer work, research projects
+
+6. Challenges & Support Needs
+   • Difficult subjects or topics, requests for tutoring or accommodations, time-management or work–life balance issues
+
+7. Achievements & Progress
+   • Awards, certifications, completed courses, skills acquired, milestones reached
+
+8. Feedback & Motivation Factors
+   • Opinions on classes or instructors, preferred teaching materials, motivational triggers or obstacles
+
+Memory Depth Guidance: Retain detailed context for the most recent three interactions; summarize older details as needed to preserve relevance and continuity.
+```
