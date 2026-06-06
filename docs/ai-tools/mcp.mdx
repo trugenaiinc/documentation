@@ -1,0 +1,87 @@
+---
+title: "MCP Server"
+description: "Use TruGen's documentation MCP server to query docs directly from your AI coding assistant"
+icon: "plug"
+---
+
+TruGen exposes a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that gives AI coding assistants direct access to this documentation. Instead of copy-pasting API references or switching between browser tabs, your assistant can search and read TruGen docs inline while you build.
+
+**MCP Server URL**
+```
+https://docs.trugen.ai/mcp
+```
+
+## Available Tools
+
+The server exposes two tools your AI assistant can call:
+
+| Tool | Description |
+|------|-------------|
+| `search_tru_gen_ai_api_documentation` | Semantic search across all TruGen docs — returns relevant sections with titles and page links |
+| `query_docs_filesystem_tru_gen_ai_api_documentation` | Read-only shell-like access to the docs filesystem — supports `cat`, `head`, `rg`, `tree`, `ls`, and other standard text utilities |
+
+## Setup
+
+### Claude Code
+
+Add the server to your Claude Code MCP config:
+
+```bash
+claude mcp add --transport http trugen-docs https://docs.trugen.ai/mcp
+```
+
+Or add it manually to your `~/.claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "trugen-docs": {
+      "type": "http",
+      "url": "https://docs.trugen.ai/mcp"
+    }
+  }
+}
+```
+
+### Cursor
+
+1. Open **Cursor Settings** → **MCP**
+2. Click **Add Server**
+3. Set the type to **HTTP** and enter the URL:
+   ```
+   https://docs.trugen.ai/mcp
+   ```
+
+### Windsurf
+
+Add to your Windsurf MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "trugen-docs": {
+      "serverUrl": "https://docs.trugen.ai/mcp"
+    }
+  }
+}
+```
+
+### Any MCP-compatible client
+
+The server uses HTTP transport. Point any MCP client that supports HTTP/SSE transport to:
+
+```
+https://docs.trugen.ai/mcp
+```
+
+## What You Can Ask
+
+Once connected, your assistant can answer questions like:
+
+- _"How do I create an agent with a knowledge base attached?"_
+- _"What callback events does TruGen support?"_
+- _"Show me the request schema for the Create Agent endpoint."_
+- _"What LLM providers are available?"_
+- _"How do I embed an agent via iframe?"_
+
+The assistant will search or read the docs directly rather than relying on its training data, giving you accurate and up-to-date answers.

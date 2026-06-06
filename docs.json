@@ -68,6 +68,10 @@
           {
             "group": "Providers",
             "pages": ["docs/providers/overview"]
+          },
+          {
+            "group": "AI Tools",
+            "pages": ["docs/ai-tools/mcp"]
           }
         ]
       },
@@ -173,6 +177,11 @@
           "anchor": "Changelog",
           "href": "https://docs.trugen.ai/docs/changelog",
           "icon": "code-branch"
+        },
+        {
+          "anchor": "llms.txt",
+          "href": "https://docs.trugen.ai/llms.txt",
+          "icon": "robot"
         }
       ]
     }
