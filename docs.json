@@ -100,6 +100,7 @@
           {
             "group": "Conversations",
             "pages": [
+              "api-reference/endpoint/conversationget",
               "api-reference/endpoint/conversationgetbyid",
               "api-reference/endpoint/conversationspeak",
               "api-reference/endpoint/conversationdelete"
