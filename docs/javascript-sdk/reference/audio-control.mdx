@@ -1,0 +1,95 @@
+---
+title: 'Audio Control'
+sidebarTitle: 'Audio Control'
+description: 'Manage microphone inputs, mute states, and audio injection'
+---
+
+The TruGen JS SDK provides utility methods to control the user's microphone state and programmatically upload or stream custom audio files to the avatar.
+
+## Microphone Management
+
+### Start/Stop Microphone
+
+Programmatically start or stop the microphone capturing session:
+
+```typescript
+// Start microphone capture
+await session.startMic();
+
+// Stop microphone capture
+await session.stopMic();
+```
+
+### Muting and Unmuting
+
+Mute or unmute microphone inputs without tearing down the audio track:
+
+```typescript
+// Mute the microphone
+const stateAfterMute = session.muteInputAudio();
+console.log("Is muted:", stateAfterMute.isMuted); // true
+
+// Unmute the microphone
+const stateAfterUnmute = session.unmuteInputAudio();
+console.log("Is muted:", stateAfterUnmute.isMuted); // false
+```
+
+### Get Microphone State
+
+Get the current mute and permission state of the user's microphone:
+
+```typescript
+const state = session.getInputAudioState();
+console.log("Mute state:", state.isMuted);
+console.log("Permission state:", state.permissionState); // 'granted' | 'denied' | 'pending'
+```
+
+### Change Audio Input Device
+
+Change the active microphone input device by passing its `deviceId`:
+
+```typescript
+// Change audio input device
+const deviceId = "your-audio-input-device-id";
+await session.changeAudioInputDevice(deviceId);
+```
+
+---
+
+## Audio Injection
+
+You can inject custom audio clips (e.g., pre-recorded user voice message files) directly into the conversation stream.
+
+<Note>
+  The SDK automatically handles switching back to the user's microphone once the custom audio injection completes.
+</Note>
+
+### Upload Audio File
+
+Inject a standard audio file (`File` or `Blob` format):
+
+```typescript
+const fileInput = document.querySelector('input[type="file"]');
+
+fileInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    try {
+      console.log("Injecting audio file...");
+      await session.uploadAudio(file);
+      console.log("Audio file injected successfully");
+    } catch (err) {
+      console.error("Failed to inject audio file:", err);
+    }
+  }
+});
+```
+
+### Send Audio Blob
+
+Send raw audio data as a `Blob`:
+
+```typescript
+// Inject audio blob directly
+await session.sendAudio(audioBlob);
+```

@@ -1,0 +1,163 @@
+---
+title: 'Basic Usage'
+sidebarTitle: 'Basic Usage'
+description: 'Install, setup, and deploy the TruGen AI JavaScript SDK'
+---
+
+## Installation
+
+Install the SDK in your project using npm:
+
+```bash
+npm install @trugen/js-sdk
+```
+
+### Browser Requirements
+
+The TruGen SDK uses WebRTC for real-time video and audio streaming. Ensure your target browsers support:
+- WebRTC (Chrome 56+, Firefox 44+, Safari 11+, Edge 79+)
+- MediaDevices API for microphone access
+
+### HTML Setup
+
+This example requires a video element to display the persona:
+
+```html
+<video id="avatarVideo" autoplay playsinline></video>
+```
+
+- `autoplay` starts the stream when the page loads.
+- `playsinline` prevents fullscreen mode on mobile devices.
+
+---
+
+## Basic Usage
+
+To keep your API key secure, exchange it for a short-lived session token on your server before initializing the client. See [Usage in Production](/docs/javascript-sdk/production) for detailed session token information.
+
+### Initialize the Client
+
+Use `createClient` with your session token:
+
+```typescript
+import { createClient } from "@trugen/js-sdk";
+
+const session = await createClient({ token: sessionToken });
+```
+
+### Start Streaming
+
+To start streaming the avatar, register a video stream event listener to attach the track to your video element, then connect the session:
+
+```typescript
+import { TruGenEvent } from "@trugen/js-sdk";
+
+// Listen for the stream starting event
+session.on(TruGenEvent.VIDEO_STREAM_STARTED, (track) => {
+  const videoElement = document.getElementById("avatarVideo");
+  track.attach(videoElement);
+});
+
+// Connect to the streaming server
+try {
+  await session.connect();
+} catch (error) {
+  console.error("Failed to start stream:", error);
+}
+```
+
+### Listen for Events
+
+Handle connection lifecycle and speaking events using the `TruGenEvent` enum:
+
+```typescript
+import { TruGenEvent, ConnectionClosedCode } from "@trugen/js-sdk";
+
+// Connection status events
+session.on(TruGenEvent.CONNECTION_ESTABLISHED, () => {
+  console.log("Connected to avatar");
+});
+
+session.on(TruGenEvent.CONNECTION_CLOSED, (code: ConnectionClosedCode, reason: string) => {
+  console.log("Connection closed:", code, reason);
+});
+
+// Agent interaction events
+session.on(TruGenEvent.AGENT_SPEAKING_STARTED, () => {
+  console.log("Avatar started speaking");
+});
+
+session.on(TruGenEvent.AGENT_SPEAKING_ENDED, () => {
+  console.log("Avatar finished speaking");
+});
+```
+
+### Stopping a Stream
+
+To stop an active session and release media resources:
+
+```typescript
+await session.disconnect();
+```
+
+---
+
+## Custom Track and Frame Processing
+
+For advanced use cases, the SDK provides low-level getters and event helpers to access WebRTC media tracks and raw video frames.
+
+### Accessing Media Tracks
+
+Get direct access to the underlying LiveKit track instances once the session is connected:
+
+```typescript
+// Returns RemoteVideoTrack | null
+const videoTrack = session.getVideoTrack();
+
+// Returns RemoteAudioTrack | null
+const audioTrack = session.getAudioTrack();
+```
+
+### Track Subscriptions
+
+Use callbacks to listen for track updates. These helpers automatically execute the callback if the track is already active, and return an unsubscribe function:
+
+```typescript
+// Subscribe to video tracks
+const unsubscribeVideo = session.onVideoTrack((track) => {
+  console.log("Active video track received:", track);
+  track.attach(document.getElementById("avatarVideo"));
+});
+
+// Subscribe to audio tracks
+const unsubscribeAudio = session.onAudioTrack((track) => {
+  console.log("Active audio track received:", track);
+});
+
+// Later, unsubscribe to stop listening
+unsubscribeVideo();
+unsubscribeAudio();
+```
+
+### Processing Raw Video Frames
+
+If you need to feed video frames into a custom canvas layout, AI processing pipeline, or video filters, use `onVideoFrame`. 
+
+It decodes and emits raw frames (using `VideoFrame` via browser WebCodecs if supported, or falling back to canvas-rendered `ImageData` frames) and returns an unsubscribe function:
+
+```typescript
+const unsubscribeFrame = session.onVideoFrame((frame) => {
+  // Process each raw frame (VideoFrame or ImageData object)
+  console.log("Received raw video frame:", frame);
+
+  // Remember to call frame.close() if it's a WebCodecs VideoFrame to prevent memory leaks
+  if (typeof frame.close === "function") {
+    frame.close();
+  }
+});
+
+// Later, unsubscribe to stop processing frames
+unsubscribeFrame();
+```
+
+

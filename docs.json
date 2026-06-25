@@ -76,6 +76,36 @@
         ]
       },
       {
+        "tab": "JS SDK",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "docs/javascript-sdk/api-key",
+              "docs/javascript-sdk/authentication",
+              "docs/javascript-sdk/quickstart",
+              "docs/javascript-sdk/production"
+            ]
+          },
+          {
+            "group": "SDK Reference",
+            "pages": [
+              "docs/javascript-sdk/reference/basic-usage",
+              "docs/javascript-sdk/reference/event-handling",
+              "docs/javascript-sdk/reference/list-all-events",
+              "docs/javascript-sdk/reference/audio-control"
+            ]
+          },
+          {
+            "group": "Examples",
+            "pages": [
+              "docs/javascript-sdk/examples/basic-javascript",
+              "docs/javascript-sdk/examples/basic-typescript"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "API Reference",
         "groups": [
           {

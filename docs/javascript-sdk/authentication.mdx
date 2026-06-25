@@ -1,0 +1,184 @@
+---
+title: 'Authentication'
+sidebarTitle: 'Authentication'
+---
+
+Secure Your API Keys and Manage Session Tokens
+
+TruGen AI uses a two-tier authentication system: API keys for server-side requests and session tokens for client-side connections.
+
+## Tier 1: API Key
+
+Your API key is used to authenticate server-side requests to the TruGen AI API.
+
+<Warning>
+  Never expose your API key on the client side. Store and use it only on your server.
+</Warning>
+
+### Getting Your API Key
+
+See the [API Key section](/docs/javascript-sdk/api-key) for instructions on creating and managing your API key from the TruGen AI Dashboard.
+
+## Tier 2: Session Tokens
+
+Session tokens are temporary JWT credentials (valid for 5 minutes) that allow client applications to connect to TruGen's streaming infrastructure without exposing your API key.
+
+### How Session Tokens Work
+
+<Steps>
+  <Step title="Token Request">
+    Your server requests a session token from TruGen AI using your API key and agent configuration.
+  </Step>
+  <Step title="Token Generation">
+    TruGen AI generates a temporary JWT token (valid for 5 minutes) tied to your specific agent configuration.
+  </Step>
+  <Step title="Client Connection">
+    Your client uses the session token with the TruGen SDK to establish a direct WebRTC connection.
+  </Step>
+  <Step title="Real-time Communication">
+    Once connected, the client can send messages and receive video/audio streams directly.
+  </Step>
+</Steps>
+
+### Creating Session Tokens
+
+Below is a basic Express server that exposes an endpoint for creating session tokens.
+
+<CodeGroup>
+
+```javascript server.js
+const express = require("express");
+const app = express();
+
+app.use(express.json());
+
+app.post("/api/session-token", async (req, res) => {
+  try {
+    const response = await fetch("https://api.trugen.ai/v1/auth/conversation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": process.env.TRUGEN_API_KEY,
+      },
+      body: JSON.stringify({
+        agentId: process.env.AGENT_ID,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Token creation failed:", errorData);
+      return res.status(response.status).json({ error: "Token creation failed" });
+    }
+
+    const { token } = await response.json();
+    res.json({ token });
+  } catch (error) {
+    console.error("Network error:", error);
+    res.status(500).json({ error: "Failed to create session token" });
+  }
+});
+
+app.listen(3000, () => console.log("Server running on port 3000"));
+```
+
+```typescript server.ts
+import express, { Request, Response } from "express";
+
+interface AgentConfig {
+  agentId: string;
+}
+
+interface SessionTokenResponse {
+  token: string;
+}
+
+const app = express();
+app.use(express.json());
+
+app.post("/api/session-token", async (_req: Request, res: Response) => {
+  try {
+    const response = await fetch("https://api.trugen.ai/v1/auth/conversation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": process.env.TRUGEN_API_KEY as string,
+      },
+      body: JSON.stringify({
+        agentId: process.env.AGENT_ID,
+      } satisfies AgentConfig),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Token creation failed:", errorData);
+      return res.status(response.status).json({ error: "Token creation failed" });
+    }
+
+    const { token }: SessionTokenResponse = await response.json();
+    res.json({ token });
+  } catch (error) {
+    console.error("Network error:", error);
+    res.status(500).json({ error: "Failed to create session token" });
+  }
+});
+
+app.listen(3000, () => console.log("Server running on port 3000"));
+```
+
+</CodeGroup>
+
+### Client-Side Usage
+
+Once your server creates and returns the session token, pass it to your client application to initialize the SDK and start streaming. See the [Quickstart](/docs/javascript-sdk/quickstart) and [Basic Usage](/docs/javascript-sdk/reference/basic-usage) guides for client-side integration examples.
+
+### Dynamic Agent Configuration
+
+Instead of using the same agent for all users, you can pass the `agentId` dynamically from the client:
+
+#### User-based Agent Selection
+
+```typescript
+app.post("/api/session-token", async (req: Request, res: Response) => {
+  const { agentId } = req.body;
+
+  if (!agentId) {
+    res.status(400).json({ error: "agentId is required" });
+    return;
+  }
+
+  const response = await fetch("https://api.trugen.ai/v1/auth/conversation", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": process.env.TRUGEN_API_KEY as string,
+    },
+    body: JSON.stringify({ agentId }),
+  });
+
+  const { token } = await response.json();
+  res.json({ token });
+});
+```
+
+#### Client-side — passing agentId dynamically:
+
+```typescript
+const response = await fetch("/api/session-token", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ agentId: "your-agent-id" }),
+});
+const { token } = await response.json();
+```
+
+### Environment Setup
+
+Store your configuration securely in a `.env` file on your backend server:
+
+```ini .env
+TRUGEN_API_KEY=your-api-key-here
+
+# Only needed if using a fixed agent (non-dynamic approach)
+AGENT_ID=your-agent-id-here
+```
