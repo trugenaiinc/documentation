@@ -2281,6 +2281,250 @@
         }
       }
     },
+    "/ext/conversation": {
+      "get": {
+        "summary": "Retrieve all Conversations",
+        "description": "Retrieve all Conversations with all fields and optional pagination/filtering.",
+        "operationId": "getAllConversations",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "The number of conversations to skip before starting to return results.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "perpage",
+            "in": "query",
+            "required": false,
+            "description": "The number of conversations to return per page.",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Search criteria to filter conversations by ID, user name, agent name, or status.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": false,
+            "description": "Filter conversations created on or after this date (YYYY-MM-DD).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": false,
+            "description": "Filter conversations created before this date plus one day (YYYY-MM-DD).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "description": "Filter by conversation or agent type.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of conversations retrieved successfully",
+            "headers": {
+              "X-Total-Count": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Total number of conversations matching the query."
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Unique identifier for the conversation",
+                        "example": "6457541c-6251-40ed-a672-52d166c2c565"
+                      },
+                      "agent_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Agent identifier",
+                        "example": "6d142a7c-a6ef-4616-90bb-0124fc83bce7"
+                      },
+                      "agent_name": {
+                        "type": "string",
+                        "description": "Name of the agent",
+                        "example": "Customer Support Agent"
+                      },
+                      "context": {
+                        "type": "string",
+                        "description": "Serialized conversational context",
+                        "example": "{\"text\":\"\"}"
+                      },
+                      "meta_data": {
+                        "type": "object",
+                        "description": "Custom metadata associated with the conversation",
+                        "example": {}
+                      },
+                      "join_link": {
+                        "type": "string",
+                        "description": "LiveKit room join link",
+                        "example": "https://meet.trugen.ai/join/..."
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": ["STARTED", "IN_PROGRESS", "ENDED"],
+                        "description": "Current status of the conversation",
+                        "example": "ENDED"
+                      },
+                      "is_active": {
+                        "type": "boolean",
+                        "description": "Whether the conversation session is active",
+                        "example": true
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the conversation was created",
+                        "example": "2025-12-18T17:54:02.153319Z"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the conversation was last updated",
+                        "example": "2025-12-18T17:59:29.720601Z"
+                      },
+                      "job_id": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Background processing job ID, if any",
+                        "example": null
+                      },
+                      "feedback": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "User feedback description, if any",
+                        "example": "Great conversation"
+                      },
+                      "rating": {
+                        "type": "integer",
+                        "nullable": true,
+                        "description": "User rating, if any",
+                        "example": 5
+                      },
+                      "usage_status": {
+                        "type": "string",
+                        "description": "Status of usage tracking",
+                        "example": "completed"
+                      },
+                      "usage_json": {
+                        "type": "string",
+                        "description": "Serialized usage metrics",
+                        "example": "{}"
+                      },
+                      "snippets": {
+                        "type": "object",
+                        "description": "Context snippets used in the conversation",
+                        "example": {}
+                      },
+                      "user_name": {
+                        "type": "string",
+                        "description": "Name of the user in the conversation",
+                        "example": "Test User"
+                      },
+                      "user_id": {
+                        "type": "string",
+                        "description": "Identifier of the user",
+                        "example": "test@test.com"
+                      },
+                      "chat_history": {
+                        "type": "object",
+                        "description": "Complete chat history of the conversation",
+                        "example": {}
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Type of the conversation",
+                        "example": "etev"
+                      },
+                      "avatar_id": {
+                        "type": "string",
+                        "description": "Identifier of the avatar",
+                        "example": "665a1170"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized – missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized: not a valid authorization api key"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Failed to retrieve conversation details"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ext/conversation/{id}": {
       "parameters": [
         {
@@ -2436,7 +2680,7 @@
         }
       }
     },
-    "/ext/agents": {
+    "/ext/agent": {
       "get": {
         "summary": "Retrieve all Agents",
         "description": "Fetches a list of all your agents, including associated avatars, knowledge bases, and callback settings.",
@@ -2446,9 +2690,48 @@
             "apiKeyAuth": []
           }
         ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "The number of agents to skip before starting to return results.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "perpage",
+            "in": "query",
+            "required": false,
+            "description": "The number of agents to return per page.",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Search criteria to filter agents by name or ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of agents retrieved successfully",
+            "headers": {
+              "X-Total-Count": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Total number of agents matching the query."
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -2789,9 +3072,7 @@
             }
           }
         }
-      }
-    },
-    "/ext/agent": {
+      },
       "post": {
         "summary": "Create an agent",
         "description": "Creates a new agent with avatar IDs, knowledge bases, and additional settings",
