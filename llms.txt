@@ -1,6 +1,6 @@
 # TruGen AI
 
-> TruGen AI is a platform for building and deploying real-time conversational video agents. Agents are powered by two proprietary foundation models — Huma-1 (expressive avatar rendering) and Hawkeye-1 (vision-based action recognition) — and deliver end-to-end responses in under one second. The platform exposes a REST API for programmatic agent management and supports iframe/SDK embedding for frontend integration.
+> TruGen AI is a platform for building and deploying real-time conversational video agents. Agents are powered by a family of proprietary foundation models — Huma-1 and Huma-2 (expressive avatar rendering, with Huma-2 delivering sub-500ms end-to-end latency) and Hawkeye-1 (vision-based action recognition) — and deliver end-to-end responses in under one second. The platform exposes a REST API for programmatic agent management and supports iframe/SDK embedding for frontend integration.
 
 ## Getting Started
 
@@ -10,7 +10,7 @@
 ## Managed Agents
 
 - [Conversational Video Agents](https://docs.trugen.ai/docs/agents/conversational-video-agents): Architecture and features of real-time video agents — speech recognition, vision perception, tool calling, persona templates, and iframe integration.
-- [Realtime Pipeline](https://docs.trugen.ai/docs/agents/pipeline): End-to-end pipeline walkthrough: WebRTC → STT → Turn Detection → LLM → Knowledge Base → TTS → Huma-1 avatar rendering.
+- [Realtime Pipeline](https://docs.trugen.ai/docs/agents/pipeline): End-to-end pipeline walkthrough: WebRTC → STT → Turn Detection → LLM → Knowledge Base → TTS → Huma-2 avatar rendering.
 - [Persona Templates](https://docs.trugen.ai/docs/agents/templates): Reusable blueprints defining system prompt, entry/exit messages, knowledge bindings, idle timeout, and behavior rules.
 - [Knowledge Base](https://docs.trugen.ai/docs/agents/knowledge-base): Attach documents, URLs, or text to ground agent responses. Supports both Agentic RAG and Traditional RAG modes.
 - [Memory](https://docs.trugen.ai/docs/agents/memory): Configure per-session or persistent memory for agents.

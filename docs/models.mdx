@@ -3,15 +3,38 @@ title: "Models"
 description: "The foundation models that power TruGen's real-time video agents."
 ---
 
-TruGen's conversational video agents are built on two proprietary foundation models that work together to deliver human-like, real-time interactions.
+TruGen's conversational video agents are built on a family of proprietary foundation models — two generations of avatar renderers (Huma-2, Huma-1) and a vision action recognition model (Hawkeye-1) — that work together to deliver human-like, real-time interactions.
 
-<Frame>
-  <img src="/images/huma-hawkeye.png" alt="Huma-1 avatar model and Hawkeye-1 vision model" />
-</Frame>
+## Huma-2 — Real-Time Interactive Avatar Model
+
+Huma-2 is TruGen's next-generation real-time interactive avatar model, built for seamless, human-like conversations. It generates high-fidelity facial animation powered by **Gaussian Splatting**, chosen because it's fast enough for real-time use, flexible enough for audio-driven deformation, and trainable from short video clips.
+
+**Best for**
+- Sub-second, face-to-face conversational experiences where every millisecond of latency matters
+- Avatars trained from minimal source material — only 2–3 minutes of pre-recorded video in a controlled setting
+- Production deployments that need robust performance across varying audio and recording conditions
+
+**Key characteristics**
+| Attribute | Detail |
+| --- | --- |
+| Modality | Real-time interactive avatar generation |
+| End-to-end latency | Sub-500 ms |
+| Rendering | Gaussian Splatting for audio-driven facial deformation |
+| Training data | 2–3 minutes of pre-recorded video |
+| Runtime architecture | Two-phase — preloading + inference — to minimize perceived latency |
+
+**What's new vs. Huma-1**
+- **Leaner models** — internal networks redesigned to be significantly smaller, delivering faster inference with negligible accuracy trade-offs
+- **Streamlined data path** — unnecessary pre-processing stages removed, producing leaner boot sequences and faster load times
+- **Robust audio encoding** — enhanced tolerance to varying recording conditions, reducing sensitivity to input quality and simplifying data collection
 
 ## Huma-1 — Expressive Avatar Model
 
-Huma-1 is TruGen's neural avatar renderer. It generates photorealistic video frames synchronized with speech, producing lifelike facial expressions, micro-expressions, lip sync, gaze direction, and emotional nuance in real time.
+<Frame>
+  <img src="/images/huma-hawkeye.png" alt="Huma-1 and Huma-2 avatar models and Hawkeye-1 vision model" />
+</Frame>
+
+Huma-1 is TruGen's first-generation neural avatar renderer. It generates photorealistic video frames synchronized with speech, producing lifelike facial expressions, micro-expressions, lip sync, gaze direction, and emotional nuance in real time.
 
 **Best for**
 - Face-to-face conversational agents where realism matters
@@ -44,12 +67,12 @@ Hawkeye-1 is TruGen's vision layer. It continuously analyzes the user's video st
 
 ## How they work together
 
-The two models are complementary — Hawkeye-1 handles perception (what the agent sees), and Huma-1 handles expression (how the agent responds). Combined with the pipeline's STT, LLM, and TTS stages, they enable agents that see, hear, understand, and respond with sub-second latency.
+The models are complementary — Hawkeye-1 handles perception (what the agent sees), and the Huma family handles expression (how the agent responds), with Huma-2 pushing end-to-end latency into sub-500 ms territory. Combined with the pipeline's STT, LLM, and TTS stages, they enable agents that see, hear, understand, and respond with sub-second latency.
 
 <CardGroup cols={2}>
 
 <Card title="Pipeline Architecture" icon="diagram-project" href="/docs/agents/pipeline">
-See how Huma-1 and Hawkeye-1 fit into the end-to-end conversational pipeline.
+See how Huma-2, Huma-1, and Hawkeye-1 fit into the end-to-end conversational pipeline.
 </Card>
 
 <Card title="Create an Agent" icon="rocket" href="/docs/quickstart">

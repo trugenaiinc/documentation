@@ -57,9 +57,7 @@
                 "group": "Avatars",
                 "icon": "user",
                 "pages": [
-                  "docs/avatars/gallery",
-                  "docs/avatars/custom",
-                  "docs/avatars/best-practices"
+                  "docs/avatars/gallery"
                 ]
               },
               {
@@ -108,13 +106,6 @@
               "docs/agents/templates",
               "docs/agents/memory"
             ]
-          },
-          {
-            "group": "Video Generation",
-            "icon": "video",
-            "pages": [
-              "docs/agents/text_to_video"
-            ]
           }
         ]
       },
@@ -148,14 +139,6 @@
                   "docs/sdks/javascript/reference/list-all-events"
                 ]
               }
-            ]
-          },
-          {
-            "group": "Python SDK",
-            "icon": "python",
-            "pages": [
-              "docs/sdks/python/overview",
-              "docs/sdks/python/quickstart"
             ]
           }
         ]
