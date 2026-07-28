@@ -1,0 +1,59 @@
+---
+title: "Models"
+description: "The foundation models that power TruGen's real-time video agents."
+---
+
+TruGen's conversational video agents are built on two proprietary foundation models that work together to deliver human-like, real-time interactions.
+
+<Frame>
+  <img src="/images/huma-hawkeye.png" alt="Huma-1 avatar model and Hawkeye-1 vision model" />
+</Frame>
+
+## Huma-1 — Expressive Avatar Model
+
+Huma-1 is TruGen's neural avatar renderer. It generates photorealistic video frames synchronized with speech, producing lifelike facial expressions, micro-expressions, lip sync, gaze direction, and emotional nuance in real time.
+
+**Best for**
+- Face-to-face conversational agents where realism matters
+- Multi-language avatars that must maintain natural expression across accents
+- Interactive product demos, interviews, coaching, and support experiences
+
+**Key characteristics**
+| Attribute | Detail |
+| --- | --- |
+| Modality | Real-time video generation |
+| Speech sync latency | ≤ 80 ms |
+| Expression fidelity | Micro-expressions, gaze, head motion |
+| Output | Streamed video frames |
+
+## Hawkeye-1 — Vision Action Recognition Model
+
+Hawkeye-1 is TruGen's vision layer. It continuously analyzes the user's video stream to understand appearance, environment, screen shares, and visual cues, feeding this context into the LLM so responses stay grounded in what the agent can actually see.
+
+**Best for**
+- Agents that must react to user actions (holding up a document, pointing at a screen)
+- Multimodal experiences where context beyond audio matters
+- Screen-share aware assistants and visual troubleshooting flows
+
+**Key characteristics**
+| Attribute | Detail |
+| --- | --- |
+| Modality | Continuous vision perception |
+| Input | Live user webcam, screen share |
+| Output | Structured scene / action context passed to the LLM |
+
+## How they work together
+
+The two models are complementary — Hawkeye-1 handles perception (what the agent sees), and Huma-1 handles expression (how the agent responds). Combined with the pipeline's STT, LLM, and TTS stages, they enable agents that see, hear, understand, and respond with sub-second latency.
+
+<CardGroup cols={2}>
+
+<Card title="Pipeline Architecture" icon="diagram-project" href="/docs/agents/pipeline">
+See how Huma-1 and Hawkeye-1 fit into the end-to-end conversational pipeline.
+</Card>
+
+<Card title="Create an Agent" icon="rocket" href="/docs/quickstart">
+Spin up your first agent using these models.
+</Card>
+
+</CardGroup>

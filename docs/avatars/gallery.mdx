@@ -1,0 +1,247 @@
+---
+title: "Avatar Gallery"
+sidebarTitle: "Gallery"
+description: "Browse TruGen's stock avatars and copy the avatar ID for use in your agent configuration."
+---
+
+TruGen's stock avatars are built on **Huma-3** and render lifelike facial motion, expression, and speech synchronisation in real time.
+
+Click the copy icon next to any avatar ID to copy it, then paste it into your agent's `avatar_ids` field.
+
+export const handleCopy = (e, id) => {
+  navigator.clipboard.writeText(id).catch(() => {});
+  const btn = e.currentTarget;
+  btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+  setTimeout(() => {
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+  }, 1500);
+};
+
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'}}>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/cathy-wide.jpg" alt="Cathy" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Cathy</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>17de03e4</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'17de03e4')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/chole-wide.jpeg" alt="Chloe" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Chloe</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>45e3f732</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'45e3f732')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/clara-wide.jpg" alt="Clara" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Clara</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>7e95996</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'7e95996')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/jennifer_wide.jpg" alt="Jennifer" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Jennifer</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>0de70332</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'0de70332')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/jessica-wide.jpeg" alt="Jessica" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Jessica</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>21ef04ad</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'21ef04ad')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/lisa-wide.png" alt="Lisa" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Lisa</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>665a1170</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'665a1170')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/lucy-wide.jpg" alt="Lucy" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Lucy</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>c5b563de</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'c5b563de')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/misha_wide.jpg" alt="Misha" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Misha</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>05b401f3</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'05b401f3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/priya-wide.jpg" alt="Priya" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Priya</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>1e4ea106</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'1e4ea106')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/sofia-wide.jpeg" alt="Sofia" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Sofia</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>1928040f</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'1928040f')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/akbar-wide.jpg" alt="Akbar" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Akbar</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>18c4043e</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'18c4043e')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/alex-wide.png" alt="Alex" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Alex</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>80b9095f</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'80b9095f')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/aman-wide.jpg" alt="Aman" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Aman</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>5daa73d5</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'5daa73d5')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/jason_wide.jpg" alt="Jason" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Jason</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>05a001fc</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'05a001fc')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/johnny_wide.jpg" alt="Johnny" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Johnny</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>1fa504ff</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'1fa504ff')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/mike-wide.jpg" alt="Mike" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Mike</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>03ae0187</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'03ae0187')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div style={{borderRadius:'12px',overflow:'hidden',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',lineHeight:'0',fontSize:'0'}}>
+    <img src="https://assets.trugen.ai/images/avatarImages/sameer-wide.jpeg" alt="Sameer" style={{width:'100%',height:'220px',objectFit:'cover',objectPosition:'top',display:'block',margin:'0',padding:'0'}} />
+    <div style={{padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',lineHeight:'normal',fontSize:'14px'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>Sameer</span>
+      <div style={{display:'flex',alignItems:'center',gap:'5px',fontFamily:'monospace',fontSize:'11px',background:'rgba(128,128,128,0.12)',borderRadius:'4px',padding:'2px 7px'}}>
+        <span>60a0926a</span>
+        <button title="Copy ID" style={{background:'none',border:'none',cursor:'pointer',padding:'0',color:'inherit',opacity:'0.6',display:'flex',alignItems:'center'}} onClick={(e)=>handleCopy(e,'60a0926a')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+## Using an Avatar ID
+
+Pass the copied ID into the `avatar_ids` array when creating an agent:
+
+```bash
+curl --request POST \
+  --url https://api.trugen.ai/v1/agent/api \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: <api-key>' \
+  --data '{
+    "avatar_ids": ["7e95996"],
+    "name": "Clara Agent",
+    "system_prompt": "You are a helpful assistant."
+  }'
+```
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Create a Custom Avatar" icon="user-plus" href="/docs/avatars/custom">
+  Upload a photo or use your camera to build your own avatar.
+</Card>
+
+<Card title="Source Image Best Practices" icon="camera" href="/docs/avatars/best-practices">
+  Technical specs and guidelines for the highest-quality custom avatars.
+</Card>
+
+<Card title="Avatars API Reference" icon="book" href="/api-reference/endpoint/avatarget">
+  Programmatic access to the full avatar list.
+</Card>
+
+<Card title="LiveKit Integration" icon="plug" href="/docs/voice-to-video/livekit">
+  Use these avatars with the TruGen LiveKit plugin.
+</Card>
+
+</CardGroup>

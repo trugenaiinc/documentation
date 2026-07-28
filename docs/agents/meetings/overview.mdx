@@ -1,0 +1,99 @@
+---
+title: "External Meetings"
+sidebarTitle: "External Meetings"
+description: "Give your AI Teammate its own meeting email and invite it into any live video call — just like a person."
+---
+
+External Meetings lets your AI Teammate join live video calls on Google Meet, Zoom, Microsoft Teams, or Webex — as a real participant. You invite it the same way you'd invite any colleague: by adding its email to the meeting. It shows up on time, listens, responds, and stores a full transcript when the call ends.
+
+No bots to configure. No platform integrations to set up. Just an email address.
+
+## Enabling External Meetings
+
+When creating or editing an agent in the [Developer Studio](https://app.trugen.ai), open the **Advanced** section and enable the **External Meetings** toggle.
+
+Once enabled, your AI Teammate is assigned a **dedicated meeting email address** — something like `alex@meetings.trugen.ai`. This is the address you'll use to invite it to any call.
+
+<Note>The email address is unique to each agent. Different teammates get different emails, so you can invite specific agents to specific meetings.</Note>
+
+## Inviting Your Teammate to a Meeting
+
+Once your agent has a meeting email, inviting it is exactly like inviting a person:
+
+<Steps>
+  <Step title="Copy the agent's meeting email">
+    Find the email address in the agent's **Advanced** settings in the Developer Studio.
+  </Step>
+  <Step title="Add it to your meeting invite">
+    When scheduling a meeting on Google Calendar, Outlook, or any other calendar tool, add the agent's email as a guest — just as you would with a colleague.
+  </Step>
+  <Step title="The agent joins automatically">
+    At the scheduled start time, your AI Teammate joins the call under its display name. No manual action required.
+  </Step>
+  <Step title="It operates throughout the call">
+    The agent listens in real time, processes the conversation, and responds based on its configuration, persona, and knowledge base.
+  </Step>
+  <Step title="Post-meeting storage">
+    When the call ends, the full transcript and recording are stored automatically — available for review or downstream workflows.
+  </Step>
+</Steps>
+
+## Supported Platforms
+
+<CardGroup cols={4}>
+  <Card title="Google Meet" icon="google" />
+  <Card title="Zoom" icon="video" />
+  <Card title="Microsoft Teams" icon="microsoft" />
+  <Card title="Webex" icon="headset" />
+</CardGroup>
+
+The agent handles platform-specific join flows automatically — including waiting rooms, lobby screens, and recording permission dialogs.
+
+## What the Agent Does in a Meeting
+
+| Capability | Description |
+| --- | --- |
+| **Real-Time Listening** | Transcribes speech as it happens, tracking who said what |
+| **Live Responses** | Speaks and responds naturally during the conversation |
+| **Participant Awareness** | Knows who's in the call and can address participants by name |
+| **Recurring Meetings** | Joins every occurrence of a recurring series; handles cancellations and reschedules automatically |
+| **Vision Understanding** | With Vision enabled, analyses the live video feed for emotions, gaze, attention, and more |
+| **Tool Use** | Can call APIs, trigger workflows, or look up knowledge base content mid-call |
+
+## Multi-Participant Calls
+
+TruGen agents are built for real meetings — not just one-on-one conversations. They participate naturally in calls with multiple people, following the flow of the discussion without interrupting or speaking out of turn.
+
+This is powered by our proprietary **Chime In** model, which continuously tracks the conversation and determines the right moment for the agent to contribute. It understands turn-taking dynamics, detects when a question is directed at the agent, and stays silent when the conversation is between other participants — just like a human attendee would.
+
+The result is an agent that feels like a real meeting participant, not a bot waiting to be explicitly triggered.
+
+## Common Use Cases
+
+- **AI interviewer** — joins hiring calls, asks structured questions, and captures candidate responses
+- **Sales agent** — attends discovery calls to answer product questions and qualify leads live
+- **Onboarding assistant** — guides new hires through their first meetings interactively
+- **Compliance monitor** — attends regulated calls and flags policy violations in real time
+- **Meeting summariser** — listens, captures key points, and sends follow-ups automatically
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Vision Understanding" icon="eye" href="/docs/agents/vision/overview">
+  Enable real-time video analysis during live meetings.
+</Card>
+
+<Card title="Knowledge Base" icon="database" href="/docs/agents/knowledge-base">
+  Connect your content so the agent answers accurately in any meeting context.
+</Card>
+
+<Card title="Tools" icon="screwdriver-wrench" href="/docs/agents/tools/overview">
+  Extend the agent with API calls, integrations, and automation during calls.
+</Card>
+
+<Card title="Event Callbacks" icon="webhook" href="/docs/agents/callback">
+  Receive real-time webhook events from active meeting sessions.
+</Card>
+
+</CardGroup>

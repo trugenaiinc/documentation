@@ -1,0 +1,88 @@
+---
+title: 'Event Handling'
+sidebarTitle: 'Event Handling'
+description: 'Listen and respond to WebRTC streaming and conversation events.'
+---
+
+The TruGen JS SDK client is an `EventEmitter` that allows you to listen to real-time session state, media streams, user speaking, and agent avatar activity.
+
+## Adding Event Listeners
+
+Register event listeners after creating the TruGen client and before starting the session with `connect()`.
+
+<Warning>
+  Event handlers must be registered before the session starts. Startup events such as microphone permission, connection, and stream initialization can fire while `connect()` is running. Late listeners will not receive events that already fired.
+</Warning>
+
+Use the `on` or `addListener` methods before calling `connect()`:
+
+```typescript
+import { createClient, TruGenEvent } from "@trugen/js-sdk";
+
+// Initialize client with your session token
+const session = await createClient({ token: sessionToken });
+
+// Register listeners before starting the session
+session.on(TruGenEvent.CONNECTION_ESTABLISHED, () => {
+  console.log("Connection Established");
+});
+
+session.on(TruGenEvent.TEXT_CHUNK_RECEIVED, (payload) => {
+  console.log("Real-time transcript chunk:", payload.text);
+});
+
+// Start connection
+await session.connect();
+```
+
+---
+
+## Code Examples
+
+### Connection Lifecycle
+
+```typescript
+import { TruGenEvent, ConnectionClosedCode } from "@trugen/js-sdk";
+
+session.on(TruGenEvent.CONNECTION_CLOSED, (code: ConnectionClosedCode, reason: string) => {
+  console.log(`Connection closed. Code: ${code}, Reason: ${reason}`);
+  if (code === ConnectionClosedCode.MICROPHONE_PERMISSION_DENIED) {
+    alert("Microphone permission was denied. Please check your browser settings.");
+  }
+});
+
+session.on(TruGenEvent.ERROR, (error) => {
+  console.error("Session error:", error);
+});
+```
+
+### Rendering Video Stream
+
+```typescript
+session.on(TruGenEvent.VIDEO_STREAM_STARTED, (track) => {
+  const videoElement = document.getElementById("avatarVideo");
+  track.attach(videoElement);
+});
+```
+
+### Custom Speaking/Listening Indicators
+
+```typescript
+session.on(TruGenEvent.USER_SPEECH_STARTED, () => {
+  // Highlight user mic icon or show "Listening..."
+  setListeningIndicator(true);
+});
+
+session.on(TruGenEvent.USER_SPEECH_ENDED, () => {
+  setListeningIndicator(false);
+});
+
+session.on(TruGenEvent.AGENT_SPEAKING_STARTED, () => {
+  // Show visual wave indicator for avatar speech
+  setAvatarSpeaking(true);
+});
+
+session.on(TruGenEvent.AGENT_SPEAKING_ENDED, () => {
+  setAvatarSpeaking(false);
+});
+```

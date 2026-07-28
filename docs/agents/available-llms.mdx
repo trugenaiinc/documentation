@@ -1,0 +1,99 @@
+---
+title: "Available LLMs"
+description: "All large language models available on TruGen, organised by provider."
+---
+
+The LLM is the reasoning engine behind every AI Teammate. When a user speaks, their words are transcribed by the STT engine and passed to the LLM, which generates the response that the TTS engine then speaks aloud. Choosing the right model affects response quality, latency, and cost.
+
+TruGen supports a range of models across multiple providers, so you can optimise for speed, quality, cost, or compliance depending on your use case.
+
+<Note>You can also connect your own LLM — see [Bring Your Own LLM](/docs/resources/byo-llm). Use the `/v1/providers` endpoint to always fetch the latest available model list.</Note>
+
+---
+
+## Groq
+
+Ultra-low latency inference. Best for real-time conversational agents where response speed is the top priority.
+
+| Model | Model ID | Best For |
+| --- | --- | --- |
+| **GPT OSS 20b** | `openai/gpt-oss-20b` | Low-latency conversational AI and agents where fast responses are critical |
+| **GPT OSS 120b** | `openai/gpt-oss-120b` | Higher-quality reasoning with low latency for more complex tasks |
+| **GPT OSS 120b — Low Reasoning** | `openai/gpt-oss-120b-low` | Ultra-fast responses with minimal reasoning overhead |
+| **GPT OSS 120b — Medium Reasoning** | `openai/gpt-oss-120b-medium` | Balanced reasoning for structured and multi-step tasks |
+| **Llama-4 Scout** | `meta-llama/llama-4-scout-17b-16e-instruct` | Multi-document analysis, codebase reasoning, and personalised tasks |
+
+---
+
+## Azure OpenAI
+
+Enterprise-grade OpenAI models hosted on Microsoft Azure. Best for teams with compliance, data residency, or enterprise SLA requirements.
+
+| Model | Model ID | Best For |
+| --- | --- | --- |
+| **GPT-5.4-Mini** | `gpt-5.4-mini` | Fast, cost-efficient general-purpose language generation |
+| **GPT-5.4-Mini — Low Reasoning** | `gpt-5.4-mini-low` | Ultra-fast responses for simple conversational tasks |
+| **GPT-5.4-Mini — Medium Reasoning** | `gpt-5.4-mini-medium` | Balanced reasoning for structured and multi-step tasks |
+
+---
+
+## Google
+
+Gemini models via Google's AI platform. Best for advanced reasoning, multimodal tasks, and cost-sensitive deployments.
+
+| Model | Model ID | Best For |
+| --- | --- | --- |
+| **Gemini 3.1 Pro Preview** | `google/gemini-3.1-pro-preview` | Advanced reasoning and high-quality generation for complex tasks |
+| **Gemini 3.1 Flash Lite** | `google/gemini-3.1-flash-lite` | Fast, lightweight responses for cost-sensitive deployments |
+
+---
+
+## Open Router
+
+Access to open-source models via a unified routing layer. Best for flexibility and experimenting with open-weight models.
+
+| Model | Model ID | Best For |
+| --- | --- | --- |
+| **Llama 4 Scout** | `meta-llama/llama-4-scout` | Open-source Llama 4 Scout via a unified routing layer |
+| **GPT OSS 120B** | `openai/gpt-oss-120b` | Large open-source model via routing layer |
+
+---
+
+## Livekit Inference
+
+Edge-optimised inference via the Livekit infrastructure. Best for low-latency deployments close to the media layer.
+
+| Model | Model ID | Best For |
+| --- | --- | --- |
+| **Gemma 4 31b** | `google/gemma-4-31b-it` | Edge-optimised inference for low-latency deployments |
+
+---
+
+## Choosing a Model
+
+| Priority | Recommended Model |
+| --- | --- |
+| **Lowest latency** | Groq GPT OSS 20b |
+| **Best quality + low latency** | Groq GPT OSS 120b |
+| **Enterprise / compliance** | Azure OpenAI GPT-5.4-Mini |
+| **Advanced reasoning** | Google Gemini 3.1 Pro Preview |
+| **Cost efficiency** | Google Gemini 3.1 Flash Lite |
+| **Open-source flexibility** | Open Router Llama 4 Scout |
+
+## What's Next?
+
+<CardGroup cols={3}>
+
+<Card title="Bring Your Own LLM" icon="brain" href="/docs/resources/byo-llm">
+  Connect a self-hosted, fine-tuned, or third-party LLM to your agents.
+</Card>
+
+<Card title="Prompting Strategies" icon="pen" href="/docs/agents/prompting-strategies">
+  Write system prompts that get the best out of any model.
+</Card>
+
+<Card title="Providers" icon="cloud" href="/docs/providers/overview">
+  See all STT, LLM, and TTS providers available on TruGen.
+</Card>
+
+</CardGroup>

@@ -1,0 +1,75 @@
+---
+title: 'List all events'
+sidebarTitle: 'List all events'
+description: 'Reference guide for all supported TruGen JS SDK events.'
+---
+
+Here is the complete reference of all events emitted by the TruGen client session:
+
+<ResponseField name="STATE_CHANGED" type="state: TruGenState">
+  Fired when the session connection state changes (e.g., to `CONNECTED`, `DISCONNECTED`).
+</ResponseField>
+
+<ResponseField name="CONNECTION_ESTABLISHED" type="void">
+  Fired when the WebRTC connection is successfully established.
+</ResponseField>
+
+<ResponseField name="CONNECTION_CLOSED" type="(code: ConnectionClosedCode, reason: string)">
+  Fired when the session connection is terminated.
+</ResponseField>
+
+<ResponseField name="VIDEO_STREAM_STARTED" type="track: RemoteVideoTrack">
+  Fired when the remote video track from the avatar becomes available.
+</ResponseField>
+
+<ResponseField name="AUDIO_STREAM_STARTED" type="track: RemoteAudioTrack">
+  Fired when the remote audio track from the avatar becomes available.
+</ResponseField>
+
+<ResponseField name="INPUT_AUDIO_STREAM_STARTED" type="stream: MediaStream">
+  Fired when the client microphone input stream is initialized.
+</ResponseField>
+
+<ResponseField name="AGENT_SPEAKING_STARTED" type="void">
+  Fired when the avatar starts speaking.
+</ResponseField>
+
+<ResponseField name="AGENT_SPEAKING_ENDED" type="void">
+  Fired when the avatar finishes speaking.
+</ResponseField>
+
+<ResponseField name="USER_SPEECH_STARTED" type="void">
+  Fired when the user starts speaking. Useful for showing an active speaking or listening indicator in the UI.
+</ResponseField>
+
+<ResponseField name="USER_SPEECH_ENDED" type="void">
+  Fired when the user finishes speaking.
+</ResponseField>
+
+<ResponseField name="USER_SPEECH_INTERRUPTED" type="void">
+  Fired when the user interrupts the avatar's speech.
+</ResponseField>
+
+<ResponseField name="TEXT_CHUNK_RECEIVED" type="payload: { text: string; isFinal: boolean; role: string; }">
+  Fired when real-time transcription/captions chunks are received.
+</ResponseField>
+
+<ResponseField name="MIC_PERMISSION_PENDING" type="void">
+  Fired when the browser is requesting microphone permissions.
+</ResponseField>
+
+<ResponseField name="MIC_PERMISSION_GRANTED" type="void">
+  Fired when microphone permissions are granted.
+</ResponseField>
+
+<ResponseField name="MIC_PERMISSION_DENIED" type="error: string | Error">
+  Fired when microphone permissions are denied by the user or browser.
+</ResponseField>
+
+<ResponseField name="INPUT_AUDIO_DEVICE_CHANGED" type="deviceId: string">
+  Fired when the active input audio capture device is changed.
+</ResponseField>
+
+<ResponseField name="ERROR" type="error: any">
+  Fired when any WebRTC or connection errors occur.
+</ResponseField>

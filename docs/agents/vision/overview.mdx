@@ -1,0 +1,102 @@
+---
+title: "Vision Understanding"
+sidebarTitle: "Vision Understanding"
+description: "Real-time video analysis for monitoring, proctoring, and engagement tracking — powered by Hawkeye-2."
+---
+
+TruGen Vision Understanding powered by **Hawkeye-2** is a real-time video analysis system designed for live monitoring and proctoring. It connects to a live video stream and continuously analyses participant behaviour using AI.
+
+The platform can:
+
+- Detect emotions
+- Track where a person is looking
+- Monitor head movement and attention
+- Count the number of people visible on screen
+- Detect deepfake video feeds
+- Detect whether lip movement is in sync with the audio and video of the user on the call
+
+It's especially useful for:
+
+- Online exam proctoring
+- Interview monitoring
+- Compliance and security checks
+- Attention and engagement tracking
+
+## How It Works
+
+The system connects to a live video session, processes video frames in real time, and sends results instantly to dashboards, apps, or external systems.
+
+It can also trigger alerts or actions automatically when certain conditions are detected, such as:
+
+- A participant repeatedly looking away
+- Multiple people appearing on screen
+- Signs of stress or distraction
+
+## Key Features
+
+<CardGroup cols={2}>
+
+<Card title="Emotion Detection" icon="face-smile">
+  Identifies emotional states in real time — Happy, Neutral, Sad, Angry,
+  Fearful, and Surprised.
+</Card>
+
+<Card title="Head Pose Tracking" icon="person">
+  Detects whether the person is looking left, right, up, down, or straight
+  ahead.
+</Card>
+
+<Card title="Eye Gaze Tracking" icon="eye">
+  Tracks eye movement to understand attention and focus across all directions.
+</Card>
+
+<Card title="Face Count Detection" icon="users">
+  Detects how many people are visible in the frame at any given moment.
+</Card>
+
+<Card title="Deepfake Detection" icon="shield-halved">
+  Monitors the video stream to detect and flag deepfaked or lip-synced video.
+</Card>
+
+<Card title="Lip Sync Detection" icon="waveform">
+  Verifies that the participant's lip movement matches the audio in the session.
+</Card>
+
+</CardGroup>
+
+## Real-Time Alerts & Automation
+
+The system supports custom triggers and automated actions. For example:
+
+- If someone looks away more than 5 times, automatically:
+  - Send an alert
+  - Trigger a webhook
+  - Notify a moderator or proctor
+
+## Built for Scale
+
+Vision Understanding is optimised for real-time performance and can run multiple AI analysis modules simultaneously with low latency. Each instance runs in its own infrastructure component, ensuring no impact on conversational quality or performance.
+
+## Common Use Cases
+
+| Use Case                            | Description                                                                 |
+| ----------------------------------- | --------------------------------------------------------------------------- |
+| **Online Exam Proctoring**          | Detect cheating behaviour, multiple faces, or attention drift in real time  |
+| **Remote Interview Monitoring**     | Track engagement, eye contact, and emotional signals during live interviews |
+| **Live Engagement Analysis**        | Measure attention and emotional response during presentations or training   |
+| **Workplace Compliance Monitoring** | Ensure policy compliance in monitored sessions or sensitive environments    |
+| **AI-Powered Video Analytics**      | Feed real-time vision data into dashboards, reports, or downstream systems  |
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Foundation Models" icon="brain" href="/docs/models">
+  Learn about Hawkeye-2 and Huma-3, the models powering TruGen agents.
+</Card>
+
+<Card title="External Meetings" icon="users" href="/docs/agents/meetings/overview">
+  Join and monitor external meetings with Vision Understanding enabled.
+</Card>
+
+</CardGroup>

@@ -1,71 +1,58 @@
 ---
-title: Bring Your Own LLM
+title: "Bring Your Own LLM"
+sidebarTitle: "Custom LLM"
+description: "Connect any OpenAI-compatible LLM to your TruGen agents — self-hosted, fine-tuned, or third-party."
 ---
 
-This guide explains how to connect any **OpenAI-compatible LLM API** to your agents. This allows you to leverage your preferred models while maintaining a consistent experience across your avatar and agent stack.
+TruGen lets you replace the default LLM with any **OpenAI-compatible API**. This means you can use self-hosted models, fine-tuned models trained on your own data, or third-party providers — while keeping the rest of the avatar and agent stack intact.
 
----
-
-## What is an External LLM?
-
-An external LLM allows you to redirect all language processing requests to a service outside of the default provider. This includes:
-
-* **Self-hosted models** (e.g., vLLM, Ollama, TGI).
-* **Fine-tuned or private models** tailored to your specific business logic.
-* **Third-party providers** that support the OpenAI Chat Completions standard (e.g., Together AI, Fireworks, Groq, Anthropic via proxy).
-
----
-
-## Why Use an External LLM?
+## Why Use a Custom LLM?
 
 | Benefit | Description |
 | --- | --- |
-| **Customization** | Use domain-specific or fine-tuned models for better accuracy. |
-| **Data Privacy** | Keep sensitive data within your own infrastructure or private cloud. |
-| **Compliance** | Meet strict regulatory requirements regarding data residency and auditing. |
-| **Cost Control** | Optimize expenses by choosing providers with competitive pricing or using your own hardware. |
+| **Customisation** | Use domain-specific or fine-tuned models for better accuracy in your vertical |
+| **Data Privacy** | Keep sensitive data within your own infrastructure or private cloud |
+| **Compliance** | Meet strict regulatory requirements around data residency and auditing |
+| **Cost Control** | Optimise expenses by choosing competitive providers or using your own hardware |
 
 ## Requirements
 
-To ensure compatibility, your LLM API must implement the **OpenAI Chat Completions** specification.
+Your LLM API must implement the **OpenAI Chat Completions** specification:
 
-### Core Compatibility
+- **Endpoint:** `POST /chat/completions`
+- **Payload:** Must accept a `messages: []` array
+- **Streaming:** Must support Server-Sent Events (SSE) for real-time interaction
 
-* **Endpoint:** `POST /chat/completions`
-* **Payload:** Must accept a `messages: []` array.
-* **Streaming:** Must support Server-Sent Events (SSE) for real-time interaction.
-
-### Optional Features
-
-* **Function Calling:** Required if your agent needs to trigger external tools.
-* **Vision:** Required for multimodal inputs (e.g., analyzing images).
-
----
+**Optional** — required only for specific features:
+- **Function Calling** — needed if your agent uses tools
+- **Vision** — needed for multimodal inputs
 
 ## Setup Options
 
-### Option 1: Via Developer Studio
+### Via Developer Studio
 
 1. Navigate to **Create New Agent**.
-2. Locate the **LLM** configuration section.
-3. Select `Bring your own LLM` from the **Provider** dropdown.
+2. Find the **Agent Config** section.
+3. Select **Bring your own LLM** from the Provider dropdown.
 4. Enter your **API URL**, **Model Name**, and **API Token**.
 
-![Alt text](/images/byo-llm.png)
+<Frame caption="Developer Studio — LLM provider configuration">
+  <img src="/images/byo-llm.png" alt="Bring Your Own LLM configuration in Developer Studio" />
+</Frame>
 
-### Option 2: Via API
+### Via API
 
-You can define an external LLM by setting the `provider` to `"custom"` within the `avatars.config.llm` object.
+Set `provider` to `"custom"` within the `avatars.config.llm` object:
 
 <CodeGroup>
-```bash Create new Agent
+```bash Create Agent with Custom LLM
 curl --request POST \
   --url https://api.trugen.ai/v1/ext/agent \
   --header 'Content-Type: application/json' \
   --header 'x-api-key: YOUR_API_KEY' \
   --data @- <<EOF
 {
-  "agent_name": "AI Agent",
+  "agent_name": "Custom LLM Agent",
   "config": { "timeout": 240 },
   "avatars": [
     {
@@ -79,11 +66,25 @@ curl --request POST \
         "stt": { "provider": "deepgram", "model": "nova-3" },
         "tts": { "provider": "elevenlabs", "voice_id": "ZUrEGyu8GFMwnHbvLhv2" }
       },
-      "persona_name": "Sample AI Agent",
-      "persona_prompt": "You're a helpful AI agent."
+      "persona_name": "Custom LLM Agent",
+      "persona_prompt": "You are a helpful AI agent."
     }
   ]
 }
 EOF
 ```
 </CodeGroup>
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Available LLMs" icon="brain" href="/docs/agents/available-llms">
+  Browse all built-in models across Groq, Azure OpenAI, Google, and more.
+</Card>
+
+<Card title="Prompting Strategies" icon="pen" href="/docs/agents/prompting-strategies">
+  Write effective system prompts for your custom LLM.
+</Card>
+
+</CardGroup>

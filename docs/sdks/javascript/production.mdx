@@ -1,0 +1,120 @@
+---
+title: 'Usage in Production'
+sidebarTitle: 'Usage in Production'
+description: 'Securely deploy TruGen AI in production environments.'
+---
+
+When deploying to production, do not expose your API key publicly. Instead:
+1. Exchange your API key for a short-lived session token on the server side.
+2. Pass this token to the client.
+3. Initialize the TruGen SDK with the session token.
+
+## Getting a Session Token
+
+Session tokens are valid for 5 minutes by default. You should request a new token for each user session rather than caching tokens long-term.
+
+<Warning>
+  The session token endpoint must be called from your server, not from client-side code. Making this request from the browser would expose your API key.
+</Warning>
+
+### Fetching a Session Token on Your Server
+
+From your server, make a request to get a session token by referencing your Agent ID (create and get one [here](https://app.trugen.ai/teammate-library)):
+
+<CodeGroup>
+
+```typescript server.ts
+interface SessionTokenResponse {
+  token: string;
+}
+
+interface SessionTokenOptions {
+  userName?: string;
+  userId?: string;
+}
+
+async function getSessionToken(
+  apiKey: string,
+  agentId: string,
+  options?: SessionTokenOptions
+): Promise<string> {
+  const response = await fetch("https://api.trugen.ai/v1/auth/conversation", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": apiKey,
+    },
+    body: JSON.stringify({
+      agentId,
+      userName: options?.userName,
+      userId: options?.userId,
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Failed to get session token: ${response.status} ${error}`);
+  }
+
+  const data: SessionTokenResponse = await response.json();
+  return data.token;
+}
+```
+
+```javascript server.js
+async function getSessionToken(apiKey, agentId, options) {
+  const response = await fetch("https://api.trugen.ai/v1/auth/conversation", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": apiKey,
+    },
+    body: JSON.stringify({
+      agentId,
+      userName: options?.userName,
+      userId: options?.userId,
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Failed to get session token: ${response.status} ${error}`);
+  }
+
+  const data = await response.json();
+  return data.token;
+}
+```
+
+</CodeGroup>
+
+---
+
+## User Identity Configuration
+
+When generating a session token, you can optionally provide details about the user connecting to the conversation session:
+
+- **`userName`**: A string representing the user's name (defaults to `"JS SDK"` if omitted).
+- **`userId`**: A unique string identifying the user. If omitted, the SDK automatically generates a timestamp-based ID (e.g. `usr_2026_06_25t12_49_49_168175`).
+
+These values are passed inside the JSON request body when calling `https://api.trugen.ai/v1/auth/conversation`.
+
+### Example Request Body
+
+```json
+{
+  "agentId": "your-agent-id-here",
+  "userName": "Alice Smith",
+  "userId": "user_alice_123"
+}
+```
+
+---
+
+## Common Error Responses
+
+| Status Code | Meaning | Solution |
+| :--- | :--- | :--- |
+| **400** | Invalid request body or malformed `agentId` | Check your request body format or verify your Agent ID is a valid UUID |
+| **401** | Invalid, missing, or expired API Key | Verify your API key is correct and included in the `X-API-Key` header |
+| **500** | Agent not found or database error | Verify that the Agent ID exists and belongs to your account |

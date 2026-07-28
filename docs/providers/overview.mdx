@@ -1,72 +1,89 @@
-The TruGen platform integrates with multiple **industry-leading AI providers** to power speech recognition (STT), language reasoning (LLM), and voice synthesis (TTS).
-Using the Providers API, you can retrieve a list of all supported external providers and determine which options are available for your agents.
-
-A **provider** is an external engine that powers one capability in the conversational pipeline. Each provider entry includes a `provider_type` property that identifies whether it supports **STT**, **LLM**, or **TTS**.
-
+---
+title: "Providers"
+description: "The external AI engines that power speech, language, and voice in TruGen's pipeline."
 ---
 
-## Supported Providers
+TruGen integrates with industry-leading AI providers to power each stage of the conversational pipeline. Each provider handles one capability — STT, LLM, or TTS — and can be configured independently per agent.
 
-| Provider | Capability | Description |
-|----------|-------------|--------------|
-| **Groq** | LLM | Ultra-low latency reasoning and response generation. |
-| **OpenAI** | LLM | High-quality reasoning and multi-modal language intelligence. |
-| **Deepgram** | STT | Streaming, low-latency speech-to-text transcription. |
-| **ElevenLabs** | TTS | Realistic expressive voice synthesis in multiple languages & voices. |
+## Speech-to-Text (STT)
 
-<Note>We are adding more providers and model configurations constantly.</Note>
+| Provider | Model | Best For |
+| --- | --- | --- |
+| **ElevenLabs** | Scribe V2 Realtime | Ultra-low latency real-time transcription across many languages for live conversational applications |
+| **Deepgram** | Nova-3 | Real-time, multilingual, or complex audio scenarios requiring maximum accuracy and customisation |
+| **Deepgram** | Nova-2 | High-volume, English-focused transcription where speed and low cost are the top priorities |
+| **Deepgram V2** | Flux General | Real-time voice agents needing accurate transcription with intelligent turn detection |
 
----
+## Large Language Models (LLM)
 
-## Use Cases
+| Provider | Model | Best For |
+| --- | --- | --- |
+| **Groq** | GPT OSS 20b | Low-latency conversational AI and agents where fast responses are critical |
+| **Groq** | GPT OSS 120b | Higher-quality reasoning with low latency for more complex tasks |
+| **Groq** | Llama-4 Scout | Multi-document analysis, codebase reasoning, and personalised tasks |
+| **Azure OpenAI** | GPT-5.4-Mini | Fast, cost-efficient general-purpose language generation |
+| **Azure OpenAI** | GPT-5.4-Mini Medium Reasoning | Balanced reasoning for structured and multi-step tasks |
+| **Azure OpenAI** | GPT-5.4-Mini Low Reasoning | Ultra-fast responses for simple conversational tasks |
+| **Google** | Gemini 3.1 Pro Preview | Advanced reasoning and high-quality generation for complex tasks |
+| **Google** | Gemini 3.1 Flash Lite | Fast, lightweight responses for cost-sensitive deployments |
+| **Open Router** | Llama 4 Scout | Open-source model access via a unified routing layer |
+| **Open Router** | GPT OSS 120B | Large open-source model via routing layer |
+| **Livekit Inference** | Gemma 4 31b | Edge-optimised inference for low-latency deployments |
 
-- Determine which LLM or voice engine is active for a deployed agent
-- Allow users to choose preferred voice or reasoning engines dynamically
-- Build UI selection menus inside dashboards
-- Validate that a region supports a specific vendor or capability
+## Text-to-Speech (TTS)
 
----
+| Provider | Model | Best For |
+| --- | --- | --- |
+| **ElevenLabs** | Turbo 2 | Fast, low-latency English TTS for real-time voice agents and IVR systems |
+| **ElevenLabs** | Turbo 2.5 | Fast, low-latency multilingual TTS for real-time conversational AI |
+| **Cartesia** | Sonic 3 | Real-time conversational TTS with a wide range of expressive voices |
+| **Cartesia** | Sonic 3.5 | Next-generation real-time TTS with enhanced voice quality and expressiveness |
+
+<Note>New providers and model configurations are added regularly. Use the `/v1/providers` endpoint to always fetch the latest available list.</Note>
+
+## Provider Types
+
+| Type | Role |
+| --- | --- |
+| `llm` | Large Language Model — reasoning and response generation |
+| `stt` | Speech-to-Text — real-time audio transcription |
+| `tts` | Text-to-Speech — voice rendering |
 
 ## Retrieve All Providers
 
-Use this endpoint to fetch the list of currently available providers:
+Use this endpoint to fetch all currently available providers and their models:
 
-### **GET** `/v1/providers`
-
-### Example Request
+**GET** `/v1/providers`
 
 <CodeGroup>
-```bash List Providers
+```bash Request
 curl --request GET \
   --url https://api.trugen.ai/v1/providers \
   --header 'Content-Type: application/json' \
   --header 'x-api-key: <api-key>'
-````
-
+```
 </CodeGroup>
 
-<Note>Replace `<api-key>` with your actual API key from the **Developer Portal**.</Note>
+<Note>Replace `<api-key>` with your API key from the Developer Portal.</Note>
 
-## Provider Types
-
-| Type  | Meaning                                                                |
-| ----- | ---------------------------------------------------------------------- |
-| `llm` | Large Language Model provider used for reasoning & response generation |
-| `stt` | Speech-to-Text provider used for realtime transcription                |
-| `tts` | Text-to-Speech provider used for voice rendering                       |
-
----
-
-## Next Steps
+## What's Next?
 
 <CardGroup cols={2}>
 
-<Card title="Create Agent" icon="robot" href="/api-reference/endpoint/agentcreate">
-Assign provider selections while creating a new agent.
+<Card title="Bring Your Own LLM" icon="brain" href="/docs/resources/byo-llm">
+  Connect a self-hosted or custom LLM to your agents.
 </Card>
 
-<Card title="API Reference: Providers" icon="book" href="/api-reference/endpoint/providerget">
-Full endpoint documentation for retrieving provider information.
+<Card title="Multilingual Support" icon="globe" href="/docs/agents/multilingual-support">
+  Configure STT and TTS languages for global conversations.
+</Card>
+
+<Card title="Create Agent" icon="robot" href="/api-reference/endpoint/agentcreate">
+  Assign provider selections when creating a new agent.
+</Card>
+
+<Card title="Providers API Reference" icon="book" href="/api-reference/endpoint/providerget">
+  Full endpoint documentation for retrieving provider information.
 </Card>
 
 </CardGroup>

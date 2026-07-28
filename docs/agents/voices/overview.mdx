@@ -1,0 +1,71 @@
+---
+title: "Voices"
+sidebarTitle: "Overview"
+description: "Choose and configure the voice your AI Teammate speaks with."
+---
+
+Every AI Teammate speaks through a **Text-to-Speech (TTS)** engine that converts the LLM's text response into natural, expressive audio in real time. TruGen integrates with **ElevenLabs** and **Cartesia** to deliver high-quality, human-like voices across a wide range of tones, styles, and languages.
+
+## How It Works
+
+When the LLM generates a response, it is passed to the TTS engine which renders it as speech before being streamed back to the user through the avatar. The whole process happens in under a second.
+
+The voice your agent uses is set via the `voice_id` field in your agent configuration. Every voice has a unique ID — copy it from the [Voice Library](/docs/agents/voices/library) and paste it directly into your agent.
+
+## Setting a Voice
+
+Set the `voice_id` when creating or updating an agent via API:
+
+<CodeGroup>
+```bash cURL
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/agent \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "agent_name": "Support Agent",
+    "avatars": [
+      {
+        "config": {
+          "llm": {
+            "provider": "openai",
+            "model": "gpt-4.1-mini"
+          },
+          "stt": { "provider": "deepgram", "model": "nova-3" },
+          "tts": {
+            "provider": "elevenlabs",
+            "voice_id": "FGY2WhTYpPnrIDTdsKH5"
+          }
+        },
+        "persona_name": "Support Agent",
+        "persona_prompt": "You are a helpful support agent."
+      }
+    ]
+  }'
+```
+</CodeGroup>
+
+<Note>You can also set the voice directly from the **Create New Agent** form in the [Developer Portal](https://app.trugen.ai) without writing any code.</Note>
+
+## Choosing the Right Voice
+
+| Goal | Recommendation |
+| --- | --- |
+| Professional / corporate tone | Chris, Will, Evan |
+| Warm / conversational | Rachel, Laura, Hope |
+| Multilingual coverage | Any voice — ElevenLabs auto-adapts to the detected language |
+| Regional accent | Yatin (South Asian), Omar (Middle Eastern) |
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Voice Library" icon="microphone" href="/docs/agents/voices/library">
+  Browse all available voices and copy their IDs.
+</Card>
+
+<Card title="Providers" icon="cloud" href="/docs/providers/overview">
+  See all STT, LLM, and TTS providers available on TruGen.
+</Card>
+
+</CardGroup>
