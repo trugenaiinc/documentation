@@ -1,17 +1,16 @@
-TruGen supports webhooks so you can receive **real-time event hooks** from active conversations and use them to drive your UI, analytics, and business logic.
-
-Whenever something important happens in a conversation (like the user starting to speak, the agent starting or stopping speech, or a call timing out), TruGen sends an HTTP `POST` request to your configured `callback_url`.
-
+---
+title: "Event Callbacks"
+description: "Receive real-time webhook events from active conversations to drive your UI, analytics, and business logic."
 ---
 
-## 1. Enabling Webhooks for an Agent
+TruGen sends an HTTP `POST` request to your configured `callback_url` whenever something important happens in a conversation — a user starts speaking, the agent is interrupted, a call ends, and more.
 
-You configure webhooks at the **agent level** using:
+## Enabling Webhooks
 
-- `callback_url` - your publicly reachable HTTPS endpoint
-- `callback_events` - a list of event names you want to receive
+Webhooks are configured at the agent level using two fields:
 
-Example (Create Agent):
+- `callback_url` — your publicly reachable HTTPS endpoint
+- `callback_events` — the list of event names you want to receive
 
 ```bash
 curl --request POST \
@@ -19,46 +18,31 @@ curl --request POST \
   --header 'Content-Type: application/json' \
   --header 'x-api-key: <api-key>' \
   --data '{
-  "avatar_ids": [
-    "ava_ae61c9e28b",
-    "ava_ed3a666dc5"
-  ],
-  "name": "New Agent",
-  "system_prompt": "You are a helpful assistant",
-  "email": "test@test.com",
-  "config": {
-    "timeout": 240
-  },
-  "is_active": true,
-  "knowledge_base": [
-    {
-      "id": "4a0365e4-ced5-42f0-8933-b6880a0ce044",
-      "name": "new kb 123"
-    }
-  ],
-  "record": true,
-  "callback_url": "https://yourdomain.com/webhooks/trugen",
-  "callback_events": [
-    "call_ended",
-    "participant_left",
-    "agent.started_speaking",
-    "agent.stopped_speaking",
-    "agent.interrupted",
-    "user.started_speaking",
-    "user.stopped_speaking",
-    "utterance_committed",
-    "max_call_duration_timeout"
-  ]
-}'
-````
+    "name": "My Agent",
+    "system_prompt": "You are a helpful assistant",
+    "avatar_ids": ["ava_ae61c9e28b"],
+    "callback_url": "https://yourdomain.com/webhooks/trugen",
+    "callback_events": [
+      "agent.interrupted",
+      "agent.started_speaking",
+      "agent.stopped_speaking",
+      "call_ended",
+      "max_call_duration_timeout",
+      "max_call_duration_warning",
+      "participant_left",
+      "tool_call",
+      "utterance_committed",
+      "user.started_speaking",
+      "user.stopped_speaking"
+    ]
+  }'
+```
 
-<Note>Replace `<api-key>` with your actual API key and `callback_url` with your HTTPS endpoint.</Note>
+<Note>Replace `<api-key>` with your API key and `callback_url` with your HTTPS endpoint.</Note>
 
----
+## Webhook Request Format
 
-## 2. Webhook Request Format
-
-Every webhook request uses the same base format:
+Every webhook uses the same base structure:
 
 ```json
 {
@@ -72,16 +56,15 @@ Every webhook request uses the same base format:
 }
 ```
 
-### Fields
+| Field | Description |
+| --- | --- |
+| `timestamp` | Unix timestamp (float) when the event was generated |
+| `conversation_id` | Unique identifier for the conversation session |
+| `type` | Event source category — always `"pipeline"` for these events |
+| `event.name` | The specific event type |
+| `event.payload` | Event-specific data |
 
-* `timestamp` - Unix timestamp (float) when the event was generated.
-* `conversation_id` - Unique identifier for the conversation session.
-* `type` - Event source category (for these events: `"pipeline"`).
-* `event.name` - The specific event type (e.g. `agent.started_speaking`).
-* `event.payload` - Event-specific data payload.
-
-### Handling Webhooks (Example in Node/Express)
-Below are examples of how to receive and handle TruGen webhook events in **Node.js** and **Python**.
+## Handling Webhooks
 
 <CodeGroup>
 ```ts Node.js
@@ -94,28 +77,45 @@ app.post("/webhooks/trugen", (req, res) => {
   const { timestamp, conversation_id, type, event } = req.body;
 
   switch (event.name) {
+    case "agent.interrupted":
+      // Cut off TTS visual indicators
+      break;
     case "agent.started_speaking":
-      // e.g. update UI to show agent is speaking
+      // Update UI to show agent is speaking
       break;
-    case "user.started_speaking":
-      // e.g. stop agent TTS, mark user as active
+    case "agent.stopped_speaking":
+      // Hide speaking indicators, re-enable user input
       break;
-    case "participant_left":
-      // e.g. end session or cleanup resources
+    case "call_ended":
+      // Trigger post-call workflows
       break;
     case "max_call_duration_timeout":
-      // e.g. show “session ended” message with duration info
+      // Show "session ended" message
       break;
-    // handle other events...
+    case "max_call_duration_warning":
+      // Show "session ending soon" warning
+      break;
+    case "participant_left":
+      // End session or clean up resources
+      break;
+    case "tool_call":
+      // Log tool usage or trigger side effects
+      break;
+    case "utterance_committed":
+      // Store transcript or trigger NLP analysis
+      break;
+    case "user.started_speaking":
+      // Mark user as active
+      break;
+    case "user.stopped_speaking":
+      // Mark turn boundary
+      break;
   }
 
-  // Always respond quickly with 2xx
   res.status(200).send("ok");
 });
 
-app.listen(3000, () => {
-  console.log("Listening for TruGen webhooks on port 3000");
-});
+app.listen(3000);
 ```
 
 ```python Python
@@ -127,120 +127,55 @@ app = FastAPI()
 @app.post("/webhooks/trugen")
 async def trugen_webhook(request: Request):
     body = await request.json()
-
-    timestamp = body.get("timestamp")
-    conversation_id = body.get("conversation_id")
     event = body.get("event", {})
     event_name = event.get("name")
     payload = event.get("payload", {})
 
-    print("Received webhook:", {
-        "timestamp": timestamp,
-        "conversation_id": conversation_id,
-        "event_name": event_name,
-    })
-
-    if event_name == "agent.started_speaking":
-        print(f"Agent started speaking")
-
+    if event_name == "agent.interrupted":
+        print("Agent was interrupted")
+    elif event_name == "agent.started_speaking":
+        print(f"Agent speaking: {payload.get('text')}")
     elif event_name == "agent.stopped_speaking":
-        text = payload.get("text")
-        print(f"Agent stopped speaking: {text}")
-
+        print(f"Agent done: {payload.get('text')}")
+    elif event_name == "call_ended":
+        print("Call ended")
+    elif event_name == "max_call_duration_timeout":
+        print(f"Timeout: {payload.get('call_duration')}s")
+    elif event_name == "max_call_duration_warning":
+        print(f"Warning: {payload.get('call_duration')}s of {payload.get('max_call_duration')}s")
+    elif event_name == "participant_left":
+        print(f"Participant left: {payload.get('id')}")
+    elif event_name == "tool_call":
+        print(f"Tool called: {payload.get('tool_name')}")
+    elif event_name == "utterance_committed":
+        print(f"User said: {payload.get('text')}")
     elif event_name == "user.started_speaking":
         print("User started speaking")
-
     elif event_name == "user.stopped_speaking":
         print("User stopped speaking")
 
-    elif event_name == "utterance_committed":
-        text = payload.get("text")
-        print(f"Final user utterance: {text}")
-
-    elif event_name == "agent.interrupted":
-        print("Agent was interrupted by user")
-
-    elif event_name == "participant_left":
-        participant_id = payload.get("id")
-        print(f"Participant left: {participant_id}")
-        # e.g. mark conversation as closed in DB
-
-    elif event_name == "max_call_duration_timeout":
-        call_duration = payload.get("call_duration")
-        max_duration = payload.get("max_call_duration")
-        print(f"Call duration timeout: {call_duration}/{max_duration} seconds")
-
-    else:
-        print(f"Unhandled event: {event_name}")
-
-    # Respond quickly to acknowledge receipt
     return JSONResponse(content={"status": "ok"}, status_code=200)
 ```
 </CodeGroup>
 
-<Note>Keep your webhook handler fast. Do heavy work asynchronously (e.g., queue jobs) after acknowledging the webhook.</Note>
+<Note>Keep your webhook handler fast. Acknowledge immediately and offload heavy work to background jobs.</Note>
 
----
+## Event Reference
 
-## 3. Event Types & Payloads
+### `agent.interrupted`
 
-Below are the supported events you listed, with **descriptions** and **example webhook bodies**.
+Triggered when the user starts speaking before the agent finishes.
 
----
-
-### `call_ended`
-
-Triggered when the call with the agent ends.
-
-**Use cases:**
-
-* Clean up resources (rooms, timers, state).
-* Mark the conversation as ended in your backend.
-* Trigger post-call workflows (surveys, summaries, etc.).
-
-**Example payload:**
+**Use cases:** cut off TTS visual indicators, log interruptions for conversational analytics.
 
 ```json
 {
-  "timestamp": 1764760201.940625,
+  "timestamp": 1764760162.6777198,
   "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
   "type": "pipeline",
-  "event": {
-    "name": "call_ended",
-    "payload": {}
-  }
+  "event": { "name": "agent.interrupted", "payload": {} }
 }
 ```
-
----
-
-### `participant_left`
-
-Triggered when a participant leaves the conversation (e.g., the user disconnects).
-
-**Use cases:**
-
-* Clean up resources (rooms, timers, state).
-* Mark the conversation as ended in your backend.
-* Trigger post-call workflows (surveys, summaries, etc.).
-
-**Example payload:**
-
-```json
-{
-  "timestamp": 1764760201.940625,
-  "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
-  "type": "pipeline",
-  "event": {
-    "name": "participant_left",
-    "payload": {
-      "id": "PA_6UYWCLeRkc9t"
-    }
-  }
-}
-```
-
-* `payload.id` - Identifier of the participant who left.
 
 ---
 
@@ -248,13 +183,7 @@ Triggered when a participant leaves the conversation (e.g., the user disconnects
 
 Triggered when the agent starts speaking (TTS + avatar rendering begins).
 
-**Use cases:**
-
-* Show a “Agent is speaking” indicator in your UI.
-* Animate visual elements (e.g., equalizer, glowing avatar border).
-* Log when the agent begins its response.
-
-**Example payload:**
+**Use cases:** show a speaking indicator, animate visual elements, log when the agent begins its response.
 
 ```json
 {
@@ -263,28 +192,20 @@ Triggered when the agent starts speaking (TTS + avatar rendering begins).
   "type": "pipeline",
   "event": {
     "name": "agent.started_speaking",
-    "payload": {
-      "text": "Hi, how are you?"
-    }
+    "payload": { "text": "Hi, how are you?" }
   }
 }
 ```
 
-* `payload.text` - The text content the agent is about to speak.
+- `payload.text` — the text the agent is about to speak.
 
 ---
 
 ### `agent.stopped_speaking`
 
-Triggered when the agent finishes speaking its current utterance.
+Triggered when the agent finishes its current utterance.
 
-**Use cases:**
-
-* Hide “Agent is speaking” indicators.
-* Enable user input (e.g., unmute mic, show “Your turn”).
-* Measure speaking durations.
-
-**Example payload:**
+**Use cases:** hide speaking indicators, re-enable user input, measure speaking duration.
 
 ```json
 {
@@ -293,138 +214,37 @@ Triggered when the agent finishes speaking its current utterance.
   "type": "pipeline",
   "event": {
     "name": "agent.stopped_speaking",
-    "payload": {
-      "text": "Hi, how are you?"
-    }
+    "payload": { "text": "Hi, how are you?" }
   }
 }
 ```
 
-* `payload.text` - The text that was just spoken.
+- `payload.text` — the text that was just spoken.
 
 ---
 
-### `agent.interrupted`
+### `call_ended`
 
-Triggered when the agent is interrupted - typically because the user started speaking before the agent finished.
+Triggered when the call with the agent ends cleanly.
 
-**Use cases:**
-
-* Cut off visual indicators of TTS.
-* Log interruptions to analyze conversational overlap.
-* Adjust LLM behavior (e.g., train for shorter answers).
-
-**Example payload:**
+**Use cases:** trigger post-call workflows (summaries, surveys, CRM updates), log session completion.
 
 ```json
 {
-  "timestamp": 1764760162.6777198,
+  "timestamp": 1764760201.940625,
   "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
   "type": "pipeline",
-  "event": {
-    "name": "agent.interrupted",
-    "payload": {}
-  }
+  "event": { "name": "call_ended", "payload": {} }
 }
 ```
-
-* `payload` - Currently empty for this event (reserved for future metadata).
-
----
-
-### `user.started_speaking`
-
-Triggered when the system detects that the user has started speaking.
-
-**Use cases:**
-
-* Pause or interrupt the agent if still speaking.
-* Update UI to show recording / listening state.
-* Trigger analytics on number of user turns.
-
-**Example payload:**
-
-```json
-{
-  "timestamp": 1764760162.4117968,
-  "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
-  "type": "pipeline",
-  "event": {
-    "name": "user.started_speaking",
-    "payload": {}
-  }
-}
-```
-
----
-
-### `user.stopped_speaking`
-
-Triggered when the user stops speaking (end of an utterance).
-
-**Use cases:**
-
-* Mark the boundary of user turns for transcription.
-* Trigger LLM processing on the completed utterance.
-* Use in analytics (speech duration, turn-taking patterns).
-
-**Example payload:**
-
-```json
-{
-  "timestamp": 1764760168.8806674,
-  "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
-  "type": "pipeline",
-  "event": {
-    "name": "user.stopped_speaking",
-    "payload": {}
-  }
-}
-```
-
----
-
-### `utterance_committed`
-
-Triggered when a user utterance has been fully captured and committed, usually after final ASR (speech-to-text) is ready.
-
-**Use cases:**
-
-* Store transcripts in your database.
-* Trigger downstream workflows (NLP analysis, sentiment, QA).
-* Display final transcript in your UI.
-
-**Example payload:**
-
-```json
-{
-  "timestamp": 1764760169.0820587,
-  "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
-  "type": "pipeline",
-  "event": {
-    "name": "utterance_committed",
-    "payload": {
-      "text": "Hello. How are you doing?"
-    }
-  }
-}
-```
-
-* `payload.text` - The final, committed text of the utterance.
 
 ---
 
 ### `max_call_duration_timeout`
 
-Triggered when a conversation reaches the configured **maximum call duration**.
+Triggered when a conversation reaches its configured maximum duration.
 
-**Use cases:**
-
-* Automatically end calls and show a “session ended” UI.
-* Offer callbacks or follow-up options.
-* Log session lengths and enforce billing / usage limits.
-
-**Example payload:**
+**Use cases:** automatically end calls, show a "session ended" UI, enforce usage limits.
 
 ```json
 {
@@ -441,23 +261,160 @@ Triggered when a conversation reaches the configured **maximum call duration**.
 }
 ```
 
-* `payload.call_duration` - Actual call duration in seconds.
-* `payload.max_call_duration` - Configured maximum duration in seconds.
+- `payload.call_duration` — actual call duration in seconds.
+- `payload.max_call_duration` — configured maximum duration in seconds.
 
 ---
 
-## 4. Best Practices
+### `max_call_duration_warning`
 
-* **Always return 2xx quickly**
-  Acknowledge webhooks immediately and offload heavy work to background jobs.
+Triggered shortly before a conversation reaches its configured maximum duration — a heads-up before the session is cut off.
 
-* **Idempotency**
-  Design handlers so they can safely process the same event multiple times.
+**Use cases:** show a "session ending soon" warning in your UI, prompt the user to wrap up.
 
-* **Logging & Monitoring**
-  Log incoming events by `conversation_id` and `event.name` for debugging and analytics.
+```json
+{
+  "timestamp": 1764760601.123456,
+  "conversation_id": "fe2b4550-a87f-440f-a9cd-e5f03208821c",
+  "type": "pipeline",
+  "event": {
+    "name": "max_call_duration_warning",
+    "payload": {
+      "call_duration": 50.5,
+      "max_call_duration": 60
+    }
+  }
+}
+```
 
-* **Security (Recommended)**
+- `payload.call_duration` — current call duration in seconds.
+- `payload.max_call_duration` — configured maximum duration in seconds.
 
-  * Use HTTPS for `callback_url`.
-  * Restrict by IP, signing secret, or auth token if your infrastructure supports it.
+---
+
+### `participant_left`
+
+Triggered when a participant disconnects from the conversation.
+
+**Use cases:** clean up rooms, timers, and state; mark conversation as ended in your backend.
+
+```json
+{
+  "timestamp": 1764760201.940625,
+  "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
+  "type": "pipeline",
+  "event": {
+    "name": "participant_left",
+    "payload": { "id": "PA_6UYWCLeRkc9t" }
+  }
+}
+```
+
+- `payload.id` — identifier of the participant who left.
+
+---
+
+### `tool_call`
+
+Triggered when the agent invokes a tool during a conversation.
+
+**Use cases:** log tool usage for analytics, trigger side effects in your backend, audit agent actions.
+
+```json
+{
+  "timestamp": 1764760200.123456,
+  "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
+  "type": "pipeline",
+  "event": {
+    "name": "tool_call",
+    "payload": {
+      "tool_name": "getOrderStatus",
+      "parameters": { "orderId": "ORD-9821" },
+      "result": { "status": "shipped", "estimated_delivery": "2026-07-30" }
+    }
+  }
+}
+```
+
+- `payload.tool_name` — the name of the tool that was called.
+- `payload.parameters` — the inputs passed to the tool by the agent.
+- `payload.result` — the response returned by the tool.
+
+---
+
+### `utterance_committed`
+
+Triggered when the user's utterance has been fully captured and finalised by speech-to-text.
+
+**Use cases:** store transcripts, trigger NLP analysis, display final transcript in your UI.
+
+```json
+{
+  "timestamp": 1764760169.0820587,
+  "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
+  "type": "pipeline",
+  "event": {
+    "name": "utterance_committed",
+    "payload": { "text": "Hello. How are you doing?" }
+  }
+}
+```
+
+- `payload.text` — the final committed text of the utterance.
+
+---
+
+### `user.started_speaking`
+
+Triggered when the system detects the user has started speaking.
+
+**Use cases:** update UI to show a listening/recording state, trigger analytics on user turn count.
+
+```json
+{
+  "timestamp": 1764760162.4117968,
+  "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
+  "type": "pipeline",
+  "event": { "name": "user.started_speaking", "payload": {} }
+}
+```
+
+---
+
+### `user.stopped_speaking`
+
+Triggered when the user stops speaking (end of an utterance).
+
+**Use cases:** mark turn boundaries for transcription, measure speech duration and turn-taking patterns.
+
+```json
+{
+  "timestamp": 1764760168.8806674,
+  "conversation_id": "471f0520-cea1-487a-9bcc-37ba37717d81",
+  "type": "pipeline",
+  "event": { "name": "user.stopped_speaking", "payload": {} }
+}
+```
+
+---
+
+## Best Practices
+
+- **Always return 2xx quickly** — acknowledge webhooks immediately and offload heavy work to background jobs.
+- **Design for idempotency** — handlers should safely process the same event more than once.
+- **Log by `conversation_id`** — makes debugging and analytics far easier.
+- **Use HTTPS** — restrict your endpoint by IP or signing secret where your infrastructure supports it.
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Templates" icon="shapes" href="/docs/agents/templates">
+  Configure `callback_url` and `callback_events` as part of a reusable template.
+</Card>
+
+<Card title="API Reference" icon="book" href="/api-reference/overview">
+  Full agent creation endpoint with all webhook options.
+</Card>
+
+</CardGroup>

@@ -1,0 +1,156 @@
+---
+title: 'Quickstart'
+sidebarTitle: 'Quickstart'
+description: 'Get your first AI avatar running in under 5 minutes.'
+---
+
+The TruGen API provides a simple interface for implementing digital AI avatars within your web applications. This guide will walk you through the process of setting up a minimal example of an interactive AI avatar. By the end, you'll have a working avatar that can have real-time conversations in your web browser.
+
+## Prerequisites
+
+- A TruGen API key (get one [here](https://app.trugen.ai/api-keys))
+- A TruGen Agent ID (create and get one [here](https://app.trugen.ai/teammate-library))
+- A modern web browser with microphone access
+- A local web server (we'll show you how to start one below)
+
+## Create Your First Avatar
+
+<Steps>
+  <Step title="Create the HTML Structure">
+    Create a new file called `index.html` and add this basic layout to display the avatar video and session status:
+    ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Hello TruGen</title>
+    </head>
+    <body>
+      <div style="text-align: center; padding: 20px;">
+        <h1>Chat with your AI Avatar</h1>
+        <p>Your AI avatar will appear below and start automatically</p>
+        <video id="avatarVideo" autoplay playsinline style="max-width: 100%; border-radius: 8px;"></video>
+        <div id="status" style="margin-top: 15px; font-size: 14px; color: #666;">Loading...</div>
+      </div>
+    </body>
+    </html>
+    ```
+  </Step>
+
+  <Step title="Add the JavaScript SDK">
+    Add the script that will automatically authenticate and start your session. Add this `<script>` tag just before the closing `</body>` tag:
+    ```html
+    <script type="module">
+      import { createClient, TruGenEvent } from "https://esm.sh/@trugen/js-sdk";
+
+      // Replace with your actual credentials
+      const API_KEY = "your-api-key-here";
+      const AGENT_ID = "your-agent-id-here";
+
+      const videoElement = document.getElementById("avatarVideo");
+      const statusElement = document.getElementById("status");
+
+      async function createSessionToken() {
+        const response = await fetch("https://api.trugen.ai/v1/auth/conversation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-Key": API_KEY,
+          },
+          body: JSON.stringify({
+            agentId: AGENT_ID,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to create session token: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.token;
+      }
+
+      async function startChat() {
+        try {
+          statusElement.textContent = "Creating session...";
+
+          const token = await createSessionToken();
+          statusElement.textContent = "Connecting...";
+
+          const session = await createClient({ token });
+
+          session.on(TruGenEvent.VIDEO_STREAM_STARTED, (track) => {
+            track.attach(videoElement);
+          });
+
+          await session.connect();
+
+          statusElement.textContent = "Connected! Start speaking to your avatar";
+
+        } catch (error) {
+          console.error("Failed to start chat:", error);
+          statusElement.textContent = "Failed to connect. Check your API key and Agent ID.";
+        }
+      }
+
+      // Auto-start when page loads
+      startChat();
+    </script>
+    ```
+  </Step>
+
+  <Step title="Configure Credentials">
+    Replace `your-api-key-here` and `your-agent-id-here` in the script block with your actual TruGen credentials.
+
+    <Warning>
+      This quickstart puts credentials directly in the browser for simplicity. For production deployments, always keep your API key on the server. See [Usage in Production](/docs/sdks/javascript/production) for the secure approach.
+    </Warning>
+  </Step>
+
+  <Step title="Start a Local Server">
+    To serve your HTML file, start a local web server in the directory containing `index.html`:
+    <CodeGroup>
+      ```bash Python
+      python -m http.server 8000
+      ```
+      ```bash Node (npx)
+      npx serve
+      ```
+    </CodeGroup>
+  </Step>
+
+  <Step title="Open and Test">
+    1. Navigate to `http://localhost:8000` (or the port specified by your local server) in your browser.
+    2. Allow microphone access when prompted.
+    3. The avatar will load, connect, and start speaking automatically!
+  </Step>
+</Steps>
+
+## What just happened?
+
+- **Session Token** — Your API key was exchanged for a temporary session token that enables the avatar connection.
+- **WebRTC Stream** — The TruGen SDK established a real-time WebRTC video/audio stream with the TruGen server.
+- **Voice Interaction** — Your avatar starts listening to your microphone input and automatically responds with natural real-time dialogue and expressions.
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Authentication" icon="lock" href="/docs/sdks/javascript/authentication">
+  Learn how to secure your API key using server-side session tokens.
+</Card>
+
+<Card title="Basic JavaScript Example" icon="js" href="/docs/sdks/javascript/examples/basic-javascript">
+  Full example with a Node.js backend and clean connect/disconnect flow.
+</Card>
+
+<Card title="Basic Usage" icon="book" href="/docs/sdks/javascript/reference/basic-usage">
+  SDK reference for initializing, streaming, and disconnecting.
+</Card>
+
+<Card title="Event Handling" icon="bolt" href="/docs/sdks/javascript/reference/event-handling">
+  Listen to connection, speaking, and transcript events in real time.
+</Card>
+
+</CardGroup>

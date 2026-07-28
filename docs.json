@@ -1,104 +1,246 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "TruGen AI API Documentation",
+  "name": "Trugen AI API Documentation",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
     "dark": "#15803D"
   },
   "appearance": {
-    "default": "dark",
-    "strict": true
+    "default": "dark"
   },
   "favicon": "favicon.svg",
+  "contextual": {
+    "options": ["copy", "chatgpt", "claude"]
+  },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true
+  },
+  "seo": {
+    "indexing": "navigable"
+  },
+  "redirects": [
+    {
+      "source": "/docs/agents/knowledgebase",
+      "destination": "/docs/agents/knowledge-base"
+    },
+    {
+      "source": "/docs/avatars/overview",
+      "destination": "/docs/avatars/gallery"
+    }
+  ],
   "navigation": {
     "tabs": [
       {
-        "tab": "Documentation",
+        "tab": "Overview",
+        "icon": "book-open",
         "groups": [
           {
             "group": "Introduction",
-            "pages": ["docs/overview", "docs/quickstart"]
+            "icon": "flag",
+            "pages": [
+              "docs/overview",
+              "docs/quickstart",
+              "docs/agents/pipeline",
+              "docs/models",
+              "docs/providers/overview"
+            ]
           },
           {
-            "group": "Managed Agents",
+            "group": "AI Teammates",
+            "icon": "robot",
             "pages": [
-              "docs/resources/byo-llm",
-              "docs/agents/callback",
               "docs/agents/conversational-video-agents",
               {
-                "group": "Example Use Cases",
-                "expanded": true,
+                "group": "Avatars",
+                "icon": "user",
                 "pages": [
-                  "docs/examples/ai-interviewer",
-                  "docs/examples/career-coach",
-                  "docs/examples/customer-support-agent",
-                  "docs/examples/healthcare-intake-assistant",
-                  "docs/examples/nutritionist",
-                  "docs/examples/sales-agents"
+                  "docs/avatars/gallery",
+                  "docs/avatars/custom",
+                  "docs/avatars/best-practices"
                 ]
               },
-              "docs/agents/knowledge-base",
-              "docs/agents/memory",
-              "docs/agents/multilingual-support",
-              "docs/agents/pipeline",
-              "docs/agents/prompting-strategies",
-              "docs/agents/templates"
+              {
+                "group": "Voices",
+                "icon": "microphone",
+                "pages": [
+                  "docs/agents/voices/overview",
+                  "docs/agents/voices/library",
+                  "docs/agents/multilingual-support"
+                ]
+              },
+              {
+                "group": "LLMs",
+                "icon": "brain",
+                "pages": [
+                  "docs/agents/available-llms",
+                  "docs/resources/byo-llm",
+                  "docs/agents/prompting-strategies"
+                ]
+              },
+              {
+                "group": "Knowledge",
+                "icon": "database",
+                "pages": ["docs/agents/knowledge-base"]
+              },
+              {
+                "group": "Tools",
+                "icon": "screwdriver-wrench",
+                "pages": [
+                  "docs/agents/tools/overview",
+                  "docs/agents/tools/integrations",
+                  "docs/agents/tools/custom-tools",
+                  "docs/agents/callback"
+                ]
+              },
+              {
+                "group": "Vision",
+                "icon": "eye",
+                "pages": ["docs/agents/vision/overview"]
+              },
+              {
+                "group": "Meetings",
+                "icon": "users",
+                "pages": ["docs/agents/meetings/overview"]
+              },
+              "docs/agents/templates",
+              "docs/agents/memory"
             ]
           },
           {
             "group": "Video Generation",
-            "pages": ["docs/agents/text_to_video"]
-          },
-          {
-            "group": "Integrations",
+            "icon": "video",
             "pages": [
-              "docs/voice-to-video/livekit",
-              "docs/integrations/n8n",
-              "docs/integrations/make",
-              "docs/integrations/embed-via-iFrame",
-              "docs/integrations/widget-integration"
+              "docs/agents/text_to_video"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "SDKs",
+        "icon": "code",
+        "groups": [
+          {
+            "group": "JavaScript SDK",
+            "icon": "js",
+            "pages": [
+              "docs/sdks/javascript/overview",
+              "docs/sdks/javascript/quickstart",
+              "docs/sdks/javascript/authentication",
+              "docs/sdks/javascript/production",
+              {
+                "group": "Examples",
+                "icon": "code",
+                "pages": [
+                  "docs/sdks/javascript/examples/basic-javascript",
+                  "docs/sdks/javascript/examples/basic-typescript"
+                ]
+              },
+              {
+                "group": "Reference",
+                "icon": "book",
+                "pages": [
+                  "docs/sdks/javascript/reference/basic-usage",
+                  "docs/sdks/javascript/reference/audio-control",
+                  "docs/sdks/javascript/reference/event-handling",
+                  "docs/sdks/javascript/reference/list-all-events"
+                ]
+              }
             ]
           },
           {
-            "group": "Avatars",
-            "pages": ["docs/avatars/overview"]
+            "group": "Python SDK",
+            "icon": "python",
+            "pages": [
+              "docs/sdks/python/overview",
+              "docs/sdks/python/quickstart"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Integrations",
+        "icon": "plug",
+        "groups": [
+          {
+            "group": "Embed",
+            "icon": "code",
+            "pages": [
+              "docs/integrations/widget-integration",
+              "docs/integrations/embed-via-iFrame"
+            ]
           },
           {
-            "group": "Providers",
-            "pages": ["docs/providers/overview"]
+            "group": "Platforms",
+            "icon": "plug-circle-plus",
+            "pages": [
+              "docs/voice-to-video/livekit"
+            ]
+          },
+          {
+            "group": "Workflows",
+            "icon": "diagram-project",
+            "pages": [
+              "docs/integrations/n8n",
+              "docs/integrations/make"
+            ]
           },
           {
             "group": "AI Tools",
+            "icon": "robot",
             "pages": ["docs/ai-tools/mcp"]
           }
         ]
       },
       {
+        "tab": "Examples",
+        "icon": "lightbulb",
+        "groups": [
+          {
+            "group": "Use Cases",
+            "icon": "lightbulb",
+            "pages": [
+              "docs/examples/ai-interviewer",
+              "docs/examples/customer-support-agent",
+              "docs/examples/healthcare-intake-assistant",
+              "docs/examples/career-coach",
+              "docs/examples/sales-agents",
+              "docs/examples/nutritionist"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "API Reference",
+        "icon": "server",
         "groups": [
           {
             "group": "API Documentation",
+            "icon": "book",
             "pages": ["api-reference/overview"]
           },
           {
             "group": "Video Agents",
+            "icon": "robot",
             "pages": [
               "api-reference/endpoint/agentcreate",
               "api-reference/endpoint/agentcreatebytemplate",
-              "api-reference/endpoint/agentgetbyid",
               "api-reference/endpoint/agentget",
+              "api-reference/endpoint/agentgetbyid",
               "api-reference/endpoint/agentupdate",
               "api-reference/endpoint/agentdelete"
             ]
           },
           {
             "group": "Avatars",
+            "icon": "user",
             "pages": ["api-reference/endpoint/avatarget"]
           },
           {
             "group": "Conversations",
+            "icon": "messages",
             "pages": [
               "api-reference/endpoint/conversationget",
               "api-reference/endpoint/conversationgetbyid",
@@ -108,84 +250,77 @@
           },
           {
             "group": "Knowledge Base",
+            "icon": "database",
             "pages": [
               "api-reference/endpoint/knowledgebasecreate",
-              "api-reference/endpoint/knowledgebaseadddoc",
-              "api-reference/endpoint/knowledgebasegetbyid",
               "api-reference/endpoint/knowledgebaseget",
+              "api-reference/endpoint/knowledgebasegetbyid",
               "api-reference/endpoint/knowledgebaseupdate",
               "api-reference/endpoint/knowledgebasedelete",
+              "api-reference/endpoint/knowledgebaseadddoc",
               "api-reference/endpoint/knowledgebasedeletedoc"
             ]
           },
           {
             "group": "MCPs",
+            "icon": "network-wired",
             "pages": [
               "api-reference/endpoint/mcpcreate",
-              "api-reference/endpoint/mcpgetbyid",
               "api-reference/endpoint/mcpget",
+              "api-reference/endpoint/mcpgetbyid",
               "api-reference/endpoint/mcpupdate",
               "api-reference/endpoint/mcpdelete"
             ]
           },
           {
             "group": "Persona Templates",
+            "icon": "id-card",
             "pages": [
               "api-reference/endpoint/templatecreate",
-              "api-reference/endpoint/templategetbyid",
               "api-reference/endpoint/templateget",
+              "api-reference/endpoint/templategetbyid",
               "api-reference/endpoint/templateupdate",
               "api-reference/endpoint/templatedelete"
             ]
           },
           {
             "group": "Providers",
+            "icon": "cloud",
             "pages": ["api-reference/endpoint/providerget"]
           },
           {
             "group": "Tools",
+            "icon": "screwdriver-wrench",
             "pages": [
               "api-reference/endpoint/toolcreate",
-              "api-reference/endpoint/toolgetbyid",
               "api-reference/endpoint/toolget",
+              "api-reference/endpoint/toolgetbyid",
               "api-reference/endpoint/toolupdate",
               "api-reference/endpoint/tooldelete"
             ]
           },
           {
             "group": "Text to Video Generation",
+            "icon": "video",
             "pages": [
               "api-reference/endpoint/texttovideo",
               "api-reference/endpoint/texttovideostatus"
             ]
           }
         ]
+      },
+      {
+        "tab": "Changelog",
+        "icon": "clock-rotate-left",
+        "groups": [
+          {
+            "group": "Changelog",
+            "icon": "clock-rotate-left",
+            "pages": ["docs/changelog"]
+          }
+        ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Developer Platform",
-          "href": "https://app.trugen.ai",
-          "icon": "Browser"
-        },
-        {
-          "anchor": "Join Our Community",
-          "href": "https://discord.gg/4dqc8A66FJ",
-          "icon": "discord"
-        },
-        {
-          "anchor": "Changelog",
-          "href": "https://docs.trugen.ai/docs/changelog",
-          "icon": "code-branch"
-        },
-        {
-          "anchor": "llms.txt",
-          "href": "https://docs.trugen.ai/llms.txt",
-          "icon": "robot"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light-mode.svg",
@@ -194,14 +329,41 @@
   "navbar": {
     "links": [
       {
+        "label": "Platform",
+        "href": "https://app.trugen.ai",
+        "icon": "browser"
+      },
+      {
+        "label": "Discord",
+        "href": "https://discord.gg/4dqc8A66FJ",
+        "icon": "discord"
+      },
+      {
+        "label": "API Key",
+        "href": "https://app.trugen.ai",
+        "icon": "key"
+      },
+      {
         "label": "Support",
-        "href": "mailto:support@trugen.ai"
+        "href": "mailto:support@trugen.ai",
+        "icon": "envelope"
+      },
+      {
+        "label": "llms.txt",
+        "href": "https://docs.trugen.ai/llms.txt",
+        "icon": "robot"
       }
-    ]
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Playbook",
+      "href": "https://playbook.trugen.ai/"
+    }
   },
   "footer": {
     "socials": {
-      "linkedin": "https://linkedin.com/company/trugen-ai"
+      "linkedin": "https://linkedin.com/company/trugen-ai",
+      "discord": "https://discord.gg/4dqc8A66FJ"
     }
   }
 }

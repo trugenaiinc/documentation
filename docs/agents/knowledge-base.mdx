@@ -1,50 +1,121 @@
 ---
-title: Knowledge Base
+title: "Knowledge Base"
+description: "Connect your documents, websites, and data so agents give accurate, grounded answers."
 ---
-Knowledge Bases define the ground truth knowledge your agents rely on by centralizing your company’s documents, sites, and internal content so they can answer consistently and accurately, while also acting as reusable knowledge layers that multiple agents and templates can attach to—making it easier to keep information updated, enforce brand and policy alignment, and roll out new use cases without duplicating content.
 
-Integrate your own documents, or knowledge to deliver grounded, brand-specific conversations.
+A Knowledge Base is a collection of your company's content — documents, FAQs, websites, and internal data — that your agents draw on when answering questions. Instead of relying on generic LLM knowledge, agents search your Knowledge Base and return answers that are accurate, brand-aligned, and up to date.
 
-Agents can dynamically reference multiple resources, ensuring accuracy, consistency, and contextual knowledge. With Knowledge Base integration, every answer is context-aware, brand-true, and rooted in your company’s knowledge-not generic guesses.
+Knowledge Bases are reusable. Multiple agents and templates can attach to the same one, making it easy to keep information consistent across all your agents from one place.
 
-We support two modes of interaction with Knowledge Bases while the agent responds:
-  1. **Agentic RAG** – The LLM decides when and which knowledge bases or collections to search based on the user’s query and conversation context.
-  2. **Traditional RAG** – Every user query is always searched against the configured knowledge bases, and the retrieved context is passed to the LLM.
+## How Retrieval Works
 
-# Getting Started
+TruGen supports two retrieval modes that control when and how the agent queries your Knowledge Base.
 
-Documents and websites are indexed and made available to agents using the Knowledge Base component.
+| Mode | How It Works |
+| --- | --- |
+| **Agentic RAG** | The LLM decides when and which Knowledge Base to search based on the user's query and conversation context. More precise — only retrieves when relevant. |
+| **Traditional RAG** | Every user query is searched against all configured Knowledge Bases, and the retrieved context is always passed to the LLM. Simpler and more predictable. |
+
+<Tip>For most use cases, **Agentic RAG** produces better results because the agent only retrieves context when it's genuinely needed — reducing noise and improving response quality.</Tip>
+
+## Supported Content Types
+
+<CardGroup cols={3}>
+
+<Card title="Documents" icon="file">
+  Upload **PDF** or **DOCX** files. Content is extracted, chunked, and indexed automatically. Best for policies, manuals, product documentation, and structured reports.
+</Card>
+
+<Card title="Plain Text" icon="text">
+  Paste raw text directly. Best for FAQs, scripted responses, quick reference content, or any content you want to control precisely without uploading a file.
+</Card>
+
+<Card title="URL & Website" icon="globe">
+  Provide a URL to scrape a single page, or crawl an entire website. TruGen fetches and indexes the content automatically. Best for public documentation, help centres, or product pages.
+</Card>
+
+</CardGroup>
+
+## Getting Started
 
 <Steps>
-  <Step title="Step 1 - Open Knowledge Base in the dashboard">
-    Go to [https://app.trugen.ai](https://app.trugen.ai) and in the left panel, under **Configure**, click on **Knowledge Base**.
+  <Step title="Open Knowledge Base">
+    Go to [app.trugen.ai](https://app.trugen.ai) and click **Knowledge Base** in the left panel under **Configure**.
   </Step>
-  <Step title="Step 2 - Create a new Knowledge Base">
-    Click **Create New**, give your Knowledge Base a clear **Name** and **Description** so agents know when to use it.
+  <Step title="Create a new Knowledge Base">
+    Click **Create New**. Give it a clear **Name** and **Description** — these are used by the agent to decide when to query this Knowledge Base.
   </Step>
-  <Step title="Step 3 - Add your content">
-    Use one of the three options: **Add files**, **Add text**, or **Add URL**. Upload your documents or paste/enter content, then click **Save & Create**.
+  <Step title="Add your content">
+    Choose from three options:
+    - **Add Files** — upload a PDF or DOCX document
+    - **Add Text** — paste plain text directly
+    - **Add URL** — enter a webpage to scrape or a root URL to crawl the entire site
+
+    Click **Save & Create** when done.
   </Step>
-  <Step title="Step 4 - Wait for indexing">
-    The system will extract, clean, chunk, and index your content. Once processing is complete, you can select this Knowledge Base when creating or updating an agent.
+  <Step title="Wait for indexing">
+    TruGen extracts, cleans, chunks, and indexes your content. Once complete, you can attach this Knowledge Base when creating or updating an agent.
   </Step>
 </Steps>
 
-**Name** and **Description** of the knowledge base is one of the most important components; these are the fields the agent uses to decide whether to use that knowledge base or not.
+<Note>The **Name** and **Description** fields are critical. The agent uses them to decide whether to query this Knowledge Base for a given question — be specific about what it contains and when it should be used.</Note>
 
-## Example
+## Naming Your Knowledge Base
+
+Good names and descriptions make a big difference in retrieval accuracy. Here's an example:
+
 ```
-Name: Get-HR-Policies
-Description: Use this whenever the user is asking any question about HR policies.
+Name: HR-Policies
+Description: Use this whenever the user asks about HR policies, leave entitlements, benefits, or employee guidelines.
 ```
 
-<Note>Knowledge Base creation and management can be performed using the API's or our Developer Platform.</Note>
+```
+Name: Product-Docs
+Description: Use this when the user asks about product features, setup instructions, integrations, or technical specifications.
+```
 
-### Know More
-Our API References sections have several endpoints to create and manage Knowledge Base.
+## Via API
 
-<Columns cols={1}>
-<Card title="Knowledge Base - API Reference" icon="book" href="/api-reference/endpoint/knowledgebasecreate">
-Explore full set of supported APIs to create and manage Knowledge Base.
+### Create a Knowledge Base
+
+<CodeGroup>
+```bash cURL
+curl --request POST \
+  --url https://api.trugen.ai/v1/knowledge-base \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "name": "HR-Policies",
+    "description": "Use this whenever the user asks about HR policies, leave entitlements, benefits, or employee guidelines."
+  }'
+```
+</CodeGroup>
+
+### Add a Document
+
+Upload a file to an existing Knowledge Base using its `knowledge_base_id`:
+
+<CodeGroup>
+```bash cURL
+curl --request POST \
+  --url https://api.trugen.ai/v1/knowledge-base/{knowledge_base_id}/document \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --form 'file=@/path/to/document.pdf'
+```
+</CodeGroup>
+
+<Note>Replace `YOUR_API_KEY` with your key from the Developer Portal and `knowledge_base_id` with the ID returned when you created the Knowledge Base.</Note>
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Knowledge Base API Reference" icon="book" href="/api-reference/endpoint/knowledgebasecreate">
+  Full set of endpoints to create, update, and manage Knowledge Bases programmatically.
 </Card>
-</Columns>
+
+<Card title="Templates" icon="shapes" href="/docs/agents/templates">
+  Attach Knowledge Bases to a template so every agent inherits the right knowledge automatically.
+</Card>
+
+</CardGroup>

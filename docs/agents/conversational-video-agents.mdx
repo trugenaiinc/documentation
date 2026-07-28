@@ -1,88 +1,106 @@
 ---
-title: Conversational Video Agents
+title: "AI Teammates"
+description: "Real-time conversational video agents that see, hear, and respond with human-like presence."
 ---
 
-Conversational Video Agents are the core of TruGen’s real-time interactive experience layer-empowering AI systems to communicate as naturally and expressively as humans.
-Built on advanced speech understanding, visual perception, and contextual intelligence, these agents **see, listen, understand, and respond instantly** with lifelike avatars that convey emotion and intent.
+AI Teammates are TruGen's real-time conversational agents — face-to-face, voice-driven, and vision-aware. Unlike a chatbot or voice assistant, an AI Teammate holds a live video conversation, reads the room, and responds the way a person would.
+
+This page explains how conversation works under the hood, what you can configure, and how to embed one into your product.
 
 <Frame>
   <img src="/images/call_ui.png" alt="Default Call UI" />
 </Frame>
 
-Perfect for interviews, sales enablement, coaching, learning, customer success, onboarding, support automation, and immersive brand experiences, Conversational Video Agents remove the barriers between humans and machines.
+## Conversation Mechanics
 
-TruGen delivers a new standard of interaction:
-**sub-second responses, natural turn-taking, and emotionally intelligent communication.**
+AI Teammates don't just wait for a user to finish speaking — they actively manage the natural rhythm of conversation.
 
----
+| Mechanic | How It Works |
+| --- | --- |
+| **Speech Recognition** | Runs continuously and incrementally, capturing partial utterances so the agent can begin reasoning before the user finishes speaking |
+| **Turn Detection** | Detects natural pauses, interruptions, and handovers — the agent knows when to listen, when to speak, and when to yield |
+| **Backchanneling** | Issues short acknowledgement cues ("mm-hmm", nodding) to signal active listening during user speech |
+| **Interruption Handling** | Gracefully stops mid-response when the user interjects, rather than talking over them |
+| **Silence Detection** | Monitors for user inactivity and responds with a configurable idle message or ends the session |
+| **Vision Awareness** | Hawkeye-2 continuously reads gestures, gaze, and body language to feed real-world context into responses |
 
-## Key Features
+[See the full pipeline →](/docs/agents/pipeline)
 
- - Real-time **speech recognition and expressive voice synthesis**
- - **Vision perception** with gesture and gaze awareness
- - **Contextual reasoning** through advanced language models
- - **Knowledge grounding** using your own content, documents, APIs, or data
- - **Tool and function calling** to perform realtime operations or fetch live information
- - **Customizable persona templates** for personality, tone, and conversational behavior
- - **Lifecycle & speech event callbacks** for analytics and workflow automation
- - Simple **frontend integration** via iFrame or SDK
+## What You Can Configure
 
----
-
-## Feature Overview
+Each AI Teammate can be fully configured from scratch, or built from a **Template** — a reusable blueprint you can share across multiple agents to keep behaviour consistent. Either way, you control:
 
 <CardGroup cols={2}>
 
-<Card title="Realtime Pipeline" icon="robot" href="/docs/agents/pipeline">
-Understand the end-to-end architecture powering real-time comprehension, reasoning, and expressive avatar responses.
+<Card title="Persona & Tone" icon="user">
+  Define the agent's role, personality, and communication style through a system prompt.
 </Card>
 
-<Card title="Templates" icon="shapes" href="/docs/agents/templates">
-Create structured persona definitions with tone, role, entry/exit behavior, and system prompts.
+<Card title="Voice & Language" icon="microphone">
+  Choose voice, accent, and language. AI Teammates support multilingual conversations out of the box.
 </Card>
 
-<Card title="Knowledge Base" icon="book" href="/docs/agents/knowledge-base">
-Give your agents real knowledge-connect internal docs, APIs, and datasets for grounded responses.
+<Card title="Knowledge Sources" icon="database">
+  Attach internal docs, FAQs, product data, or APIs so responses are grounded in your content.
 </Card>
 
-<Card title="Event Callbacks" icon="bell" href="/docs/agents/callback">
-Trigger UI updates, analytics, or automation with real-time speech, emotion, and lifecycle events.
+<Card title="Tools & Function Calling" icon="wrench">
+  Connect external APIs and services the agent can call in real time during a conversation.
 </Card>
 
-<Card title="Integration" icon="plug" href="/docs/integrations/embed-via-iFrame">
-The fastest way to deploy-embed your agent anywhere using a single iframe.
+<Card title="Entry & Exit Behaviour" icon="door-open">
+  Set custom greeting and farewell messages for session start and end.
+</Card>
+
+<Card title="Session Controls" icon="clock">
+  Set max session length, idle timeout behaviour, and recording preferences.
 </Card>
 
 </CardGroup>
 
----
+[Learn how to create a template →](/docs/agents/templates)
 
-## Why TruGen Conversational Agents?
+## Capabilities
 
-TruGen agents are engineered for **high-speed, high-fidelity, multi-turn conversation** driven by multimodal understanding.
-Unlike traditional chatbots, they:
+| Capability | Detail |
+| --- | --- |
+| **Modalities** | Audio, video, text |
+| **Response Latency** | ≤ 1 second end-to-end |
+| **Vision** | Gesture, gaze, and body language via Hawkeye-2 |
+| **Avatar Rendering** | Expressive lip-sync, micro-expressions, and emotional nuance via Huma-3 |
+| **Languages** | Multilingual — see [supported languages](/docs/agents/multilingual-support) |
+| **Session Recording** | Optional, configurable per agent |
+| **Concurrent Sessions** | Unlimited |
+| **Uptime** | > 99.9% |
 
-- **Speak and react with authentic facial motion and expression**
-- **See and understand** gestures, engagement, and body movement
-- Handle **interruptions, backchanneling, and natural pacing**
-- Adapt responses based on **context, intent, and environment**
-- Can interact **hands-free**, enhancing accessibility and user comfort
+## Quick Integration
 
-Whether you’re building a next-gen assistant, avatar coach, AI interviewer, or automated sales presenter, TruGen provides the foundation to create compelling, human-level digital experiences-in minutes.
+The fastest way to deploy an AI Teammate is a single iframe — no SDK, no WebRTC setup, no media pipeline configuration.
 
----
+```html
+<iframe
+  src="https://app.trugen.ai/embed/{agent_id}?username=USER_NAME&id=USER_ID&context=CONTEXT"
+  width="100%"
+  height="600"
+  frameborder="0"
+  allow="camera; microphone; autoplay"
+></iframe>
+```
 
+Drop it into any frontend — React, Next.js, Vue, Angular, or plain HTML — and your agent is live instantly.
 
+[Full integration guide →](/docs/integrations/embed-via-iFrame)
 
-### Next Step
-Ready to build your first agent?
-Start with the **Quickstart guide** or explore **API Reference** to integrate programmatically.
+## What's Next?
 
 <CardGroup cols={2}>
-<Card title="Get Started" icon="rocket" href="/docs/quickstart">
-A simple guide to creating your first agent and deploying it at scale.
+
+<Card title="Templates" icon="shapes" href="/docs/agents/templates">
+  Create and manage reusable persona blueprints for consistent agent behaviour at scale.
 </Card>
-<Card title="API References" icon="book" href="/api-reference/overview">
-Explore full set of supported APIs to create and manage agents.
+
+<Card title="API Reference" icon="book" href="/api-reference/overview">
+  Explore the full set of APIs to create and manage AI teammates programmatically.
 </Card>
+
 </CardGroup>

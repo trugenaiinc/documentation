@@ -1,117 +1,117 @@
 ---
-title: Memory
+title: "Memory"
+description: "Persist important user details across conversations so your agent remembers who it's talking to."
 ---
 
-Memory helps agents save important user details **across multiple conversations**. **Custom Instructions** help the agent with guidelines to what needs to be remembered, and the amount of detail depends on the configured **memory depth**.
+Memory allows AI Teammates to save key details from one conversation and recall them in the next. Combined with **Custom Instructions**, you control exactly what gets remembered and how much detail is retained.
 
-# Getting Started
+## Getting Started
 
 <Steps>
-  <Step title="Step 1 - Open the Developer Platform">
+  <Step title="Open the Developer Platform">
     Go to [app.trugen.ai](https://app.trugen.ai).
   </Step>
-  <Step title="Step 2 - Create a new agent">
-    Click **Create New Agent** and fill in the basic agent details.
+  <Step title="Create or open an agent">
+    Click **Create New Agent** or open an existing one.
   </Step>
-  <Step title="Step 3 - Configure Memory (Custom Instruction)">
-    Open the **Memory** tab and enable the **Custom Instruction** toggle. Update the instruction to specify what details should be saved.
+  <Step title="Configure Memory">
+    Open the **Memory** tab and enable the **Custom Instruction** toggle. Write an instruction specifying what details the agent should save.
   </Step>
-  <Step title="Step 4 - Start conversations">
-    Talk to the agent. It will save memory entries based on your instruction and use them in future conversations with the same user.
+  <Step title="Start a conversation">
+    Talk to the agent. It will save memory entries based on your instruction and recall them in future conversations with the same user.
   </Step>
 </Steps>
 
-### How Memory Works
+## How Memory Works
 
-Memory in an agent works as a continuous loop. When the agent starts, it first loads the user’s previous chat history. From this history, it selects and adds the most relevant context to the current session. As the conversation progresses, the updated interaction is stored, making it available for future calls by the same user.
+When a conversation starts, the agent loads the user's previous chat history and selects the most relevant context to bring into the current session. As the conversation progresses, new details are stored — making them available the next time that user returns.
 
-<Note>Ensure privacy settings and user consent before storing sensitive details.</Note>
+<Note>Review your privacy settings and ensure user consent is in place before storing sensitive personal details.</Note>
 
-### Example Custom Instruction for a Sales Agent
+## Custom Instruction Examples
+
+Custom Instructions tell the agent what categories of information to capture. Below are two ready-to-use examples.
+
+### Sales Agent
+
 ```
 1. Personal Profile
-
-   • Capture user’s full name, preferred name, date of birth or age, relationship status, family members and pets.
-
-   • Record context and source (“User mentioned on 2024-05-10”) and update whenever changes occur.
+   - Capture full name, preferred name, date of birth or age, relationship status, family members and pets.
+   - Record context and source ("User mentioned on 2024-05-10") and update whenever changes occur.
 
 2. Life Events & Memories
-
-   • Log notable experiences—vacations, celebrations, milestones—with date, location, participants, and user-expressed significance.
-
-   • Tag memories by theme (e.g., travel, accomplishment) and mark emotional valence (positive/negative/neutral).
+   - Log notable experiences — vacations, celebrations, milestones — with date, location, participants, and significance.
+   - Tag memories by theme (e.g., travel, accomplishment) and mark emotional valence (positive/negative/neutral).
 
 3. Emotional & Mental Wellbeing
-
-   • Track expressed moods, feelings, stressors, sources of joy or concern.
-
-   • Note changes over time (e.g., “User felt anxious on 2024-04-22 due to exam stress”) to identify patterns.
+   - Track expressed moods, feelings, stressors, and sources of joy or concern.
+   - Note changes over time to identify patterns.
 
 4. Preferences & Interests
-
-   • Store likes/dislikes across food, music, movies, hobbies, travel destinations, routines.
-
-   • For each preference, include specificity (e.g., “Prefers jazz over classical”; “Loves Thai cuisine—especially pad Thai”).
+   - Store likes/dislikes across food, music, movies, hobbies, travel, and routines.
+   - Include specificity (e.g., "Prefers jazz over classical", "Loves Thai cuisine — especially pad Thai").
 
 5. Goals, Plans & Tasks
-
-   • Record short- and long-term objectives, project steps, resolutions, and scheduled events with deadlines.
-
-   • Track progress updates and completed items; flag overdue tasks and send reminders as appropriate.
+   - Record short- and long-term objectives, project steps, resolutions, and scheduled events with deadlines.
+   - Track progress updates and flag overdue tasks.
 
 6. Social Network & Communication
-
-   • Note close friends, mentors, colleagues, and their preferred contact methods.
-
-   • Include relationship context (“College roommate,” “Work manager”) and frequency of interaction.
+   - Note close friends, mentors, and colleagues with their relationship context and preferred contact methods.
 
 7. Feedback & Reflections
-
-   • Store user’s evaluations of recent experiences, lessons learned, aspirations for growth.
-
-   • Link reflections to related goals or events to facilitate follow-up discussions.
+   - Store evaluations of recent experiences, lessons learned, and aspirations for growth.
 
 8. Health & Wellness Routines
+   - Log exercise habits, dietary preferences, sleep patterns, and relaxation practices in a personal (non-clinical) context.
 
-   • Log exercise habits, dietary preferences, sleep patterns, relaxation practices in a personal (non-clinical) context.
-
-   • Include frequency, duration, and user satisfaction levels to spot improvements or challenges.
-
-
-Implementation Guidelines
-
-• Timestamp every entry and note the context in which information was shared.
-• Update or archive entries as details evolve; avoid duplication by merging overlapping data.
-• Enable retrieval by keyword, category, date range, and emotional tag to support personalized, context-aware interactions.
+Implementation Guidelines:
+- Timestamp every entry and note the context in which information was shared.
+- Update or archive entries as details evolve; avoid duplication by merging overlapping data.
+- Enable retrieval by keyword, category, date range, and emotional tag.
 ```
 
-### Example Custom Instruction for a Educational Mentor
+### Educational Mentor
+
 ```
 Types of Information to Remember:
 
 1. Personal & Academic Profile
-   • User’s name, institution, grade or year, major or area of study, enrolled courses
+   - User's name, institution, grade or year, major, enrolled courses.
 
 2. Academic Goals & Aspirations
-   • Target GPA, study-abroad plans, scholarship or internship applications, career objectives
+   - Target GPA, study-abroad plans, scholarship or internship applications, career objectives.
 
 3. Assignments, Exams & Deadlines
-   • Upcoming homework, projects, tests, exam dates, assignment requirements, study schedules
+   - Upcoming homework, projects, tests, exam dates, and study schedules.
 
 4. Learning Preferences & Styles
-   • Preferred media (visual, auditory, kinesthetic), class format (online/in-person), study environment, group vs. solo learning
+   - Preferred media (visual, auditory, kinesthetic), class format, study environment, group vs. solo learning.
 
 5. Extracurricular & Research Activities
-   • Clubs, organizations, sports, competitions, volunteer work, research projects
+   - Clubs, sports, competitions, volunteer work, and research projects.
 
 6. Challenges & Support Needs
-   • Difficult subjects or topics, requests for tutoring or accommodations, time-management or work–life balance issues
+   - Difficult subjects, requests for tutoring or accommodations, time-management issues.
 
 7. Achievements & Progress
-   • Awards, certifications, completed courses, skills acquired, milestones reached
+   - Awards, certifications, completed courses, skills acquired, milestones reached.
 
 8. Feedback & Motivation Factors
-   • Opinions on classes or instructors, preferred teaching materials, motivational triggers or obstacles
+   - Opinions on classes or instructors, preferred teaching materials, motivational triggers or obstacles.
 
-Memory Depth Guidance: Retain detailed context for the most recent three interactions; summarize older details as needed to preserve relevance and continuity.
+Memory Depth Guidance: Retain detailed context for the most recent three interactions; summarise older details as needed to preserve relevance and continuity.
 ```
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Templates" icon="shapes" href="/docs/agents/templates">
+  Define the full persona and behaviour blueprint for your agent.
+</Card>
+
+<Card title="Knowledge Base" icon="database" href="/docs/agents/knowledge-base">
+  Give your agent access to documents, FAQs, and data sources.
+</Card>
+
+</CardGroup>

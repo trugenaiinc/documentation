@@ -1,0 +1,65 @@
+---
+title: "Integrations"
+description: "Connect 1,000+ apps to your AI Teammate via Composio — no custom API code required."
+---
+
+TruGen integrates with **Composio** to give your agents access to over 1,000 third-party apps out of the box. Connect tools like Slack, Google Calendar, HubSpot, Salesforce, Notion, GitHub, and more — without writing any API integration code yourself.
+
+Once connected, the agent automatically decides when to use a tool based on your description and the user's request.
+
+## How It Works
+
+Composio handles the authentication and API plumbing. You pick the tools you want, authorise the connection, and TruGen's agent can start using them immediately in live conversations.
+
+<Steps>
+  <Step title="Open the Integrations Panel">
+    In the [Developer Studio](https://app.trugen.ai), navigate to your agent's **Tools** section and select **Integrations**.
+  </Step>
+  <Step title="Browse and Select a Tool">
+    Search the Composio catalogue for the app or action you want — for example, `Send Slack Message`, `Create Calendar Event`, or `Update HubSpot Contact`.
+  </Step>
+  <Step title="Authorise the Connection">
+    Connect your account using **Composio's native authentication** — OAuth for apps like Google or Slack, or an API key for services like OpenAI or Stripe. Composio handles the token storage and refresh automatically.
+  </Step>
+  <Step title="Add to Your Agent">
+    Once authorised, the integration is available to your agent. The agent will invoke it automatically when the user's request matches the tool's purpose.
+  </Step>
+</Steps>
+
+## Supported Authentication Methods
+
+| Method | Used By |
+| --- | --- |
+| **OAuth 2.0** | Google, Slack, Salesforce, HubSpot, GitHub, and most major SaaS platforms |
+| **API Key** | Stripe, SendGrid, Twilio, and services with key-based access |
+| **Basic Auth** | Legacy systems and internal tools |
+
+## Popular Integrations
+
+| Category | Examples |
+| --- | --- |
+| **Communication** | Slack, Microsoft Teams, Gmail, Twilio |
+| **CRM & Sales** | HubSpot, Salesforce, Pipedrive |
+| **Productivity** | Google Calendar, Notion, Airtable, Trello |
+| **Developer Tools** | GitHub, Jira, Linear |
+| **E-commerce** | Shopify, Stripe |
+
+<Note>Composio supports 1,000+ apps. If your app isn't listed, you can connect it using an [API & Webhook tool](/docs/agents/tools/custom-tools#api--webhook) instead.</Note>
+
+## Testing Your Integration
+
+After connecting a tool, use the **Test** button in the Developer Studio to verify the connection is working. Provide the expected inputs and check that the response comes back correctly before going live.
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Custom Tools" icon="code" href="/docs/agents/tools/custom-tools">
+  Build API, MCP, or client-side tools for endpoints not covered by Composio.
+</Card>
+
+<Card title="Tools Overview" icon="screwdriver-wrench" href="/docs/agents/tools/overview">
+  See all tool types and when to use each one.
+</Card>
+
+</CardGroup>

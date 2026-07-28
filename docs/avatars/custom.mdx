@@ -1,0 +1,112 @@
+---
+title: "Custom Avatars"
+description: "Create your own TruGen avatar from a single source photo or a live camera capture."
+---
+
+Custom avatars let you build agents with your own face, a customer's face, a spokesperson, or a designed character — all driven by TruGen's **Huma-3** neural rendering engine.
+
+<Note>Detailed step-by-step instructions and the API for creating custom avatars are coming soon. In the meantime, follow the guidance below to prepare a great source image.</Note>
+
+## Create a Custom Avatar
+
+<Steps>
+  <Step title="Prepare a source image">
+    Choose or capture a well-lit, front-facing photo that follows our [source image best practices](/docs/avatars/best-practices).
+  </Step>
+  <Step title="Upload to the Developer Platform">
+    Go to [app.trugen.ai](https://app.trugen.ai), open the **Avatars** section, and click **Create Avatar**.
+  </Step>
+  <Step title="Preview and save">
+    Preview the generated avatar in a live conversation. If you're happy, save it — you'll receive a new avatar ID you can use in any agent.
+  </Step>
+</Steps>
+
+## Create via API
+
+You can also create a custom avatar programmatically by sending a `POST` request to the `/v2/custom-avatar` endpoint with the avatar details and a base64-encoded source image.
+
+<CodeGroup>
+
+```javascript JavaScript
+const myHeaders = new Headers();
+myHeaders.append("x-api-key", "YOUR_API_KEY");
+myHeaders.append("Content-Type", "application/json");
+
+const raw = JSON.stringify({
+  "avatar_id": "20072601",
+  "avatar_name": "my_avatar",
+  "gender": "male",
+  "input_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+  "is_private": true
+});
+
+const requestOptions = {
+  method: "POST",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
+
+fetch("https://api.trugen.ai/v2/custom-avatar", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+```
+
+```python Python
+import requests
+import json
+
+url = "https://api.trugen.ai/v2/custom-avatar"
+
+payload = json.dumps({
+  "avatar_id": "20072601",
+  "avatar_name": "my_avatar",
+  "gender": "male",
+  "input_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+  "is_private": True
+})
+headers = {
+  'x-api-key': 'YOUR_API_KEY',
+  'Content-Type': 'application/json'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+```
+
+</CodeGroup>
+
+## When to use a Custom Avatar
+
+- **Personal brand agents** — use your own face for a coach, tutor, or spokesperson agent.
+- **Enterprise personas** — create a consistent brand character across all customer touch points.
+- **Character-driven experiences** — build entertainment, storytelling, or roleplay agents with a designed persona.
+- **Customer-facing sales agents** — use a photo of a real team member to make outreach feel personal.
+
+## Using Your Custom Avatar
+
+Once created, your custom avatar receives an `avatar_id`. Use it exactly like a stock avatar in the `avatar_ids` array when creating an agent:
+
+```json
+{
+  "avatar_ids": ["your_custom_avatar_id"],
+  "name": "My Custom Agent",
+  "system_prompt": "..."
+}
+```
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Voices" icon="microphone" href="/docs/agents/voices/overview">
+  Choose a voice and language for your custom avatar agent.
+</Card>
+
+<Card title="Custom Image Best Practices" icon="camera" href="/docs/avatars/best-practices">
+  Get the highest-quality result on the first try.
+</Card>
+
+</CardGroup>

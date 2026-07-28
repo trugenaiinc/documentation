@@ -2,13 +2,35 @@
 title: "Changelog"
 description: "Product updates and announcements"
 ---
-<Update label="2026-05-28" description="v0.5.0">
-Introducing Make.com and N8N workflow support
+<Update label="2026-07-28" description="v0.5.0">
+Documentation overhaul — JavaScript SDK, External Meetings, Vision Understanding, Tools revamp, and more
 
-### Key Features in This Release
+### JavaScript SDK
 
-- **Make.com workflows:** We are announcing that our official app is published in Make.com app directory.
-- **n8n workflows:** We are introducing support for n8n nodes.
+- **Full JavaScript SDK documentation** — Quickstart, Authentication (two-tier API key + session tokens), Production usage, Basic JavaScript and TypeScript examples, and a complete SDK Reference covering Basic Usage, Audio Control, Event Handling, and all 17 events
+- **LiveKit JavaScript/TypeScript support** — Added JS/TS tab to the LiveKit integration page alongside Python, covering `@livekit/agents-plugin-trugen` install, environment setup, and `AvatarSession` configuration reference
+
+### AI Teammates
+
+- **External Meetings** — New documentation covering how to enable External Meetings per agent, agent email addresses, invite flow, supported platforms (Google Meet, Zoom, Teams, Webex), multi-participant support, and the proprietary Chime In model for natural turn-taking
+- **Vision Understanding** — Renamed and fully expanded with Hawkeye-2 capabilities: Emotion Detection, Head Pose Tracking, Eye Gaze Tracking, Face Count Detection, Deepfake Detection, and Lip Sync Detection, plus real-time alerts, scale architecture, and common use cases
+- **Tools revamp** — Completely restructured into three pages: Tools Overview (all types + testing), Integrations (Composio 1000+ apps, OAuth/API key auth), and Custom Tools (API/Webhook, MCP with SHTTP/SSE transport, Client Tools with npm handler pattern)
+- **Event Callbacks** — Added `max_call_duration_warning` and `tool_call` events, bringing the total to 11 events. All events and code examples are now in alphabetical order
+- **Knowledge Base** — Expanded with RAG vs Agentic RAG explanation, three content types (Documents, Plain Text, URL/Website), improved naming guidance, and API examples for creating knowledge bases and adding documents
+
+### LLMs
+
+- **Available LLMs** — New page listing all supported models across Groq, Azure OpenAI, Google, Open Router, and Livekit Inference, with a quick-reference model selection guide
+- **Custom LLM** — Renamed sidebar entry and improved with clearer setup steps
+
+### Voices & Languages
+
+- **Voice Library** — Updated with ElevenLabs audio sample URLs for all 17 voices, plus 52 Cartesia voices added
+- **Multilingual Support** — Expanded from 9 to 60+ languages organised into European, Asian & Pacific, and Arabic regional tables with dialect-level codes
+
+### Providers
+
+- **Providers page** — Restructured into three clear sections: STT, LLM, and TTS, with all providers and models listed and moved to the Introduction group for better discoverability
 
 </Update>
 
@@ -26,14 +48,14 @@ Knowledge Base improvements and new Memory
 
 ### Key Features in This Release
 
-- **Enhanced Knowledge Base:** we revised our entire knowledge layer architecture for improved reliability and overall performance. Our retrievels are today &lt;100ms on an average.
+- **Enhanced Knowledge Base:** we revised our entire knowledge layer architecture for improved reliability and overall performance. Our retrievals today average &lt;100ms.
 - **Introduced Memory documentation page** describing how agents use conversation and long-term memory, plus navigation entry under Managed Agents.
 
 </Update>
 
 <Update label="2026-02-26" description="v0.1.3">
 
-- **Updated stock avatars page to include list of all avaiable avatars for Livekit Voice Agent integration.**
+- **Updated stock avatars page to include list of all available avatars for LiveKit Voice Agent integration.**
 
 </Update>
 

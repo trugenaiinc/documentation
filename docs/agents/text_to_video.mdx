@@ -1,54 +1,29 @@
 ---
-title: Text-To-Video(TTV)
+title: "Text to Video"
+sidebarTitle: "Text to Video"
+description: "Generate a professional avatar video from a script — no camera or studio required."
 ---
 
-Revolutionize Your Content Strategy with Our New **Text-to-Video** Generator
+Turn a written script into a fully rendered avatar video in minutes. Provide your text, choose an avatar and voice, and TruGen handles the rest — lip sync, facial expression, and delivery are all generated automatically.
 
-In the fast-paced world of digital communication, video is king—but producing it has always been a
-bottleneck. Whether it’s the cost of equipment, the nerves of being on camera, or the endless hours
-spent in post-production, high-quality video has traditionally been a luxury.
-
-Today, we are changing the game. We are thrilled to announce the launch of our latest
-feature: **Text-to-Video service**.
-
-This tool allows you to transform simple text into professional, engaging video content in minutes,
-powered by our cutting-edge video generator models.
-
-**How It Works**: Your Digital Spokesperson,
-Our Text-to-Video generator is designed to be intuitive, powerful, and, most importantly, human.
-
-## Here is how you can create your next masterpiece:
+## How It Works
 
 <Steps>
 
-<Step title="Generate an API key">
-    1. Using TruGen.AI [Developer Platform](https://app.trugen.ai), generate an API key from our developers page.
-    2. Set the newly generated API key as `x-api-key` in header.
-    ```bash
-    apiKey: "x-api-key"
-    ```
+  <Step title="Get an API Key">
+    Generate an API key from the [TruGen Developer Portal](https://app.trugen.ai) and include it as the `x-api-key` header in every request.
   </Step>
-  <Step title="Select your avatar">
-    Choose from our diverse library of hyper-realistic digital human avatars.
-    Whether you need a corporate professional for a B2B presentation or a
-    friendly face for a customer welcome video, we have the perfect match for
-    your brand.
 
-    You can select the avatar of your choice from the link and copy the avatar_id and paste it in your payload
-
-    https://docs.trugen.ai/docs/avatars/overview
+  <Step title="Choose an Avatar">
+    Pick an avatar ID from the [Avatar Gallery](/docs/avatars/gallery) and paste it into your payload.
 
     ```bash
-    "avatar_id" : "c5b563de"
+    "avatar_id": "c5b563de"
     ```
-
   </Step>
-  <Step title="Pick a Voice ID">
-    Match your avatar with a high-fidelity voice. From warm and conversational
-    to authoritative and bold, our voice IDs use advanced synthesis to ensure
-    the tone matches your message perfectly.
 
-    You can pick any voice id from the list below
+  <Step title="Choose a Voice">
+    Select a voice from the table below and include the `voice_id`, `provider_name`, and `model_name` in your payload.
 
     | Name | Voice ID |
     | :--- | :--- |
@@ -68,105 +43,91 @@ Our Text-to-Video generator is designed to be intuitive, powerful, and, most imp
     | **Laura (Alt)** | `FGLJyeekUzxl8M3CTG9M` |
     | **Omar** | `xvhpbk8otnNHtT3fjCpr` |
 
-Please give the provider_name as `elevenlabs` and model_name as `eleven_turbo_v2_5`
-
-```bash
-"voice_id" : "FGY2WhTYpPnrIDTdsKH5",
-"provider_name" : "elevenlabs",
-"model_name" : "eleven_turbo_v2_5"
-```
-
-  </Step>
-  <Step title="Input Your Script">
-    Simply type or paste your text. Our AI takes over from there, perfectly
-    syncing the avatar’s lip movements, facial expressions to the rhythm of the
-    speech.
     ```bash
-    "script": "Hello, This is team trugen"
+    "provider_name": "elevenlabs",
+    "model_name": "eleven_turbo_v2_5"
+    ```
+  </Step>
+
+  <Step title="Write Your Script">
+    Provide the text you want the avatar to speak. The avatar's lip movements and expressions are automatically synced to the generated audio.
+
+    ```bash
+    "script": "Hello, welcome to TruGen."
+    ```
+  </Step>
+
+  <Step title="Set a Callback URL">
+    Video generation is asynchronous. Provide a publicly reachable HTTPS endpoint — TruGen will POST the finished video link to it when rendering is complete.
+
+    ```bash
+    "callback_url": "https://yourdomain.com/webhook/video-ready"
+    ```
+  </Step>
+
+  <Step title="Submit the Request">
+    Send a `POST` to the video generation endpoint with your full payload.
+
+    <CodeGroup>
+    ```bash cURL
+    curl --request POST \
+      --url https://api.trugen.ai/v1/script-to-video/createVideo \
+      --header 'Content-Type: application/json' \
+      --header 'x-api-key: <your-api-key>' \
+      --data '{
+        "avatar_id": "c5b563de",
+        "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+        "provider_name": "elevenlabs",
+        "model_name": "eleven_turbo_v2_5",
+        "script": "Hello, welcome to TruGen.",
+        "callback_url": "https://yourdomain.com/webhook/video-ready"
+      }'
     ```
 
-  </Step>
-  <Step title="Give your callbak URL">
-    This is important step, Please give a callback URL.
-    You will recieve the link to your video to this callback URL
-    ```bash
-    "callback_url": "https://paste-your-callback-url.com"
-    ```
+    ```python Python
+    import requests
 
-  </Step>
-  <Step title="POST request">
-Finally, choose the terminal or platform of your choice and send the post request to the following endpoint and example payload.
+    url = "https://api.trugen.ai/v1/script-to-video/createVideo"
 
-    ```bash
-    https://api.trugen.ai/v1/script-to-video/createVideo
-
-    {
-      "avatar_id": "c5b563de",
-      "voice_id": "FGY2WhTYpPnrIDTdsKH5",
-      "provider_name": "elevenlabs",
-      "model_name": "eleven_turbo_v2_5",
-      "script": "Hello, This is team trugen",
-      "callback_url": "https://paste-your-callback-url.com"
+    payload = {
+        "avatar_id": "c5b563de",
+        "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+        "provider_name": "elevenlabs",
+        "model_name": "eleven_turbo_v2_5",
+        "script": "Hello, welcome to TruGen.",
+        "callback_url": "https://yourdomain.com/webhook/video-ready"
     }
 
+    headers = {"x-api-key": "<your-api-key>"}
+
+    response = requests.post(url, json=payload, headers=headers)
+    print(response.json())
     ```
+    </CodeGroup>
 
+    <Note>Replace `<your-api-key>` with your actual API key from the [Developer Portal](https://app.trugen.ai).</Note>
   </Step>
-  <Step title="Example payload">
-      Send a `POST` request to `https://api.trugen.ai/v1/script-to-video/createVideo`.
-
-      <CodeGroup>
-        ```bash cURL
-        curl --request POST \
-          --url https://api.trugen.ai/v1/script-to-video/createVideo \
-          --header 'x-api-key: <your-api-key>' \
-          --data '{
-            "avatar_id": "c5b563de",
-            "voice_id": "FGY2WhTYpPnrIDTdsKH5",
-            "provider_name": "elevenlabs",
-            "model_name": "eleven_turbo_v2_5",
-            "script": "Hello, This is team trugen",
-            "callback_url": "https://paste-your-callback-url.com"
-          }'
-        ```
-
-        ```python Python
-        import requests
-
-        url = "https://api.trugen.ai/v1/script-to-video/createVideo"
-
-        payload = {
-            "avatar_id": "c5b563de",
-            "voice_id": "FGY2WhTYpPnrIDTdsKH5",
-            "provider_name": "elevenlabs",
-            "model_name": "eleven_turbo_v2_5",
-            "script": "Hello, This is team trugen",
-            "callback_url": "https://paste-your-callback-url.com"
-        }
-
-        headers = {
-            "x-api-key": "<your-api-key>"
-        }
-
-        response = requests.post(url, json=payload, headers=headers)
-        print(response.json())
-        ```
-      </CodeGroup>
-
-    </Step>
 
 </Steps>
 
-### Know More
+## What's Next?
 
-Our API References sections have several endpoints to create and manage Knowledge Base.
+<CardGroup cols={2}>
 
-<Columns cols={1}>
-  <Card
-    title="Text to Video - API Reference"
-    icon="book"
-    href="/api-reference/endpoint/texttovideo"
-  >
-    Explore full set of supported APIs to create and manage Knowledge Base.
-  </Card>
-</Columns>
+<Card title="Text to Video API Reference" icon="book" href="/api-reference/endpoint/texttovideo">
+  Full endpoint documentation including status polling and response schema.
+</Card>
+
+<Card title="Avatar Gallery" icon="user" href="/docs/avatars/gallery">
+  Browse all available avatars and copy their IDs.
+</Card>
+
+<Card title="Custom Avatars" icon="user-plus" href="/docs/avatars/custom">
+  Use your own likeness instead of a stock avatar.
+</Card>
+
+<Card title="Event Callbacks" icon="webhook" href="/docs/agents/callback">
+  Understand how TruGen delivers async results to your callback URL.
+</Card>
+
+</CardGroup>

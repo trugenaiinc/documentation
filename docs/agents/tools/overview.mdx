@@ -1,0 +1,60 @@
+---
+title: "Tools"
+sidebarTitle: "Overview"
+description: "Extend your AI Teammate with actions — call APIs, connect integrations, trigger UI events, and more."
+---
+
+Tools give your AI Teammate the ability to take action during a conversation — not just respond. Instead of stopping at an answer, your agent can call an API, look up live data, trigger something in your app, or connect to any of thousands of third-party services.
+
+Tools are powered by **LLM function calling** — the agent decides when a tool is relevant based on the user's request and your description of what the tool does.
+
+## Tool Types
+
+<CardGroup cols={2}>
+
+<Card title="Integrations" icon="plug" href="/docs/agents/tools/integrations">
+  Connect 1,000+ apps via Composio — Slack, Google Calendar, Salesforce, HubSpot, and more. Authorize with native OAuth or API key.
+</Card>
+
+<Card title="API & Webhook" icon="webhook" href="/docs/agents/tools/custom-tools#api--webhook">
+  Call any external HTTP endpoint during a conversation. Define the URL, method, headers, and parameters — the agent handles the rest.
+</Card>
+
+<Card title="MCP" icon="network-wired" href="/docs/agents/tools/custom-tools#mcp">
+  Bring your own Model Context Protocol server. Connect via Streamable HTTP or SSE for a standards-based tool integration.
+</Card>
+
+<Card title="Client Tools" icon="browser" href="/docs/agents/tools/custom-tools#client-tools">
+  Trigger actions inside your frontend — open a modal, navigate to a page, update the UI — handled by your npm package at runtime.
+</Card>
+
+</CardGroup>
+
+## When to Use Each
+
+| Tool Type | Best For |
+| --- | --- |
+| **Integrations** | Connecting to popular apps quickly without writing any code |
+| **API & Webhook** | Calling your own internal APIs or third-party REST endpoints |
+| **MCP** | Teams already running an MCP-compatible server |
+| **Client Tools** | Triggering real-time UI actions in the user's browser during a conversation |
+
+## Testing a Tool
+
+Every tool has a **Test** button in the Developer Studio. Once a tool is connected or created, you can run a live test directly from the portal — provide the inputs the tool expects, fire the request, and verify the response before deploying.
+
+This lets you confirm the tool is correctly configured and the agent can reach the endpoint, without needing to start a full conversation.
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Integrations" icon="plug" href="/docs/agents/tools/integrations">
+  Connect Composio apps to your agent in minutes.
+</Card>
+
+<Card title="Custom Tools" icon="code" href="/docs/agents/tools/custom-tools">
+  Build API, MCP, and client-side tools for your agent.
+</Card>
+
+</CardGroup>
