@@ -11,27 +11,37 @@ Knowledge Bases are reusable. Multiple agents and templates can attach to the sa
 
 TruGen supports two retrieval modes that control when and how the agent queries your Knowledge Base.
 
-| Mode | How It Works |
-| --- | --- |
-| **Agentic RAG** | The LLM decides when and which Knowledge Base to search based on the user's query and conversation context. More precise — only retrieves when relevant. |
+| Mode                | How It Works                                                                                                                                              |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Agentic RAG**     | The LLM decides when and which Knowledge Base to search based on the user's query and conversation context. More precise — only retrieves when relevant.  |
 | **Traditional RAG** | Every user query is searched against all configured Knowledge Bases, and the retrieved context is always passed to the LLM. Simpler and more predictable. |
 
-<Tip>For most use cases, **Agentic RAG** produces better results because the agent only retrieves context when it's genuinely needed — reducing noise and improving response quality.</Tip>
+<Tip>
+  For most use cases, **Agentic RAG** produces better results because the agent
+  only retrieves context when it's genuinely needed — reducing noise and
+  improving response quality.
+</Tip>
 
 ## Supported Content Types
 
 <CardGroup cols={3}>
 
 <Card title="Documents" icon="file">
-  Upload **PDF** or **DOCX** files. Content is extracted, chunked, and indexed automatically. Best for policies, manuals, product documentation, and structured reports.
+  Upload **PDF** or **DOCX** files. Content is extracted, chunked, and indexed
+  automatically. Best for policies, manuals, product documentation, and
+  structured reports.
 </Card>
 
 <Card title="Plain Text" icon="text">
-  Paste raw text directly. Best for FAQs, scripted responses, quick reference content, or any content you want to control precisely without uploading a file.
+  Paste raw text directly. Best for FAQs, scripted responses, quick reference
+  content, or any content you want to control precisely without uploading a
+  file.
 </Card>
 
 <Card title="URL & Website" icon="globe">
-  Provide a URL to scrape a single page, or crawl an entire website. TruGen fetches and indexes the content automatically. Best for public documentation, help centres, or product pages.
+  Provide a URL to scrape a single page, or crawl an entire website. TruGen
+  fetches and indexes the content automatically. Best for public documentation,
+  help centres, or product pages.
 </Card>
 
 </CardGroup>
@@ -52,13 +62,18 @@ TruGen supports two retrieval modes that control when and how the agent queries 
     - **Add URL** — enter a webpage to scrape or a root URL to crawl the entire site
 
     Click **Save & Create** when done.
+
   </Step>
   <Step title="Wait for indexing">
     TruGen extracts, cleans, chunks, and indexes your content. Once complete, you can attach this Knowledge Base when creating or updating an agent.
   </Step>
 </Steps>
 
-<Note>The **Name** and **Description** fields are critical. The agent uses them to decide whether to query this Knowledge Base for a given question — be specific about what it contains and when it should be used.</Note>
+<Note>
+  The **Name** and **Description** fields are critical. The agent uses them to
+  decide whether to query this Knowledge Base for a given question — be specific
+  about what it contains and when it should be used.
+</Note>
 
 ## Naming Your Knowledge Base
 
@@ -80,14 +95,12 @@ Description: Use this when the user asks about product features, setup instructi
 
 <CodeGroup>
 ```bash cURL
-curl --request POST \
-  --url https://api.trugen.ai/v1/knowledge-base \
-  --header 'Content-Type: application/json' \
-  --header 'x-api-key: YOUR_API_KEY' \
-  --data '{
-    "name": "HR-Policies",
-    "description": "Use this whenever the user asks about HR policies, leave entitlements, benefits, or employee guidelines."
-  }'
+curl --location 'https://api.trugen.ai/v1/knowledgebase/' \
+--header 'Content-Type: application/json' \
+--header 'x-api-key: <api-key>' \
+--form 'name="HR-Policies"' \
+--form 'description="Use this whenever the user asks about HR policies, leave entitlements, benefits, or employee guidelines."' \
+--form 'is_active="true"'
 ```
 </CodeGroup>
 
@@ -98,24 +111,33 @@ Upload a file to an existing Knowledge Base using its `knowledge_base_id`:
 <CodeGroup>
 ```bash cURL
 curl --request POST \
-  --url https://api.trugen.ai/v1/knowledge-base/{knowledge_base_id}/document \
-  --header 'x-api-key: YOUR_API_KEY' \
+  --url https://api.trugen.ai/v1/knowledgebase/{knowledge_base_id}/doc \
+  --header 'x-api-key: <api-key>' \
   --form 'file=@/path/to/document.pdf'
 ```
 </CodeGroup>
 
-<Note>Replace `YOUR_API_KEY` with your key from the Developer Portal and `knowledge_base_id` with the ID returned when you created the Knowledge Base.</Note>
+<Note>
+  Replace `<api-key>` with your key from the Developer Portal and
+  `knowledge_base_id` with the ID returned when you created the Knowledge Base.
+</Note>
 
 ## What's Next?
 
 <CardGroup cols={2}>
 
-<Card title="Knowledge Base API Reference" icon="book" href="/api-reference/endpoint/knowledgebasecreate">
-  Full set of endpoints to create, update, and manage Knowledge Bases programmatically.
+<Card
+  title="Knowledge Base API Reference"
+  icon="book"
+  href="/api-reference/endpoint/knowledgebasecreate"
+>
+  Full set of endpoints to create, update, and manage Knowledge Bases
+  programmatically.
 </Card>
 
 <Card title="Templates" icon="shapes" href="/docs/agents/templates">
-  Attach Knowledge Bases to a template so every agent inherits the right knowledge automatically.
+  Attach Knowledge Bases to a template so every agent inherits the right
+  knowledge automatically.
 </Card>
 
 </CardGroup>

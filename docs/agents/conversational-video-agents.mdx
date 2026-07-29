@@ -75,21 +75,53 @@ Each AI Teammate can be fully configured from scratch, or built from a **Templat
 
 ## Quick Integration
 
-The fastest way to deploy an AI Teammate is a single iframe — no SDK, no WebRTC setup, no media pipeline configuration.
+The fastest way to deploy an AI Teammate is a single iframe — no SDK, no WebRTC setup, no media pipeline configuration. For React and Next.js apps, use the React widget instead.
 
-```html
-<iframe
-  src="https://app.trugen.ai/embed/{agent_id}?username=USER_NAME&id=USER_ID&context=CONTEXT"
-  width="100%"
-  height="600"
-  frameborder="0"
-  allow="camera; microphone; autoplay"
-></iframe>
-```
+<Tabs>
+  <Tab title="React">
+    Install the package:
 
-Drop it into any frontend — React, Next.js, Vue, Angular, or plain HTML — and your agent is live instantly.
+    ```bash
+    npm install @aiteammate/agent-widget
+    ```
 
-[Full integration guide →](/docs/integrations/embed-via-iFrame)
+    Import and render the widget:
+
+    ```tsx
+    import "@aiteammate/agent-widget/styles.css";
+    import { TrugenAgentWidget } from "@aiteammate/agent-widget";
+
+    export default function TrugenWidget() {
+      return (
+        <TrugenAgentWidget
+          agentId="{agent_id}"
+          userName="USER_NAME"
+          userId="USER_ID"
+          context="CONTEXT"
+        />
+      );
+    }
+    ```
+
+    [Full widget guide →](/docs/integrations/widget-integration)
+  </Tab>
+
+  <Tab title="iFrame">
+    Drop the iframe into any frontend — Vue, Angular, Svelte, or plain HTML — and your agent is live instantly.
+
+    ```html
+    <iframe
+      src="https://app.trugen.ai/embed/{agent_id}?username=USER_NAME&id=USER_ID&context=CONTEXT"
+      width="100%"
+      height="600"
+      frameborder="0"
+      allow="camera; microphone; autoplay"
+    ></iframe>
+    ```
+
+    [Full integration guide →](/docs/integrations/embed-via-iFrame)
+  </Tab>
+</Tabs>
 
 ## What's Next?
 

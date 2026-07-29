@@ -8,12 +8,12 @@ TruGen lets you replace the default LLM with any **OpenAI-compatible API**. This
 
 ## Why Use a Custom LLM?
 
-| Benefit | Description |
-| --- | --- |
-| **Customisation** | Use domain-specific or fine-tuned models for better accuracy in your vertical |
-| **Data Privacy** | Keep sensitive data within your own infrastructure or private cloud |
-| **Compliance** | Meet strict regulatory requirements around data residency and auditing |
-| **Cost Control** | Optimise expenses by choosing competitive providers or using your own hardware |
+| Benefit           | Description                                                                    |
+| ----------------- | ------------------------------------------------------------------------------ |
+| **Customisation** | Use domain-specific or fine-tuned models for better accuracy in your vertical  |
+| **Data Privacy**  | Keep sensitive data within your own infrastructure or private cloud            |
+| **Compliance**    | Meet strict regulatory requirements around data residency and auditing         |
+| **Cost Control**  | Optimise expenses by choosing competitive providers or using your own hardware |
 
 ## Requirements
 
@@ -24,6 +24,7 @@ Your LLM API must implement the **OpenAI Chat Completions** specification:
 - **Streaming:** Must support Server-Sent Events (SSE) for real-time interaction
 
 **Optional** — required only for specific features:
+
 - **Function Calling** — needed if your agent uses tools
 - **Vision** — needed for multimodal inputs
 
@@ -37,7 +38,10 @@ Your LLM API must implement the **OpenAI Chat Completions** specification:
 4. Enter your **API URL**, **Model Name**, and **API Token**.
 
 <Frame caption="Developer Studio — LLM provider configuration">
-  <img src="/images/byo-llm.png" alt="Bring Your Own LLM configuration in Developer Studio" />
+  <img
+    src="/images/byo-llm.png"
+    alt="Bring Your Own LLM configuration in Developer Studio"
+  />
 </Frame>
 
 ### Via API
@@ -56,22 +60,66 @@ curl --request POST \
   "config": { "timeout": 240 },
   "avatars": [
     {
-      "config": {
+        "stt": {
+          "provider": "elevenlabs",
+          "model": "scribe_v2_realtime",
+          "language": "en",
+          "fallback_model": "nova-2-general",
+          "allow_interm_results_interruption": true,
+          "min_endpointing_delay": 0.4,
+          "max_endpointing_delay": 0.3
+        },
+        "turn_detector": true,
         "llm": {
           "provider": "custom",
           "model": "MODEL_NAME",
           "url": "API_BASE_URL",
           "token": "YOUR_EXTERNAL_TOKEN"
         },
-        "stt": { "provider": "deepgram", "model": "nova-3" },
-        "tts": { "provider": "elevenlabs", "voice_id": "ZUrEGyu8GFMwnHbvLhv2" }
-      },
-      "persona_name": "Custom LLM Agent",
-      "persona_prompt": "You are a helpful AI agent."
-    }
+        "tts": {
+          "provider": "elevenlabs",
+          "model_id": "eleven_turbo_v2_5",
+          "language": "a",
+          "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+          "customPronounciation": [
+            {
+              "word": "AI",
+              "pronounciation": "AI"
+            },
+            {
+              "word": "TRUGEN",
+              "pronounciation": "TRUE GEN"
+            },
+            {
+              "word": "API",
+              "pronounciation": "A P I"
+            },
+            {
+              "word": "SQL",
+              "pronounciation": "Sequel"
+            },
+            {
+              "word": "UI",
+              "pronounciation": "U I"
+            },
+            {
+              "word": "URL",
+              "pronounciation": "U R L"
+            }
+          ],
+          "pitch": 0,
+          "effects_profile_id": "small-bluetooth-speaker-class-device",
+          "speaking_rate": 1,
+          "stability": 0.5,
+          "similarity_boost": 0.75,
+          "sample_rate": 16000,
+          "encoding": "pcm_s16le",
+          "gender": "female",
+          "fallback_voice_id": "am_puck"
+        }
+      }
   ]
 }
-EOF
 ```
 </CodeGroup>
 
@@ -83,7 +131,11 @@ EOF
   Browse all built-in models across Groq, Azure OpenAI, Google, and more.
 </Card>
 
-<Card title="Prompting Strategies" icon="pen" href="/docs/agents/prompting-strategies">
+<Card
+  title="Prompting Strategies"
+  icon="pen"
+  href="/docs/agents/prompting-strategies"
+>
   Write effective system prompts for your custom LLM.
 </Card>
 

@@ -6,7 +6,7 @@ description: "Browse TruGen's stock avatars and copy the avatar ID for use in yo
 
 TruGen's stock avatars are built on **Huma-2** and render lifelike facial motion, expression, and speech synchronisation in real time.
 
-Click the copy icon next to any avatar ID to copy it, then paste it into your agent's `avatar_ids` field.
+Click the copy icon next to any avatar ID to copy it, then paste it into your agent's `avatar_key_id` field.
 
 export const handleCopy = (e, id) => {
   navigator.clipboard.writeText(id).catch(() => {});
@@ -210,19 +210,7 @@ export const handleCopy = (e, id) => {
 
 ## Using an Avatar ID
 
-Pass the copied ID into the `avatar_ids` array when creating an agent:
-
-```bash
-curl --request POST \
-  --url https://api.trugen.ai/v1/agent/api \
-  --header 'Content-Type: application/json' \
-  --header 'x-api-key: <api-key>' \
-  --data '{
-    "avatar_ids": ["7e95996"],
-    "name": "Clara Agent",
-    "system_prompt": "You are a helpful assistant."
-  }'
-```
+Pass the copied ID into the `avatar_key_id` field when creating an agent.
 
 ## What's Next?
 
