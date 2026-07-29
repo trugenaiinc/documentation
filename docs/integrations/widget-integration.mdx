@@ -2,73 +2,43 @@
 title: "Embed via Widget"
 ---
 
-Let your customers learn about your prodcut and services while having fun and informative chat with TruGen video agents.
+Let your customers learn about your product and services while having a fun and informative chat with TruGen video agents. The React widget drops into any React or Next.js app in a couple of lines.
 
 ## Get started
 
 <Steps>
-  <Step title="Import the script">
-    To your existing `index.html` file import the trugen widget java script file as follows
+  <Step title="Install the package">
+    Add the widget to your project with npm (or your preferred package manager).
+
     ```bash
-    <script src="https://dist.trugen.ai/trugen-chat.js"></script>
+    npm install @aiteammate/agent-widget
     ```
   </Step>
-  <Step title="Generate an API key">
-    1. Using TruGen.AI [Developer Platform](https://app.trugen.ai), generate an API key from our developers page.
-    2. Set the newly generated API key as `apiKey`  variable in the widget script configuration.
-    ```bash
-    apiKey: "x-api-key,
+
+  <Step title="Import and render the widget">
+    Import the stylesheet and the `TrugenAgentWidget` component, then render it with your agent ID and user context.
+
+    ```tsx
+    import "@aiteammate/agent-widget/styles.css";
+    import { TrugenAgentWidget } from "@aiteammate/agent-widget";
+
+    export default function TrugenWidget() {
+      return (
+        <TrugenAgentWidget
+          agentId="3c167f6a-b0db-4da6-9fb9-d6171fd77248"
+          userName="USER_NAME"
+          userId="USER_ID"
+          context="CONTEXT"
+        />
+      );
+    }
     ```
-  </Step>
-  <Step title="Configuring your widget">
-    Just above the imported js file script tag, you can configure widget as follows
-    ```javascript
-    <script>
-      window.TrugenWidget = {
-        agentName: "Your agent name", // This is the agent name thats displayed in the widget
-        agentId: "Your agent id", // copy your agent id from agents library or create a new agent and copy the id
-        apiKey: "x-api-key",
-        heading: "Main heading of widget",
-        subHeading: "Sub heading of widget",
-        logoUrl: "logo_url_to_display",
-        displayAvatarUrl: "avatar image url to dispaly in widget bubble"
-      };
-  </script>
-  <script src="https://dist.trugen.ai/trugen-chat.js"></script>
-    ```
-  
-    #### Complete Example
-    <CodeGroup>
-    ```html html highlight={21,11-19}
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Widget Integrations</title>
-</head>
-<body>
-    <script>
-      window.TrugenWidget = {
-        agentName: 'Lisa',
-        agentId: "your agent id",
-        apiKey: "x-api-key",
-        heading: "Lisa AI Sales Agent",
-        subHeading: "Your AI sales agent",
-        logoUrl: "https://trugen.ai/_next/static/media/trugen-logo2.d572f903.svg",
-        displayAvatarUrl: "https://trugen.ai/_next/static/media/trugen-logo2.d572f903.svg"
-      };
-  </script>
-  <script src="https://dist.trugen.ai/trugen-chat.js"></script>
-</body>
-</html>
-    ```
-    </CodeGroup>
+
+    <Note>Replace `agentId` with the ID of the agent you created in the [Developer Portal](https://app.trugen.ai), and swap `USER_NAME`, `USER_ID`, and `CONTEXT` with values that identify the end user and any session context you want the agent to have.</Note>
   </Step>
 </Steps>
 
-### More Resourcess
+### More Resources
 
 <CardGroup cols={2}>
 

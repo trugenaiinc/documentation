@@ -20,7 +20,6 @@ curl --request POST \
   --data '{
     "name": "My Agent",
     "system_prompt": "You are a helpful assistant",
-    "avatar_ids": ["ava_ae61c9e28b"],
     "callback_url": "https://yourdomain.com/webhooks/trugen",
     "callback_events": [
       "agent.interrupted",
@@ -56,13 +55,13 @@ Every webhook uses the same base structure:
 }
 ```
 
-| Field | Description |
-| --- | --- |
-| `timestamp` | Unix timestamp (float) when the event was generated |
-| `conversation_id` | Unique identifier for the conversation session |
-| `type` | Event source category — always `"pipeline"` for these events |
-| `event.name` | The specific event type |
-| `event.payload` | Event-specific data |
+| Field             | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `timestamp`       | Unix timestamp (float) when the event was generated          |
+| `conversation_id` | Unique identifier for the conversation session               |
+| `type`            | Event source category — always `"pipeline"` for these events |
+| `event.name`      | The specific event type                                      |
+| `event.payload`   | Event-specific data                                          |
 
 ## Handling Webhooks
 
@@ -74,49 +73,50 @@ const app = express();
 app.use(express.json());
 
 app.post("/webhooks/trugen", (req, res) => {
-  const { timestamp, conversation_id, type, event } = req.body;
+const { timestamp, conversation_id, type, event } = req.body;
 
-  switch (event.name) {
-    case "agent.interrupted":
-      // Cut off TTS visual indicators
-      break;
-    case "agent.started_speaking":
-      // Update UI to show agent is speaking
-      break;
-    case "agent.stopped_speaking":
-      // Hide speaking indicators, re-enable user input
-      break;
-    case "call_ended":
-      // Trigger post-call workflows
-      break;
-    case "max_call_duration_timeout":
-      // Show "session ended" message
-      break;
-    case "max_call_duration_warning":
-      // Show "session ending soon" warning
-      break;
-    case "participant_left":
-      // End session or clean up resources
-      break;
-    case "tool_call":
-      // Log tool usage or trigger side effects
-      break;
-    case "utterance_committed":
-      // Store transcript or trigger NLP analysis
-      break;
-    case "user.started_speaking":
-      // Mark user as active
-      break;
-    case "user.stopped_speaking":
-      // Mark turn boundary
-      break;
-  }
+switch (event.name) {
+case "agent.interrupted":
+// Cut off TTS visual indicators
+break;
+case "agent.started_speaking":
+// Update UI to show agent is speaking
+break;
+case "agent.stopped_speaking":
+// Hide speaking indicators, re-enable user input
+break;
+case "call_ended":
+// Trigger post-call workflows
+break;
+case "max_call_duration_timeout":
+// Show "session ended" message
+break;
+case "max_call_duration_warning":
+// Show "session ending soon" warning
+break;
+case "participant_left":
+// End session or clean up resources
+break;
+case "tool_call":
+// Log tool usage or trigger side effects
+break;
+case "utterance_committed":
+// Store transcript or trigger NLP analysis
+break;
+case "user.started_speaking":
+// Mark user as active
+break;
+case "user.stopped_speaking":
+// Mark turn boundary
+break;
+}
 
-  res.status(200).send("ok");
+res.status(200).send("ok");
 });
 
 app.listen(3000);
-```
+
+````
 
 ```python Python
 from fastapi import FastAPI, Request
@@ -155,10 +155,14 @@ async def trugen_webhook(request: Request):
         print("User stopped speaking")
 
     return JSONResponse(content={"status": "ok"}, status_code=200)
-```
+````
+
 </CodeGroup>
 
-<Note>Keep your webhook handler fast. Acknowledge immediately and offload heavy work to background jobs.</Note>
+<Note>
+  Keep your webhook handler fast. Acknowledge immediately and offload heavy work
+  to background jobs.
+</Note>
 
 ## Event Reference
 

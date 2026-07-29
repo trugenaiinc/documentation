@@ -25,23 +25,55 @@ Call any external HTTP endpoint during a conversation. The agent uses function c
 
 ### Example
 
-```json
-{
-  "name": "getOrderStatus",
-  "description": "Use this tool when the user asks about the status of their order. Requires the order ID.",
-  "url": "https://api.yourstore.com/orders/{orderId}/status",
-  "method": "GET",
-  "headers": {
-    "Authorization": "Bearer YOUR_API_TOKEN"
-  },
-  "parameters": {
-    "orderId": {
-      "type": "string",
-      "description": "The unique identifier for the customer's order"
+<CodeGroup>
+```bash cURL
+curl --location 'https://api.trugen.ai/v1/ext/tool' \
+--header 'x-api-key: <api-key>' \
+--header 'Content-Type: application/json' \
+--data '{
+  "type": "tool.api",
+  "schema": {
+    "type": "function",
+    "name": "check_weather",
+    "description": "Check the current weather in the location",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+          "description": "Location to find weather"
+        }
+      },
+      "required": ["location"]
     }
-  }
-}
+  },
+  "request_config": {
+    "name": "test",
+    "method": "GET",
+    "url": "https://getweather.com",
+    "headers": {
+      "authorization": "api key value"
+    }
+  },
+  "event_messages": {
+    "on_start": {
+      "message": "Getting weather"
+    },
+    "on_success": {
+      "message": "Successfully got latest weather"
+    },
+    "on_delay": {
+      "delay": 1,
+      "message": "waiting for weather data"
+    },
+    "on_error": {
+      "message": "Failed to get the data"
+    }
+  },
+  "is_active": true
+}'
 ```
+</CodeGroup>
 
 <Tip>Write your **Description** as if you're telling a smart colleague exactly when to pick up this tool. Specificity matters — vague descriptions lead to missed or incorrect invocations.</Tip>
 

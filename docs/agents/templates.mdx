@@ -14,13 +14,20 @@ A template consists of the following configurable components, and more:
 - **Behaviour & Safety Settings** - Control boundaries, compliance rules, escalation, and conversation guardrails.
 - **Callback Events & Webhooks** - Trigger external workflows or UI updates based on session lifecycle events.
 
-<Note>Templates ensure that every agent deployed by your organisation shares consistent brand voice, intelligence grounding, and conversation workflow — whether you have 1 agent or thousands.</Note>
+<Note>
+  Templates ensure that every agent deployed by your organisation shares
+  consistent brand voice, intelligence grounding, and conversation workflow —
+  whether you have 1 agent or thousands.
+</Note>
 
 ---
 
 ## Create & Use a Template
 
-<Note>Template creation and management can be performed using the API or visually through our Developer Platform.</Note>
+<Note>
+  Template creation and management can be performed using the API or visually
+  through our Developer Platform.
+</Note>
 
 <Steps>
   <Step title="Create a New Template">
@@ -61,6 +68,7 @@ curl --request POST \
   "message": "Template created successfully"
 }
 ```
+
 </CodeGroup>
 
 <Note>Replace `<api-key>` with your actual API key generated from our [Developer Portal](https://app.trugen.ai).</Note>
@@ -74,15 +82,12 @@ Use the template ID returned above to spin up a fully configured agent instantly
 <CodeGroup>
 ```bash Request
 curl --request POST \
-  --url https://api.trugen.ai/v1/agent/bytemplate \
+  --url https://api.trugen.ai/v1/ext/agentbytemplate \
   --header 'Content-Type: application/json' \
   --header 'x-api-key: <api-key>' \
   --data '
 {
-  "avatar_ids": [
-    "ava_ed3a666dc5",
-    "ava_ae61c9e28b"
-  ],
+  "avatar_key_id": "665a1170",
   "template_id": "76d9ff1d-b1d5-4dee-9b9a-d4c4d58c9c55",
   "email": "demo@trugen.ai"
 }'
@@ -94,9 +99,12 @@ curl --request POST \
   "message": "Agent created successfully"
 }
 ```
+
 </CodeGroup>
 
-<Note>Replace `template_id` with the actual template `id` returned in Step 1.</Note>
+<Note>
+  Replace `template_id` with the actual template `id` returned in Step 1.
+</Note>
 
   </Step>
 </Steps>
@@ -108,19 +116,23 @@ curl --request POST \
 <CardGroup cols={2}>
 
 <Card title="Faster Deployment" icon="rocket">
-  Clone-ready configurations let you launch new agents in seconds — no manual setup from scratch.
+  Clone-ready configurations let you launch new agents in seconds — no manual
+  setup from scratch.
 </Card>
 
 <Card title="Consistency & Brand Control" icon="shield-check">
-  Centralise personality, tone, and rules so every agent speaks with the same voice.
+  Centralise personality, tone, and rules so every agent speaks with the same
+  voice.
 </Card>
 
 <Card title="Scales to Any Size" icon="chart-line">
-  Ideal for enterprise teams and multi-location rollouts — one template, thousands of agents.
+  Ideal for enterprise teams and multi-location rollouts — one template,
+  thousands of agents.
 </Card>
 
 <Card title="Easy Experimentation" icon="flask">
-  Modify a template and all agents built from it update instantly — no rebuilding required.
+  Modify a template and all agents built from it update instantly — no
+  rebuilding required.
 </Card>
 
 </CardGroup>
@@ -131,12 +143,17 @@ curl --request POST \
 
 <CardGroup cols={2}>
 
-<Card title="Templates API Reference" icon="book" href="/api-reference/endpoint/templatecreate">
+<Card
+  title="Templates API Reference"
+  icon="book"
+  href="/api-reference/endpoint/templatecreate"
+>
   Full API set for creating, updating, retrieving, and deleting templates.
 </Card>
 
 <Card title="Knowledge Base" icon="database" href="/docs/agents/knowledge-base">
-  Attach knowledge sources to your template so agents always have the right context.
+  Attach knowledge sources to your template so agents always have the right
+  context.
 </Card>
 
 </CardGroup>
