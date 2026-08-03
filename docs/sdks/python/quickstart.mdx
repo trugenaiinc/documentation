@@ -1,29 +1,100 @@
 ---
-title: "Python SDK Quickstart"
+title: "Quickstart"
 sidebarTitle: "Quickstart"
-description: "Stream your first TruGen agent from a Python application."
+description: "Stream your first TruGen avatar in a Python OpenCV window in under 5 minutes."
 ---
 
-<Note>The Python SDK is currently in preview. Detailed step-by-step documentation is coming soon.</Note>
+This quickstart uses `TruGenRunner` — the thread-safe wrapper that runs the async session loop on a background thread while your main thread handles rendering. Perfect for OpenCV, Pygame, PyQt/PySide, or any UI toolkit.
 
 ## Prerequisites
 
-- Python 3.9+
-- A TruGen API key — [get one from the Developer Platform](https://app.trugen.ai).
+- **Python 3.10+**
+- A TruGen API key from the [Developer Portal](https://app.trugen.ai)
+- An agent ID — create one in the [Teammate Library](https://app.trugen.ai/teammate-library)
 
-## Install
+## 1. Install
 
 ```bash
-pip install trugen
+uv add trugen-sdk --extra display
+# or: pip install trugen-sdk[display]
 ```
 
-## Coming soon
+The `[display]` extra pulls in `opencv-python`, `sounddevice`, and `numpy` for the GUI example below.
 
-- Session initialization
-- Streaming audio and video
-- Event handlers
-- Production patterns
+## 2. Set your credentials
 
-<Card title="Python SDK Overview" icon="python" href="/docs/sdks/python/overview">
-Back to the SDK overview.
-</Card>
+Create a `.env` file:
+
+```bash
+TRUGEN_API_KEY=your-api-key
+TRUGEN_AGENT_ID=your-agent-id
+```
+
+## 3. Run your first avatar
+
+Save the following as `avatar.py`:
+
+```python
+import cv2
+import os
+from trugen import TruGenClient, TruGenRunner
+
+# 1. Define how to connect to the session
+async def create_session():
+    client = TruGenClient(api_key=os.getenv("TRUGEN_API_KEY", ""))
+    session = await client.create_session(agent_id=os.getenv("TRUGEN_AGENT_ID", ""))
+    await session.connect()
+    await session.enable_audio_output()  # Speaker + AEC in one call
+    return session
+
+# 2. Initialize the runner
+runner = TruGenRunner(session_factory=create_session)
+
+# 3. Handle incoming frames
+@runner.on_frame
+def show_frame(frame):
+    if frame is not None:
+        cv2.imshow("TruGen Avatar", frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        runner.stop()
+
+# 4. Start rendering loop (blocks main thread)
+if __name__ == "__main__":
+    runner.run()
+    cv2.destroyAllWindows()
+```
+
+Run it:
+
+```bash
+uv run --extra display python avatar.py
+# or: python avatar.py
+```
+
+A window opens showing the avatar. Speak into your microphone — the agent responds.
+
+Press **Q** to quit.
+
+## What just happened
+
+- **`create_session`** initialised a `TruGenClient` with your API key and asked it to create a `TruGenSession` for your agent. `connect()` opened the WebRTC connection; `enable_audio_output()` activated the speaker with built-in Acoustic Echo Cancellation.
+- **`TruGenRunner`** spun up a background thread running the async session event loop. The main thread stays free for your rendering code.
+- **`@runner.on_frame`** registered a callback that fires on the main thread with each new BGR video frame (a NumPy array) — perfect for OpenCV, Pygame, or any UI toolkit.
+- **`runner.run()`** blocked the main thread to drive the rendering loop; `runner.stop()` (from the `q` key press) shut down the background loop and cleanly disconnected.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="lock" href="/docs/sdks/python/authentication">
+    Secure your API key and manage session tokens.
+  </Card>
+  <Card title="Basic Usage" icon="book" href="/docs/sdks/python/reference/basic-usage">
+    Full SDK reference for initializing, streaming, and disconnecting.
+  </Card>
+  <Card title="Basic GUI Example" icon="code" href="/docs/sdks/python/examples/basic-python">
+    Complete OpenCV viewer with status bar, mic indicator, and floating captions.
+  </Card>
+  <Card title="Event Handling" icon="bolt" href="/docs/sdks/python/reference/event-handling">
+    Listen to connection, speaking, and transcription events in real time.
+  </Card>
+</CardGroup>

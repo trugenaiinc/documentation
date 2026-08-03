@@ -1,0 +1,80 @@
+---
+title: "Shopify"
+description: "Add a TruGen agent to a Shopify storefront using a Custom Liquid section or theme edit."
+---
+
+TruGen agents drop into Shopify storefronts via the standard iframe embed. Ideal for guided shopping, size/fit consultation, or post-purchase support.
+
+## Prerequisites
+
+- A TruGen agent with an `agent_id` — see the [quickstart](/docs/quickstart)
+- Access to your Shopify admin with theme edit permissions
+
+## Add via Custom Liquid section (recommended)
+
+<Steps>
+  <Step title="Open the theme customizer">
+    In your Shopify admin, go to **Online Store → Themes → Customize** on your active theme.
+  </Step>
+  <Step title="Add a Custom Liquid section">
+    On the page where you want the agent to appear (Home, Product, or Custom page), click **Add section** and choose **Custom Liquid**.
+  </Step>
+  <Step title="Paste the iframe">
+    ```html
+    <div style="max-width: 720px; margin: 0 auto;">
+      <iframe
+        src="https://app.trugen.ai/embed/YOUR_AGENT_ID?username={{ customer.first_name | default: 'Guest' }}&id={{ customer.id | default: 'anon' }}&context=Store visitor"
+        width="100%"
+        height="600"
+        frameborder="0"
+        allow="camera; microphone; autoplay; display-capture; fullscreen"
+      ></iframe>
+    </div>
+    ```
+
+    Replace `YOUR_AGENT_ID` with your agent ID. Shopify's Liquid variables (`customer.first_name`, `customer.id`) auto-inject the shopper's identity for personalization.
+  </Step>
+  <Step title="Save and preview">
+    Save the section. Preview the page in an incognito window to test as a real shopper.
+  </Step>
+</Steps>
+
+## Add via theme code edit (advanced)
+
+For sitewide floating widgets, edit the theme's `theme.liquid`:
+
+<Steps>
+  <Step title="Open theme code">
+    Go to **Online Store → Themes → Actions → Edit code**.
+  </Step>
+  <Step title="Edit theme.liquid">
+    Open `layout/theme.liquid` and add the iframe before the closing `</body>` tag:
+
+    ```html
+    <iframe
+      src="https://app.trugen.ai/embed/YOUR_AGENT_ID"
+      style="position: fixed; bottom: 20px; right: 20px; width: 380px; height: 560px; border: 0; z-index: 9999;"
+      allow="camera; microphone; autoplay; display-capture; fullscreen"
+    ></iframe>
+    ```
+  </Step>
+</Steps>
+
+## Domain allowlist
+
+If your agent uses `allowed_domains`, add your Shopify domain — both your custom domain (e.g., `mystore.com`) and the default `.myshopify.com` domain — to the list.
+
+## Content Security Policy note
+
+Shopify's default CSP is permissive enough to load third-party iframes. If you've customized it via a checkout script or theme edit, ensure `frame-src https://app.trugen.ai` is included.
+
+## What's next
+
+<CardGroup cols={2}>
+<Card title="iFrame reference" icon="code" href="/docs/integrations/embed-via-iFrame">
+Every iframe parameter documented.
+</Card>
+<Card title="Prompting for e-commerce" icon="pen" href="/docs/agents/prompting-strategies">
+Write a shopping-savvy system prompt.
+</Card>
+</CardGroup>

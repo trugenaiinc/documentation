@@ -2,4 +2,65 @@
 title: 'Update Agent'
 openapi: 'PUT /ext/agent/{id}'
 ---
- 
+
+Replace an agent's configuration. `PUT` is a full-replace — send the complete configuration, not a partial. For partial updates, use `PATCH /ext/agent/{id}`.
+
+## When to use PUT vs PATCH
+
+| Endpoint | Behavior | Use when |
+| --- | --- | --- |
+| `PUT /ext/agent/{id}` | Full replace — omitted fields reset to defaults | You want to re-declare the full agent state |
+| `PATCH /ext/agent/{id}` | Partial merge — only send changed fields | You want to update one field without touching others |
+
+## Effect on live sessions
+
+Updates take effect on the **next session** — existing active sessions keep the previous configuration until they end. If you need to force a config change immediately, end active sessions with [`DELETE /v1/conversation/{conversationId}`](/api-reference/endpoint/conversationdelete) after the update lands.
+
+## Common patterns
+
+### Change the prompt without touching anything else
+
+```bash
+curl --request PATCH \
+  --url https://api.trugen.ai/v1/ext/agent/{id} \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "agent_system_prompt": "You are Priya, a friendly nutritionist AI…"
+  }'
+```
+
+### Swap the LLM provider
+
+```bash
+curl --request PATCH \
+  --url https://api.trugen.ai/v1/ext/agent/{id} \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "avatars": [
+      {
+        "llm": {
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "fallback_model": "gpt-5.4-mini"
+        }
+      }
+    ]
+  }'
+```
+
+### Deactivate without deleting
+
+```bash
+curl --request PATCH \
+  --url https://api.trugen.ai/v1/ext/agent/{id} \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "is_active": false }'
+```
+
+## Next steps
+
+- [Retrieve the current agent](/api-reference/endpoint/agentgetbyid)
+- [Delete an agent](/api-reference/endpoint/agentdelete)

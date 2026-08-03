@@ -1,122 +1,117 @@
 ---
 title: "Voices"
 sidebarTitle: "Overview"
-description: "Choose and configure the voice your AI Teammate speaks with."
+description: "Choose the voice your agent speaks with — from stock voices, cloned voices, or a fully custom provider setup."
 ---
 
-Every AI Teammate speaks through a **Text-to-Speech (TTS)** engine that converts the LLM's text response into natural, expressive audio in real time. TruGen integrates with **ElevenLabs** and **Cartesia** to deliver high-quality, human-like voices across a wide range of tones, styles, and languages.
+Every agent speaks through a **Text-to-Speech (TTS)** engine that converts the LLM's text response into audio in real time. TruGen ships with **ElevenLabs** and **Cartesia** as the default providers — both deliver sub-150 ms first-audio latency across dozens of languages and voice styles.
 
-## How It Works
+The voice is configured per agent via `voice_id`. Copy an ID from the [Voice Library](/docs/agents/voices/library) and drop it into your agent config.
 
-When the LLM generates a response, it is passed to the TTS engine which renders it as speech before being streamed back to the user through the avatar. The whole process happens in under a second.
+## Setting a voice
 
-The voice your agent uses is set via the `voice_id` field in your agent configuration. Every voice has a unique ID — copy it from the [Voice Library](/docs/agents/voices/library) and paste it directly into your agent.
+Set `voice_id` when you create or update an agent. Everything else — provider, model, sample rate, encoding — falls back to platform defaults if omitted.
 
-## Setting a Voice
-
-Set the `voice_id` when creating or updating an agent via API:
-
-<CodeGroup>
-```bash cURL
-curl --request POST \
-  --url https://api.trugen.ai/v1/ext/agent \
-  --header 'Content-Type: application/json' \
-  --header 'x-api-key: YOUR_API_KEY' \
-  --data '{
-    "agent_name": "Support Agent",
-    "avatars": [
-      {
-        "stt": {
-          "provider": "elevenlabs",
-          "model": "scribe_v2_realtime",
-          "language": "en",
-          "fallback_model": "nova-2-general",
-          "allow_interm_results_interruption": true,
-          "min_endpointing_delay": 0.4,
-          "max_endpointing_delay": 0.3
-        },
-        "turn_detector": true,
-        "llm": {
-          "provider": "azure-openai",
-          "model": "gpt-5.4-mini",
-          "fallback_model": "gpt-4.1-nano",
-          "use_nltk": false
-        },
-        "tts": {
-          "provider": "elevenlabs",
-          "model_id": "eleven_turbo_v2_5",
-          "language": "a",
-          "voice_id": "FGY2WhTYpPnrIDTdsKH5",
-          "customPronounciation": [
-            {
-              "word": "AI",
-              "pronounciation": "AI"
-            },
-            {
-              "word": "TRUGEN",
-              "pronounciation": "TRUE GEN"
-            },
-            {
-              "word": "API",
-              "pronounciation": "A P I"
-            },
-            {
-              "word": "SQL",
-              "pronounciation": "Sequel"
-            },
-            {
-              "word": "UI",
-              "pronounciation": "U I"
-            },
-            {
-              "word": "URL",
-              "pronounciation": "U R L"
-            }
-          ],
-          "pitch": 0,
-          "effects_profile_id": "small-bluetooth-speaker-class-device",
-          "speaking_rate": 1,
-          "stability": 0.5,
-          "similarity_boost": 0.75,
-          "sample_rate": 16000,
-          "encoding": "pcm_s16le",
-          "gender": "female",
-          "fallback_voice_id": "am_puck"
-        }
+```json
+{
+  "agent_name": "Support Agent",
+  "avatars": [
+    {
+      "avatar_key_id": "665a1170",
+      "tts": {
+        "voice_id": "FGY2WhTYpPnrIDTdsKH5"
       }
-    ]
-  }'
+    }
+  ]
+}
 ```
-</CodeGroup>
 
-<Note>
-  You can also set the voice directly from the **Create New Agent** form in the
-  [Developer Portal](https://app.trugen.ai) without writing any code.
-</Note>
+<Note>You can also change the voice directly from the **Create New Agent** form in the [Developer Portal](https://app.trugen.ai) — no code required.</Note>
 
-## Choosing the Right Voice
+## Full TTS configuration
 
-| Goal                          | Recommendation                                              |
-| ----------------------------- | ----------------------------------------------------------- |
-| Professional / corporate tone | Chris, Will, Evan                                           |
-| Warm / conversational         | Rachel, Laura, Hope                                         |
-| Multilingual coverage         | Any voice — ElevenLabs auto-adapts to the detected language |
-| Regional accent               | Yatin (South Asian), Omar (Middle Eastern)                  |
+For advanced use — custom pronunciations, sample rate, pitch, speaking rate, stability — pass a full `tts` object:
 
-## What's Next?
+```json
+"tts": {
+  "provider": "elevenlabs",
+  "model_id": "eleven_turbo_v2_5",
+  "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+  "language": "a",
+  "speaking_rate": 1.0,
+  "stability": 0.5,
+  "similarity_boost": 0.75,
+  "sample_rate": 16000,
+  "encoding": "pcm_s16le",
+  "fallback_voice_id": "am_puck",
+  "customPronounciation": [
+    { "word": "TRUGEN", "pronounciation": "TRUE GEN" },
+    { "word": "SQL",    "pronounciation": "Sequel" }
+  ]
+}
+```
+
+See the [full agent configuration reference](/api-reference/endpoint/agentcreate) for every field.
+
+## Choosing a voice
+
+| Goal | Recommendation |
+| --- | --- |
+| Professional, corporate tone | Chris, Will, Evan |
+| Warm, conversational tone | Rachel, Laura, Hope |
+| Broad multilingual coverage | Any voice with `language: "multi"` — providers auto-adapt |
+| Regional accent | Yatin (South Asian), Omar (Middle Eastern) |
+| Fastest first-audio latency | Cartesia Sonic voices |
+
+## Choosing a TTS provider
+
+| Provider | Model | Best for |
+| --- | --- | --- |
+| **ElevenLabs** | `eleven_turbo_v2_5` | Multilingual, expressive default |
+| **ElevenLabs** | `eleven_turbo_v2` | English-first with slightly lower latency |
+| **Cartesia** | `sonic-3.5` | Ultra-low latency real-time conversations |
+| **Cartesia** | `sonic-3` | Fastest voice quality trade-off |
+
+Full provider list in [Providers](/docs/providers/overview).
+
+## Custom pronunciations
+
+Product names, acronyms, and industry jargon often get mispronounced. Fix them per-voice by adding entries to `customPronounciation`:
+
+```json
+"customPronounciation": [
+  { "word": "TRUGEN",  "pronounciation": "TRUE GEN" },
+  { "word": "API",     "pronounciation": "A P I" },
+  { "word": "SQL",     "pronounciation": "Sequel" },
+  { "word": "GraphQL", "pronounciation": "Graph Q L" }
+]
+```
+
+Pronunciations apply to whichever voice is set on the agent. For dictionaries shared across many agents, see [pronunciation dictionaries](/docs/agents/voices/library#pronunciation-dictionaries) *(coming soon)*.
+
+## Fallback voices
+
+If the primary TTS provider fails or is rate-limited, TruGen falls back to a secondary voice automatically. Set `fallback_voice_id` to a voice from a different provider for resilience:
+
+```json
+"tts": {
+  "provider": "elevenlabs",
+  "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+  "fallback_voice_id": "am_puck"
+}
+```
+
+## Voice cloning
+
+For a fully custom voice — a spokesperson, a specific character, or your CEO — TruGen supports voice cloning through ElevenLabs Professional Voice Cloning. Contact [sales@trugen.ai](mailto:sales@trugen.ai) or provide an existing PVC voice ID directly as `voice_id`.
+
+## What's next
 
 <CardGroup cols={2}>
-
-<Card
-  title="Voice Library"
-  icon="microphone"
-  href="/docs/agents/voices/library"
->
-  Browse all available voices and copy their IDs.
-</Card>
-
-<Card title="Providers" icon="cloud" href="/docs/providers/overview">
-  See all STT, LLM, and TTS providers available on TruGen.
-</Card>
-
+  <Card title="Voice Library" icon="microphone" href="/docs/agents/voices/library">
+    Browse every stock voice and copy the ID.
+  </Card>
+  <Card title="Multilingual" icon="globe" href="/docs/agents/multilingual-support">
+    Configure STT + TTS for 60+ languages.
+  </Card>
 </CardGroup>

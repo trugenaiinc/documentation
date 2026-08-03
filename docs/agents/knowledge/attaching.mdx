@@ -1,0 +1,108 @@
+---
+title: "Attach to Agents"
+sidebarTitle: "Attach to Agents"
+description: "Wire your Knowledge Base to one or many agents — via the Studio, via the agent API, or through a template."
+---
+
+A Knowledge Base sits idle until it's attached to an agent. Attach it in the Studio when creating or editing an agent, or via the API by including the KB's ID in the agent's `knowledge_base` array.
+
+## In the Studio
+
+<Steps>
+  <Step title="Open the agent">
+    Open the agent you want to attach the KB to in [app.trugen.ai](https://app.trugen.ai).
+  </Step>
+  <Step title="Go to the Knowledge Base tab">
+    In the agent's configuration tabs, open **Knowledge Base**.
+  </Step>
+  <Step title="Select one or more Knowledge Bases">
+    Pick from your list of KBs. You can attach multiple — the agent decides which one to search for each user question.
+  </Step>
+  <Step title="Save">
+    Save the agent. The next session picks up the new KB configuration automatically.
+  </Step>
+</Steps>
+
+## Via API
+
+Include one or more KB references in the agent's `knowledge_base` array when creating or updating an agent:
+
+```json
+{
+  "agent_name": "Support Agent",
+  "agent_system_prompt": "You help customers with product questions.",
+  "knowledge_base": [
+    { "id": "kb_prod_docs_123", "name": "Product-Docs" },
+    { "id": "kb_faqs_456", "name": "Support-FAQs" }
+  ]
+}
+```
+
+You can attach as many KBs as needed. Each KB's Name and Description tell the agent when to search that specific one — see [Naming and describing well](/docs/agents/knowledge/creating#naming-and-describing-well).
+
+Full endpoint reference: [Create Agent](/api-reference/endpoint/agentcreate) and [Update Agent](/api-reference/endpoint/agentupdate).
+
+## Via a template
+
+Attach Knowledge Bases to a [template](/docs/agents/templates) instead of individual agents when you want every agent built from that template to inherit the same knowledge:
+
+```json
+{
+  "template_name": "Support Template",
+  "template_system_prompt": "You are a friendly support agent.",
+  "knowledge_base": [
+    { "id": "kb_prod_docs_123", "name": "Product-Docs" },
+    { "id": "kb_faqs_456", "name": "Support-FAQs" }
+  ]
+}
+```
+
+Any agent later created from this template automatically has both KBs attached.
+
+## Multi-KB strategy
+
+Attaching multiple focused Knowledge Bases to one agent almost always beats attaching a single mixed one. The LLM uses each KB's Name and Description to pick the right one — well-scoped KBs give it a strong signal.
+
+**Recommended:**
+
+```
+Support Agent
+├── Product-Docs
+├── Pricing-2026
+├── Support-FAQs
+└── Return-Policies
+```
+
+Each KB has ~10–30 focused documents. The agent picks the right KB for each user question before searching inside it.
+
+**Not recommended:**
+
+```
+Support Agent
+└── All-Company-Docs (300 mixed documents)
+```
+
+Retrieval quality drops sharply as unrelated content piles up. The LLM has no meaningful signal to prefer one region of the KB over another.
+
+## When updates take effect
+
+Adding or removing a Knowledge Base on an agent takes effect on the **next session** — active conversations keep the previous configuration until they end. If you need to force the change on running sessions, end them explicitly with [`DELETE /v1/conversation/{conversationId}`](/api-reference/endpoint/conversationdelete) after saving the agent update.
+
+## Verifying retrieval
+
+The best way to verify a KB is working is to talk to the agent. Ask a question whose answer you know is inside the KB:
+
+- If the agent answers correctly → retrieval is working.
+- If the agent hedges or gives generic info → the KB may not have been picked. Check the KB's Name and Description are specific enough. See [Naming and describing well](/docs/agents/knowledge/creating#naming-and-describing-well).
+- If the agent hallucinates → the answer isn't in the KB, or retrieval isn't finding the right chunk. Rephrase the source content, or split the doc.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Templates" icon="shapes" href="/docs/agents/templates">
+    Attach a KB to a template so every agent built from it inherits the knowledge.
+  </Card>
+  <Card title="Adding Content" icon="upload" href="/docs/agents/knowledge/uploading">
+    Add more content to a KB after attaching.
+  </Card>
+</CardGroup>

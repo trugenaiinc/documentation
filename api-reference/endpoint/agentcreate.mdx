@@ -2,4 +2,68 @@
 title: 'Create Agent'
 openapi: 'POST /ext/agent'
 ---
- 
+
+Create a new conversational video agent. Returns the agent's ID, which you'll use to embed the agent, mint session tokens, and manage it via the other endpoints.
+
+## When to use
+
+- **First-time setup** — creating your first agent (or your first agent for a new use case)
+- **Programmatic rollouts** — creating many agents in bulk from your own workflows
+- **Testing** — spinning up experimental agents alongside your production ones
+
+If you're creating many similar agents, define a [template](/docs/agents/templates) once and use [Create Agent by Template](/api-reference/endpoint/agentcreatebytemplate) instead.
+
+## Required fields
+
+At minimum you must send:
+
+- `agent_name` — used for display and identification
+- `agent_system_prompt` — how the agent should behave (see [Prompting Strategies](/docs/agents/prompting-strategies))
+- `avatars[0].avatar_key_id` — the visual identity (from the [Avatar Gallery](/docs/avatars/gallery) or a custom avatar)
+
+Everything else falls back to platform defaults:
+
+- LLM: Groq `gpt-oss-120b`
+- STT: ElevenLabs `scribe_v2_realtime`
+- TTS: ElevenLabs `eleven_turbo_v2_5` with a default voice
+- Language: English
+- Turn detector: enabled
+- Max call duration: 300 seconds
+- Recording: disabled
+
+## Minimum viable request
+
+```bash
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/agent \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "agent_name": "My First Agent",
+    "agent_system_prompt": "You are a friendly assistant that answers in 1-2 sentences.",
+    "avatars": [{ "avatar_key_id": "665a1170" }]
+  }'
+```
+
+Response:
+
+```json
+{
+  "id": "agt_12345example",
+  "message": "Agent created successfully"
+}
+```
+
+## Common gotchas
+
+- **`avatar_key_id` is not `agent_id`.** They look similar and it's an easy mixup.
+- **The prompt gets copied to `avatars[0].persona_prompt` under the hood.** For most agents the top-level `agent_system_prompt` is sufficient.
+- **Voices and LLMs have their own IDs.** Pick from the [Voice Library](/docs/agents/voices/library) and [Available LLMs](/docs/agents/available-llms).
+- **Setting `record: true` starts capturing recordings on the next session.** Confirm your privacy policy first.
+
+## Next steps
+
+- [Embed the agent with the widget](/docs/integrations/widget-integration)
+- [Add a knowledge base](/docs/agents/knowledge/overview)
+- [Register tools](/docs/agents/tools/overview)
+- [Configure webhooks](/docs/agents/callback)

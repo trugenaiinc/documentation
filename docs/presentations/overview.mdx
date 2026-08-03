@@ -1,0 +1,117 @@
+---
+title: "Presentations"
+sidebarTitle: "Presentations"
+description: "Give your agent a deck. When the user asks a relevant question, the agent presents the right slide alongside its spoken answer."
+---
+
+**Visual Presentations** turn your agent into a presenter. Upload a PDF or PowerPoint deck to your library, attach the presentation to an agent, and when a user asks a question that matches the content, the agent shows the relevant slide while it speaks its answer.
+
+This turns typical "explain how X works" answers into an actual walkthrough — the agent shows the pricing slide when asked about pricing, the architecture diagram when asked how the system works, and so on.
+
+## Supported media
+
+| Media | Formats | Size limit | Notes |
+| --- | --- | --- | --- |
+| **PDF** | `.pdf` | 100 MB | Upload a file or provide a public URL. Each page becomes a slide. |
+| **PowerPoint** | `.ppt`, `.pptx` | 100 MB | Upload a file or provide a public URL. Each slide is indexed. |
+
+Each slide is indexed after upload — the agent uses semantic search to find the right slide based on the user's question, similar to how [Knowledge Base](/docs/agents/knowledge/overview) retrieval works.
+
+## Creating a presentation
+
+<Steps>
+  <Step title="Open the Presentations tab in Studio">
+    In the Studio's agent creation flow, open the **Visual Presentations** tab.
+  </Step>
+  <Step title="Upload your media">
+    Pick a media kind (PDF or PowerPoint), upload the file, and give the presentation a name and optional tags.
+  </Step>
+  <Step title="Wait for processing">
+    Uploads process asynchronously — PDFs are page-split and PowerPoints are slide-indexed. Status moves through `pending` → `processing` → `completed`.
+  </Step>
+  <Step title="Attach to the agent">
+    Once processing is complete, select the presentation in the tab and save the agent. It's now available for the agent to use in every session.
+  </Step>
+</Steps>
+
+## How the agent uses it
+
+During a live session:
+
+1. The user asks a question.
+2. Before answering, the agent semantically searches the attached presentations for the most relevant slide.
+3. If a strong match is found, the agent both **speaks the answer** and **presents the slide** — the widget shows the slide alongside the avatar.
+4. If no strong match is found, the agent falls back to answering from its system prompt and knowledge base as normal — no presentation is shown.
+
+The agent decides when to present. You don't have to script it.
+
+## Custom instruction
+
+Each presentation has a **custom instruction** that tells the LLM how to answer using the retrieved slide. The default is a strict, grounded template:
+
+```
+QUESTION
+{query}
+
+RESULTS
+{results}
+
+Using the provided RESULTS, answer the QUESTION. Select the most relevant result
+and present it as a slide. Keep your response strictly grounded in the RESULTS.
+If the answer is not clearly supported by the RESULTS, respond with "I don't know"
+and close the presentation. Do not make assumptions.
+```
+
+You can customize this per presentation from the upload modal. Common reasons to change it:
+
+- **Loosen groundedness** — allow the agent to elaborate beyond what's on the slide
+- **Change presentation style** — force the agent to summarize rather than quote
+- **Adjust fallback behavior** — change what the agent says when no slide matches
+
+The `{query}` and `{results}` placeholders are filled in at runtime.
+
+## Attaching to an agent
+
+Presentations are attached via the `visual_presentations` array on the agent config:
+
+```json
+{
+  "agent_name": "Sales Agent",
+  "visual_presentations": [
+    { "id": "presentation-uuid-1" },
+    { "id": "presentation-uuid-2" }
+  ]
+}
+```
+
+Attach as many presentations as makes sense. The agent searches across all of them and picks the best match.
+
+## Best practices
+
+- **Split large decks by topic.** A 100-slide master deck retrieves worse than 5 focused 20-slide decks. The agent picks the right presentation before it picks the right slide.
+- **Use clear slide titles.** Slide titles are heavily weighted in retrieval. "Q3 Pricing Update" is more findable than "Slide 12."
+- **Prefer PDF over PowerPoint** when the source allows. PDFs process faster and produce cleaner slide extractions.
+- **Test with real user questions.** After attaching, join a test session and ask 5–10 questions the way your users would. Watch which slides come up and which don't.
+
+## Presentations vs Knowledge Base
+
+Both are retrieval-based, but they serve different purposes.
+
+| Use Knowledge Base for | Use Visual Presentations for |
+| --- | --- |
+| Text answers grounded in documents | Answers that need to *show* something visually |
+| FAQs, policies, product docs | Pitch decks, tutorials, product screenshots |
+| Long-form written content | Slide-per-idea material designed to be presented |
+
+You can — and often should — use both on the same agent.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Knowledge Base" icon="database" href="/docs/agents/knowledge/overview">
+    Attach text-based sources for grounded written answers.
+  </Card>
+  <Card title="Prompting" icon="pen" href="/docs/agents/prompting-strategies">
+    Write a system prompt that plays well with a presenting agent.
+  </Card>
+</CardGroup>

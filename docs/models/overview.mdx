@@ -1,0 +1,59 @@
+---
+title: "Models"
+sidebarTitle: "Overview"
+description: "The Huma family of proprietary avatar-rendering models that power TruGen's real-time video agents."
+---
+
+TruGen builds and runs its own foundation models. Two families live here:
+
+- The **[Huma family](#the-huma-family-at-a-glance)** — avatar renderers that turn audio into a photorealistic face. Two are in production today: **Huma-2** for real-time conversations, and **Huma-1** for high-expressiveness renders.
+- **[Hawkeye-1](/docs/models/hawkeye-1)** — the Vision Action Recognition Model that gives agents real-time perception of the user, their environment, and their emotional state.
+
+Together, Huma renders the face; Hawkeye reads the room.
+
+## The Huma family at a glance
+
+| Model | Render pipeline | Best fit |
+| --- | --- | --- |
+| **[Huma-2](/docs/models/huma-2)** | ≤ 500 ms audio → video | Real-time conversational agents. Default renderer. |
+| **[Huma-1](/docs/models/huma-1)** | Higher — optimised for expression fidelity | Async video generation, high-expressiveness renders |
+
+## Huma-2 vs Huma-1
+
+The two production models take different design trade-offs. Here's how they compare across the dimensions that matter for real deployments.
+
+| Dimension | Huma-2 | Huma-1 |
+| --- | --- | --- |
+| **Primary use case** | Real-time conversation | Async video generation, expressive renders |
+| **End-to-end conversational latency** | ≤ 800 ms | Higher — not tuned for throughput |
+| **Render pipeline (audio → video)** | ≤ 500 ms | Longer per frame — optimised for expression |
+| **Rendering approach** | Gaussian Splatting with audio-driven facial deformation | First-generation neural avatar renderer |
+| **Source video required for custom avatars** | 2–3 minutes controlled recording | Longer, more constrained capture |
+| **Model footprint** | Leaner, faster inference | Larger, more expressive per-frame |
+| **Runtime** | Two-phase (preload + inference) | Single-phase render |
+| **Expression fidelity** | High — natural facial motion, gaze, micro-expressions | Highest — dense micro-expression and emotional nuance |
+| **Audio robustness** | Robust across recording conditions | Tuned for clean audio input |
+| **Availability** | Default on all new agents | Available on legacy agents |
+
+## How the model fits in the pipeline
+
+Whichever Huma model you use, it sits at the end of TruGen's conversational pipeline:
+
+```
+User audio → STT → LLM → TTS → Huma → Video output
+                        ↑
+                    Hawkeye-1 (vision context, in parallel)
+```
+
+Full breakdown in the [Realtime Pipeline](/docs/agents/pipeline).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Huma-2 deep dive" icon="bolt" href="/docs/models/huma-2">
+    Real-time avatar renderer — architecture, characteristics, and how it renders your agent.
+  </Card>
+  <Card title="Huma-1 deep dive" icon="palette" href="/docs/models/huma-1">
+    First-generation expressive renderer.
+  </Card>
+</CardGroup>

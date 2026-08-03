@@ -1,4 +1,35 @@
 ---
 title: "Get Agent By Id"
 openapi: "GET /ext/agent/{id}"
---- 
+---
+
+Fetch the complete configuration for a single agent by ID. Useful for auditing, debugging, cloning, or building admin UIs on top of TruGen.
+
+## When to use
+
+- **Debugging** — confirm the live configuration matches what you think it is
+- **Cloning** — read a working agent, tweak, and re-create as a new agent
+- **Admin dashboards** — build an internal view of your organization's agents
+- **Backup** — snapshot configuration before making changes
+
+## What's returned
+
+The full agent object as it exists on the server, including:
+
+- Top-level fields (`agent_name`, `agent_system_prompt`, `is_active`, `record`, `callback_url`, etc.)
+- All configured avatars with STT, LLM, TTS, and turn-detection settings
+- Attached knowledge bases (by ID)
+- Attached tools and MCPs (by ID)
+- Widget configuration
+
+## Common gotchas
+
+- **The response can be large.** Agents with many avatars, tools, and knowledge bases produce sizable responses. Cache aggressively on your side.
+- **Attachments are returned as IDs.** Attached tools, knowledge bases, and MCPs are returned as IDs — fetch the individual resources separately if you need their full configuration.
+- **Not found returns 404.** If the agent was deleted, the endpoint returns 404.
+
+## Next steps
+
+- [List all agents](/api-reference/endpoint/agentget)
+- [Update the agent](/api-reference/endpoint/agentupdate)
+- [Delete the agent](/api-reference/endpoint/agentdelete)

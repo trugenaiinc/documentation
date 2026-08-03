@@ -1,0 +1,79 @@
+---
+title: "Squarespace"
+description: "Add a TruGen agent to a Squarespace site with a Code Block or Code Injection."
+---
+
+Squarespace supports third-party iframes through **Code Blocks** on individual pages or **Code Injection** for site-wide widgets.
+
+## Prerequisites
+
+- A TruGen agent with an `agent_id` — see the [quickstart](/docs/quickstart)
+- Squarespace **Business** plan or higher (Code Blocks aren't available on Personal plans)
+
+## Add via a Code Block (single page)
+
+<Steps>
+  <Step title="Edit the page">
+    Open the Squarespace editor for the page where you want the agent.
+  </Step>
+  <Step title="Add a Code Block">
+    Click the **+** insertion icon → **Code**. Choose **HTML** as the language.
+  </Step>
+  <Step title="Paste the iframe">
+    ```html
+    <iframe
+      src="https://app.trugen.ai/embed/YOUR_AGENT_ID?username=USER_NAME&id=USER_ID&context=CONTEXT"
+      width="100%"
+      height="600"
+      frameborder="0"
+      allow="camera; microphone; autoplay; display-capture; fullscreen"
+    ></iframe>
+    ```
+
+    Replace `YOUR_AGENT_ID` and set the user parameters.
+  </Step>
+  <Step title="Save and publish">
+    Save the block. Publish the page.
+  </Step>
+</Steps>
+
+## Add site-wide via Code Injection (floating widget)
+
+<Steps>
+  <Step title="Open Code Injection settings">
+    Go to **Settings → Advanced → Code Injection**.
+  </Step>
+  <Step title="Add to the Footer field">
+    ```html
+    <iframe
+      src="https://app.trugen.ai/embed/YOUR_AGENT_ID"
+      style="position: fixed; bottom: 20px; right: 20px; width: 380px; height: 560px; border: 0; z-index: 9999;"
+      allow="camera; microphone; autoplay; display-capture; fullscreen"
+    ></iframe>
+    ```
+  </Step>
+  <Step title="Save">
+    Save and reload the site. The widget will float bottom-right on every page.
+  </Step>
+</Steps>
+
+## Squarespace-specific notes
+
+- **Preview vs published** — Squarespace's editor preview strips iframes. Always test on the live URL.
+- **Header injection blocked** — Squarespace only allows Code Injection in Header and Footer. Choose Footer for anything with active DOM.
+- **Mobile scaling** — Squarespace templates sometimes constrain iframe width on mobile. Test on a real device.
+
+## Domain allowlist
+
+Add your Squarespace domain (custom or `.squarespace.com`) to your agent's `allowed_domains` list if configured.
+
+## What's next
+
+<CardGroup cols={2}>
+<Card title="iFrame reference" icon="code" href="/docs/integrations/embed-via-iFrame">
+Every iframe parameter documented.
+</Card>
+<Card title="Widget (React)" icon="react" href="/docs/integrations/widget-integration">
+For headless Squarespace + React setups.
+</Card>
+</CardGroup>

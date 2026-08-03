@@ -2,4 +2,73 @@
 title: 'Create Knowledge Base'
 openapi: 'POST /ext/kb'
 ---
- 
+
+Create a new [knowledge base](/docs/agents/knowledge/overview) — a collection of documents your agents search when they need to ground an answer in your data.
+
+## When to create a new knowledge base
+
+Create separate knowledge bases per **domain**, not per document. Small, well-scoped KBs retrieve dramatically better than one large mixed KB.
+
+**Good scoping:**
+
+- `Product-Docs` — product features, setup, integrations
+- `Pricing-and-Plans` — pricing, plan differences, discounts
+- `Support-FAQs` — common troubleshooting
+
+**Bad scoping:**
+
+- `All-Company-Docs` — the LLM can't tell what's in it, so retrieval quality drops
+
+## Name and description matter
+
+The `name` and `description` are how the agent decides whether to search this knowledge base. Be specific.
+
+```json
+{
+  "name": "HR-Policies",
+  "description": "Use this whenever the user asks about HR policies, leave entitlements, benefits, or employee guidelines."
+}
+```
+
+The description especially — the LLM reads it verbatim when deciding routing.
+
+## Example
+
+```bash
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/kb \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "name": "Product-Docs",
+    "description": "Use this when the user asks about product features, setup instructions, integrations, or technical specifications.",
+    "is_active": true
+  }'
+```
+
+Response:
+
+```json
+{
+  "id": "kb_prod_docs_123",
+  "message": "Knowledge base created successfully"
+}
+```
+
+## Next steps
+
+Once the KB is created, add documents:
+
+```
+POST /ext/kb/{id}/doc
+```
+
+See [Add Document](/api-reference/endpoint/knowledgebaseadddoc) for the file upload flow.
+
+Then attach the KB to an agent:
+
+```json
+"knowledge_base": [
+  { "id": "kb_prod_docs_123", "name": "Product-Docs" }
+]
+```

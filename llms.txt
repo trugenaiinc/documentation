@@ -12,7 +12,7 @@
 - [Conversational Video Agents](https://docs.trugen.ai/docs/agents/conversational-video-agents): Architecture and features of real-time video agents — speech recognition, vision perception, tool calling, persona templates, and iframe integration.
 - [Realtime Pipeline](https://docs.trugen.ai/docs/agents/pipeline): End-to-end pipeline walkthrough: WebRTC → STT → Turn Detection → LLM → Knowledge Base → TTS → Huma-2 avatar rendering.
 - [Persona Templates](https://docs.trugen.ai/docs/agents/templates): Reusable blueprints defining system prompt, entry/exit messages, knowledge bindings, idle timeout, and behavior rules.
-- [Knowledge Base](https://docs.trugen.ai/docs/agents/knowledge-base): Attach documents, URLs, or text to ground agent responses. Supports both Agentic RAG and Traditional RAG modes.
+- [Knowledge Base](https://docs.trugen.ai/docs/agents/knowledge/overview): Attach documents, URLs, or text to ground agent responses. Supports both Agentic RAG and Traditional RAG modes.
 - [Memory](https://docs.trugen.ai/docs/agents/memory): Configure per-session or persistent memory for agents.
 - [Event Callbacks (Webhooks)](https://docs.trugen.ai/docs/agents/callback): Receive real-time HTTP POST events for speech, lifecycle, and action triggers from active conversations.
 - [Prompting Strategies](https://docs.trugen.ai/docs/agents/prompting-strategies): Guidance on writing effective system prompts for video agents.

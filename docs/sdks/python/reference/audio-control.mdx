@@ -1,0 +1,118 @@
+---
+title: "Audio Control"
+sidebarTitle: "Audio Control"
+description: "Manage microphone lifecycle, mute states, and custom audio injection in the Python SDK."
+---
+
+The Python SDK gives you programmatic control over the local microphone and lets you inject custom audio (WAV files or raw 16-bit PCM bytes) directly into the room.
+
+## Microphone Management
+
+### Start/Stop Microphone
+
+Programmatically connect or disconnect the microphone track:
+
+```python
+# Connect and publish the microphone track
+await session.start_mic()
+
+# Stop capturing and unpublish the microphone track
+await session.stop_mic()
+```
+
+### Muting and Unmuting
+
+Mute or unmute microphone input without tearing down the audio track:
+
+```python
+# Mute the microphone
+session.mute_input_audio()
+
+# Unmute the microphone
+session.unmute_input_audio()
+
+# Check the current mute state
+if session.is_input_muted():
+    print("Mic is currently muted")
+```
+
+### Get Microphone State
+
+`get_input_audio_state()` returns an `InputAudioState` object containing both the mute status and mic permission status:
+
+```python
+state = session.get_input_audio_state()
+print("Muted:", state.is_muted)
+print("Permission:", state.permission_state)  # 'pending' | 'granted' | 'denied'
+```
+
+### TruGenRunner shortcut
+
+If you're using `TruGenRunner`, toggle mute from the main thread safely:
+
+```python
+runner.toggle_mute()
+
+if runner.mic_muted:
+    print("Currently muted")
+```
+
+## Audio Injection
+
+You can stream custom audio into the room — a pre-recorded WAV file or raw 16-bit PCM bytes. Useful for scripted playback, voice cloning demos, or piping in audio from another source.
+
+<Warning>
+  Auto-mute the microphone before injecting audio, then unmute after it completes. Without muting, the agent's response to your injected audio loops back through the mic and floods the STT pipeline — see the WAV-injection helper in [`examples/advanced_session_ui.py`](/docs/sdks/python/examples/advanced-python) for the recommended pattern.
+</Warning>
+
+### Upload a WAV file
+
+Stream a PCM WAV file into the room:
+
+```python
+await session.upload_audio("/path/to/audio.wav")
+```
+
+The SDK handles reading, decoding, and pacing the audio into the session at the right sample rate.
+
+### Send raw PCM bytes
+
+Inject raw 16-bit PCM bytes directly:
+
+```python
+await session.send_audio(
+    data=pcm_bytes,        # bytes-like object, 16-bit little-endian PCM
+    sample_rate=48000,     # default 48000
+    num_channels=1,        # default 1 (mono)
+)
+```
+
+Use `send_audio()` when your source is already decoded — TTS output from another provider, live audio from a different track, or synthetic audio you're generating on the fly.
+
+### Safe injection pattern
+
+The recommended pattern (used in `examples/advanced_session_ui.py`) mutes the mic during injection and restores its previous state afterwards:
+
+```python
+async def inject_safely(session, runner, wav_path):
+    was_muted = runner.mic_muted
+    if not was_muted:
+        session.mute_input_audio()
+
+    try:
+        await session.upload_audio(wav_path)
+    finally:
+        if not was_muted:
+            session.unmute_input_audio()
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Event Handling" icon="bolt" href="/docs/sdks/python/reference/event-handling">
+    Listen to connection, speaking, and transcription events.
+  </Card>
+  <Card title="Advanced Example" icon="code" href="/docs/sdks/python/examples/advanced-python">
+    Full GUI viewer with WAV injection, captions, and speaking state.
+  </Card>
+</CardGroup>

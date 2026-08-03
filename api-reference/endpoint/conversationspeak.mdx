@@ -2,3 +2,84 @@
 title: "Speak"
 openapi: "PUT /v1/conversation/{conversation_id}/speak"
 ---
+
+Make the agent speak arbitrary text mid-conversation. Overrides whatever the agent was about to say. Use for scripted interjections, custom greetings, or human-in-the-loop takeover.
+
+## When to use
+
+- **Human handoff** — a live agent takes over and needs to say a specific thing
+- **System notifications** — announce something the LLM shouldn't have to reason about ("Your call is being transferred…")
+- **Custom greetings** — inject a personalized greeting the LLM might otherwise phrase awkwardly
+- **Scripted flows** — force the agent to say a specific line at a specific point in a structured workflow
+
+## What it does
+
+The current LLM turn (if any) is interrupted. The text you supply is sent straight to TTS and the avatar renders it. After the utterance completes, the LLM regains control on the user's next turn.
+
+## Example
+
+```bash
+curl --request PUT \
+  --url https://api.trugen.ai/v1/conversation/{conversation_id}/speak \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "text": "One moment while I transfer you to a human agent.",
+    "interrupt": true
+  }'
+```
+
+## Interrupt behavior
+
+| `interrupt` | Effect |
+| --- | --- |
+| `true` (default) | Cut off any current agent utterance; speak the new text immediately |
+| `false` | Wait for the current utterance to finish, then speak the new text |
+
+## Add context afterwards
+
+If you want the LLM to know it just said something outside its usual turn:
+
+```json
+{
+  "text": "One moment while I transfer you.",
+  "interrupt": true,
+  "add_to_context": true
+}
+```
+
+With `add_to_context: true`, the utterance is added to the LLM's message history so it can reason about what was said.
+
+## Common uses
+
+### Trigger a personalized greeting
+
+```typescript
+// After session starts, before the agent's default greeting
+await fetch(
+  `https://api.trugen.ai/v1/conversation/${conversationId}/speak`,
+  {
+    method: "PUT",
+    headers: { "x-api-key": KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      text: `Hi ${userName}, good to see you back. Last time you were asking about ${lastTopic} — where do you want to pick up?`,
+      interrupt: true,
+    }),
+  }
+);
+```
+
+### Announce transfer to human
+
+```json
+{
+  "text": "Let me connect you with Alex from our team. Please hold for a moment.",
+  "interrupt": true,
+  "add_to_context": true
+}
+```
+
+## Next steps
+
+- [End the conversation](/api-reference/endpoint/conversationdelete)
+- [Get conversation by ID](/api-reference/endpoint/conversationgetbyid)

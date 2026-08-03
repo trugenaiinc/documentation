@@ -1,0 +1,198 @@
+---
+title: "Basic GUI Example"
+sidebarTitle: "Basic GUI"
+description: "Complete OpenCV viewer with connection status bar, mic mute indicator, and floating captions."
+---
+
+A minimal but production-shaped OpenCV viewer for a TruGen agent. Adapted verbatim from the `examples/basic_session_ui.py` in the [official Python SDK repository](https://github.com/trugenai/python-sdk).
+
+## What it does
+
+- Connects to a live TruGen session and renders the avatar in a resizable OpenCV window
+- Shows a top status bar with the current session state and mic status
+- Overlays streaming captions with a fade-out timer at the bottom
+- Toggles mic mute with **M**, quits with **Q** or **Esc**
+
+## Requirements
+
+```bash
+uv add trugen-sdk --extra display
+# or: pip install trugen-sdk[display]
+# or: pip install opencv-python sounddevice numpy python-dotenv
+```
+
+Set your credentials in a `.env`:
+
+```bash
+TRUGEN_API_KEY=your-api-key
+TRUGEN_AGENT_ID=your-agent-id
+```
+
+## Run
+
+```bash
+uv run --extra display python examples/basic_session_ui.py
+```
+
+## Full source
+
+```python
+"""
+TruGen Interactive Avatar Viewer
+=================================
+Connects to a TruGen AI session and displays the live video avatar in a GUI window.
+
+Controls:
+  M / m   — Toggle mic mute/unmute
+  Q / Esc — Close window and quit
+"""
+
+import os
+import time
+import textwrap
+import numpy as np
+import cv2
+from dotenv import load_dotenv
+
+from trugen import TruGenClient, TruGenRunner, TruGenState, TruGenEvent
+
+load_dotenv()
+
+# ── Display settings ───────────────────────────────────────────────────────────
+
+WINDOW_TITLE      = "TruGen AI — Live Avatar"
+FRAME_W, FRAME_H  = 1280, 720
+CAPTION_MAX_CHARS = 80
+CAPTION_HOLD_SECS = 5.0
+FONT              = cv2.FONT_HERSHEY_DUPLEX
+FONT_SCALE        = 0.65
+FONT_THICK        = 1
+
+C_WHITE   = (255, 255, 255)
+C_BLACK   = (0,   0,   0)
+C_GREEN   = (80,  200, 80)
+C_RED     = (60,  60,  220)
+C_YELLOW  = (0,   220, 220)
+C_GRAY    = (180, 180, 180)
+C_OVERLAY = (20,  20,  20)
+
+
+# ── GUI helpers ────────────────────────────────────────────────────────────────
+
+def _overlay_rect(frame, x1, y1, x2, y2, color=C_OVERLAY, alpha=0.55):
+    roi = frame[y1:y2, x1:x2]
+    cv2.addWeighted(np.full_like(roi, color), alpha, roi, 1 - alpha, 0, roi)
+    frame[y1:y2, x1:x2] = roi
+
+
+def _put_text(frame, text, x, y, color=C_WHITE, scale=FONT_SCALE, thick=FONT_THICK):
+    cv2.putText(frame, text, (x, y), FONT, scale, C_BLACK, thick + 1, cv2.LINE_AA)
+    cv2.putText(frame, text, (x, y), FONT, scale, color,   thick,     cv2.LINE_AA)
+
+
+def _placeholder() -> np.ndarray:
+    frame = np.zeros((FRAME_H, FRAME_W, 3), dtype=np.uint8)
+    msg = "Waiting for video avatar…"
+    tw, th = cv2.getTextSize(msg, FONT, 0.9, 2)[0]
+    cv2.putText(frame, msg, ((FRAME_W - tw) // 2, (FRAME_H + th) // 2),
+                FONT, 0.9, C_GRAY, 2, cv2.LINE_AA)
+    return frame
+
+
+# ── Session factory — user owns TruGenClient and session creation ──────────────
+
+async def create_session():
+    """Creates, connects, and returns a TruGenSession."""
+    client  = TruGenClient(api_key=os.getenv("TRUGEN_API_KEY", ""))
+    session = await client.create_session(agent_id=os.getenv("TRUGEN_AGENT_ID", ""))
+    await session.connect()
+    await session.enable_audio_output()   # AEC + speaker output
+    return session
+
+
+# ── Runner setup ───────────────────────────────────────────────────────────────
+
+runner = TruGenRunner(session_factory=create_session)
+
+cv2.namedWindow(WINDOW_TITLE, cv2.WINDOW_NORMAL)
+cv2.resizeWindow(WINDOW_TITLE, FRAME_W, FRAME_H)
+
+
+@runner.on_state
+def on_state(state: TruGenState) -> None:
+    pass
+
+
+@runner.on_event(TruGenEvent.AGENT_SPEAKING_STARTED)
+def on_speak_start() -> None:
+    pass
+
+
+@runner.on_event(TruGenEvent.AGENT_SPEAKING_ENDED)
+def on_speak_end() -> None:
+    pass
+
+
+@runner.on_frame
+def on_frame(frame: np.ndarray | None) -> None:
+    display = frame.copy() if frame is not None else _placeholder()
+    h, w    = display.shape[:2]
+
+    # Status bar
+    _overlay_rect(display, 0, 0, w, 34)
+    state_color = C_GREEN if runner.session_state == TruGenState.CONNECTED else C_YELLOW
+    _put_text(display, f"  {runner.session_state.value}", 10, 22,
+              color=state_color, scale=0.58)
+    mic_text  = "🔇 MIC MUTED  [M to unmute]" if runner.mic_muted else "🎤 MIC ON     [M to mute]"
+    mic_color = C_RED if runner.mic_muted else C_GREEN
+    _put_text(display, mic_text, w - 280, 22, color=mic_color, scale=0.55)
+    _put_text(display, "Q / Esc — quit", w // 2 - 55, 22, color=C_GRAY, scale=0.50)
+
+    # Captions
+    caption, caption_ts = runner.get_caption()
+    if caption and time.monotonic() - caption_ts < CAPTION_HOLD_SECS:
+        lines  = textwrap.wrap(caption, width=CAPTION_MAX_CHARS)
+        line_h = 28
+        y0     = h - (len(lines) * line_h + 16) - 10
+        _overlay_rect(display, 0, y0, w, h - 10)
+        for i, line in enumerate(lines):
+            tw = cv2.getTextSize(line, FONT, FONT_SCALE, FONT_THICK)[0][0]
+            _put_text(display, line, (w - tw) // 2, y0 + 20 + i * line_h)
+
+    # Render & key handling
+    cv2.imshow(WINDOW_TITLE, display)
+    key = cv2.waitKey(1) & 0xFF
+    if key in (ord("q"), ord("Q"), 27):
+        runner.stop()
+    elif key in (ord("m"), ord("M")):
+        runner.toggle_mute()
+    if cv2.getWindowProperty(WINDOW_TITLE, cv2.WND_PROP_VISIBLE) < 1:
+        runner.stop()
+
+
+# ── Main ───────────────────────────────────────────────────────────────────────
+
+if __name__ == "__main__":
+    print("Controls: M = mute/unmute | Q / Esc = quit\n")
+    runner.run()
+    cv2.destroyAllWindows()
+```
+
+## What to notice
+
+- **`create_session()`** owns the connection — this pattern keeps your credentials, agent selection, and setup calls in one place.
+- **`enable_audio_output()`** activates the speaker with Acoustic Echo Cancellation. Without it, the agent hears its own voice through the mic and gets caught in a feedback loop.
+- **`@runner.on_frame`** runs on the main thread, so `cv2.imshow`, `cv2.waitKey`, and window management are all safe from here.
+- **`runner.get_caption()`** returns `(text, timestamp)` so you can time-box overlays — the `CAPTION_HOLD_SECS` check fades captions after 5 seconds.
+- **`runner.stop()`** is thread-safe and idempotent — call it from any thread, any time.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Advanced GUI Example" icon="code" href="/docs/sdks/python/examples/advanced-python">
+    Full-feature viewer with WAV injection, speaking indicators, and reconnect handling.
+  </Card>
+  <Card title="Event Handling" icon="bolt" href="/docs/sdks/python/reference/event-handling">
+    Subscribe to every event the SDK emits.
+  </Card>
+</CardGroup>

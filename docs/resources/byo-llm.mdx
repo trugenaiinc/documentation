@@ -1,142 +1,198 @@
 ---
 title: "Bring Your Own LLM"
 sidebarTitle: "Custom LLM"
-description: "Connect any OpenAI-compatible LLM to your TruGen agents — self-hosted, fine-tuned, or third-party."
+description: "Connect any OpenAI-compatible LLM — self-hosted, fine-tuned, or third-party — while keeping the rest of the TruGen pipeline intact."
 ---
 
-TruGen lets you replace the default LLM with any **OpenAI-compatible API**. This means you can use self-hosted models, fine-tuned models trained on your own data, or third-party providers — while keeping the rest of the avatar and agent stack intact.
+TruGen lets you replace the default LLM with any **OpenAI-compatible** endpoint. Everything else — STT, TTS, avatar rendering, tools, knowledge base — keeps working. Use this for compliance, fine-tuned models, or your own inference infrastructure.
 
-## Why Use a Custom LLM?
+## Why bring your own LLM
 
-| Benefit           | Description                                                                    |
-| ----------------- | ------------------------------------------------------------------------------ |
-| **Customisation** | Use domain-specific or fine-tuned models for better accuracy in your vertical  |
-| **Data Privacy**  | Keep sensitive data within your own infrastructure or private cloud            |
-| **Compliance**    | Meet strict regulatory requirements around data residency and auditing         |
-| **Cost Control**  | Optimise expenses by choosing competitive providers or using your own hardware |
+| Benefit | Description |
+| --- | --- |
+| **Customisation** | Use a domain-specific fine-tune for better vertical accuracy |
+| **Data residency** | Keep sensitive data inside your own infrastructure or private cloud |
+| **Compliance** | Meet regulatory requirements around auditing and data handling |
+| **Cost control** | Choose your own provider or run on your own hardware |
 
 ## Requirements
 
-Your LLM API must implement the **OpenAI Chat Completions** specification:
+Your endpoint must implement the **OpenAI Chat Completions** specification:
 
 - **Endpoint:** `POST /chat/completions`
-- **Payload:** Must accept a `messages: []` array
-- **Streaming:** Must support Server-Sent Events (SSE) for real-time interaction
+- **Payload:** accepts a `messages: []` array
+- **Streaming:** Server-Sent Events (SSE) with `data:` framing
 
-**Optional** — required only for specific features:
+**Optional — required only for specific features:**
 
-- **Function Calling** — needed if your agent uses tools
+- **Function calling** — needed if the agent uses tools
 - **Vision** — needed for multimodal inputs
 
-## Setup Options
+## Configure via the Developer Portal
 
-### Via Developer Studio
+<Steps>
+  <Step title="Open your agent">
+    Navigate to **Create New Agent** or an existing agent in [app.trugen.ai](https://app.trugen.ai).
+  </Step>
+  <Step title="Open Agent Config">
+    Find the **LLM** section.
+  </Step>
+  <Step title="Select Bring Your Own LLM">
+    In the Provider dropdown, select **Bring your own LLM**.
+  </Step>
+  <Step title="Enter your endpoint">
+    Provide your **API URL**, **Model Name**, and **API Token**. Save.
+  </Step>
+</Steps>
 
-1. Navigate to **Create New Agent**.
-2. Find the **Agent Config** section.
-3. Select **Bring your own LLM** from the Provider dropdown.
-4. Enter your **API URL**, **Model Name**, and **API Token**.
-
-<Frame caption="Developer Studio — LLM provider configuration">
+<Frame caption="Developer Portal — Custom LLM configuration">
   <img
     src="/images/byo-llm.png"
     alt="Bring Your Own LLM configuration in Developer Studio"
   />
 </Frame>
 
-### Via API
+## Configure via API
 
-Set `provider` to `"custom"` within the `avatars.config.llm` object:
+Set the LLM config's `provider` to `"custom"`:
 
-<CodeGroup>
-```bash Create Agent with Custom LLM
+```json
+"llm": {
+  "provider": "custom",
+  "model": "MODEL_NAME",
+  "url": "https://your-inference.example.com/v1",
+  "token": "YOUR_ENDPOINT_TOKEN"
+}
+```
+
+That's the only change needed. The rest of your agent configuration is unchanged.
+
+Full request example:
+
+```bash
 curl --request POST \
   --url https://api.trugen.ai/v1/ext/agent \
   --header 'Content-Type: application/json' \
   --header 'x-api-key: YOUR_API_KEY' \
-  --data @- <<EOF
-{
-  "agent_name": "Custom LLM Agent",
-  "config": { "timeout": 240 },
-  "avatars": [
-    {
-        "stt": {
-          "provider": "elevenlabs",
-          "model": "scribe_v2_realtime",
-          "language": "en",
-          "fallback_model": "nova-2-general",
-          "allow_interm_results_interruption": true,
-          "min_endpointing_delay": 0.4,
-          "max_endpointing_delay": 0.3
-        },
-        "turn_detector": true,
+  --data '{
+    "agent_name": "Custom LLM Agent",
+    "agent_system_prompt": "You are a helpful assistant.",
+    "avatars": [
+      {
+        "avatar_key_id": "665a1170",
         "llm": {
           "provider": "custom",
-          "model": "MODEL_NAME",
-          "url": "API_BASE_URL",
-          "token": "YOUR_EXTERNAL_TOKEN"
-        },
-        "tts": {
-          "provider": "elevenlabs",
-          "model_id": "eleven_turbo_v2_5",
-          "language": "a",
-          "voice_id": "FGY2WhTYpPnrIDTdsKH5",
-          "customPronounciation": [
-            {
-              "word": "AI",
-              "pronounciation": "AI"
-            },
-            {
-              "word": "TRUGEN",
-              "pronounciation": "TRUE GEN"
-            },
-            {
-              "word": "API",
-              "pronounciation": "A P I"
-            },
-            {
-              "word": "SQL",
-              "pronounciation": "Sequel"
-            },
-            {
-              "word": "UI",
-              "pronounciation": "U I"
-            },
-            {
-              "word": "URL",
-              "pronounciation": "U R L"
-            }
-          ],
-          "pitch": 0,
-          "effects_profile_id": "small-bluetooth-speaker-class-device",
-          "speaking_rate": 1,
-          "stability": 0.5,
-          "similarity_boost": 0.75,
-          "sample_rate": 16000,
-          "encoding": "pcm_s16le",
-          "gender": "female",
-          "fallback_voice_id": "am_puck"
+          "model": "your-fine-tune-v1",
+          "url": "https://your-inference.example.com/v1",
+          "token": "YOUR_ENDPOINT_TOKEN"
         }
       }
+    ]
+  }'
+```
+
+## Endpoint contract
+
+Your `/chat/completions` handler receives:
+
+```json
+POST /chat/completions
+{
+  "model": "your-fine-tune-v1",
+  "messages": [
+    { "role": "system", "content": "You are a helpful assistant." },
+    { "role": "user",   "content": "What are your business hours?" }
+  ],
+  "stream": true,
+  "tools": [ /* ... */ ]
+}
+```
+
+And must respond with an SSE stream:
+
+```
+data: {"id":"…","object":"chat.completion.chunk","choices":[{"delta":{"content":"We"},"index":0}]}
+
+data: {"id":"…","object":"chat.completion.chunk","choices":[{"delta":{"content":"'re open"},"index":0}]}
+
+data: {"id":"…","object":"chat.completion.chunk","choices":[{"delta":{"content":" Monday to Friday."},"index":0,"finish_reason":"stop"}]}
+
+data: [DONE]
+```
+
+## Keep-alive during long generations
+
+Long generations without any output can trigger idle timeouts. Emit a comment line every 10 seconds:
+
+```
+: keep-alive
+
+```
+
+## Function calling
+
+If your endpoint supports OpenAI-style function calling, return tool calls in the delta:
+
+```json
+{
+  "choices": [
+    {
+      "delta": {
+        "tool_calls": [
+          {
+            "index": 0,
+            "id": "call_abc",
+            "function": {
+              "name": "check_order_status",
+              "arguments": "{\"orderId\": \"ORD-9821\"}"
+            }
+          }
+        ]
+      }
+    }
   ]
 }
 ```
-</CodeGroup>
 
-## What's Next?
+TruGen invokes the tool, sends the result back as a follow-up `messages[].role: "tool"` turn, and continues generation.
+
+## Fallback to a hosted model
+
+If your custom endpoint errors or times out, TruGen can fall back to a hosted model automatically:
+
+```json
+"llm": {
+  "provider": "custom",
+  "model": "your-fine-tune-v1",
+  "url": "https://your-inference.example.com/v1",
+  "token": "YOUR_ENDPOINT_TOKEN",
+  "fallback_provider": "groq",
+  "fallback_model": "openai/gpt-oss-120b"
+}
+```
+
+Strongly recommended for production — a single infrastructure hiccup on your side shouldn't kill live sessions.
+
+## Latency expectations
+
+Custom LLMs add network round-trip time between TruGen's infrastructure and yours. Aim for:
+
+- **Time to first token:** under 500 ms
+- **Endpoint region:** as close to your TruGen region as possible
+- **Network latency to TruGen edge:** under 50 ms
+
+If your endpoint is in a different continent, latency will noticeably degrade the conversation.
+
+## What's next
 
 <CardGroup cols={2}>
-
 <Card title="Available LLMs" icon="brain" href="/docs/agents/available-llms">
-  Browse all built-in models across Groq, Azure OpenAI, Google, and more.
+Compare hosted providers if BYO isn't a hard requirement.
 </Card>
-
-<Card
-  title="Prompting Strategies"
-  icon="pen"
-  href="/docs/agents/prompting-strategies"
->
-  Write effective system prompts for your custom LLM.
+<Card title="Prompting strategies" icon="pen" href="/docs/agents/prompting-strategies">
+Write prompts that work well for real-time voice.
 </Card>
-
+<Card title="Tools" icon="screwdriver-wrench" href="/docs/agents/tools/overview">
+Enable function calling on your custom LLM.
+</Card>
 </CardGroup>

@@ -1,4 +1,87 @@
 ---
 title: 'Add Documents to Knowledge Base'
 openapi: 'POST /ext/kb/{id}/doc'
---- 
+---
+
+Add a document to an existing [knowledge base](/docs/agents/knowledge/overview). Supported formats: **PDF**, **DOCX**, plain text, and URLs (single page or full site crawl).
+
+## Supported inputs
+
+| Input | Content-Type | Notes |
+| --- | --- | --- |
+| PDF file | `multipart/form-data` | Best for policies, manuals, structured content |
+| DOCX file | `multipart/form-data` | Cleanly-formatted Word documents |
+| Plain text | `multipart/form-data` or JSON | For FAQs and scripted content |
+| Single URL | JSON | TruGen fetches, parses, and indexes the page |
+| Root URL (crawl) | JSON | TruGen crawls the site up to N pages deep |
+
+## Upload a file
+
+```bash
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/kb/{id}/doc \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --form 'file=@/path/to/product-guide.pdf'
+```
+
+## Upload from a URL
+
+```bash
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/kb/{id}/doc \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "url",
+    "url": "https://docs.yourcompany.com/pricing"
+  }'
+```
+
+To crawl an entire site:
+
+```json
+{
+  "type": "url",
+  "url": "https://docs.yourcompany.com",
+  "crawl": true,
+  "max_pages": 100
+}
+```
+
+## Response
+
+```json
+{
+  "doc_id": "doc_abc123",
+  "status": "processing",
+  "message": "Document accepted; indexing in progress"
+}
+```
+
+## Indexing status
+
+Documents pass through: `queued` → `processing` → `ready` (or `failed`). Poll the parent KB to see all documents' status:
+
+```
+GET /ext/kb/{id}
+```
+
+## Best practices
+
+- **Clean text beats fancy PDFs.** A PDF with unusual layouts, footnotes, or tables retrieves poorly. Convert to Markdown when you can.
+- **Split large documents.** A 100-page PDF retrieves worse than 10 well-scoped documents.
+- **Use titles that describe content.** File names show up in retrieval reasoning; `hr-leave-policy-2026.pdf` beats `document-final-v2.pdf`.
+- **Re-upload changed docs rather than editing.** Delete the old one and upload the new one for a clean index.
+
+## Common failures
+
+- **`unsupported_format`** — the file isn't a PDF, DOCX, or text.
+- **`file_too_large`** — max 50 MB per file. Split larger files.
+- **`crawl_failed`** — the target URL rejected our crawler (robots.txt, auth-gated, JS-only). Provide static, publicly reachable URLs.
+- **`extraction_low_confidence`** — the document was successfully processed but content quality is low. Common with heavily-formatted PDFs.
+
+## Next steps
+
+- [Delete a document](/api-reference/endpoint/knowledgebasedeletedoc)
+- [Update the KB](/api-reference/endpoint/knowledgebaseupdate)
+- [Knowledge Base concepts](/docs/agents/knowledge/overview)

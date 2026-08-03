@@ -1,0 +1,69 @@
+---
+title: "Knowledge Base"
+sidebarTitle: "Overview"
+description: "Give your agents access to your documents, FAQs, and web content — grounded answers via Retrieval-Augmented Generation."
+---
+
+A **Knowledge Base** is a collection of your content — documents, plain text, and websites — that your agents search when answering questions. Instead of relying on generic LLM knowledge, agents retrieve from your Knowledge Base and answer with information that's accurate, brand-aligned, and up to date.
+
+Knowledge Bases are **reusable**. Multiple agents and templates can attach to the same one, so you keep information consistent across all your agents from one place.
+
+## How retrieval works
+
+TruGen supports two retrieval modes that control **when** and **how** the agent queries your Knowledge Base.
+
+| Mode | How it works |
+| --- | --- |
+| **Agentic RAG** | The LLM decides when and which Knowledge Base to search based on the user's query and conversation context. More precise — only retrieves when relevant. |
+| **Traditional RAG** | Every user query is searched against all configured Knowledge Bases, and the retrieved context is always passed to the LLM. Simpler and more predictable. |
+
+<Tip>
+  For most use cases, **Agentic RAG** produces better results — the agent retrieves only when it's genuinely needed, which reduces noise and improves response quality.
+</Tip>
+
+## Supported content types
+
+<CardGroup cols={3}>
+  <Card title="Documents" icon="file">
+    Upload **PDF** or **DOCX** files. Content is extracted, chunked, and indexed
+    automatically. Best for policies, manuals, product documentation, and
+    structured reports.
+  </Card>
+  <Card title="Plain Text" icon="text">
+    Paste raw text directly. Best for FAQs, scripted responses, quick reference
+    content, or anything you want to control precisely without a file upload.
+  </Card>
+  <Card title="URL & Website" icon="globe">
+    Provide a URL to scrape a single page, or crawl an entire site. Best for
+    public documentation, help centres, and product pages.
+  </Card>
+</CardGroup>
+
+Full format and size limits: see [Adding Content](/docs/agents/knowledge/uploading).
+
+## The three-step lifecycle
+
+Every Knowledge Base moves through three phases:
+
+<Steps>
+  <Step title="Create">
+    Set the name, description, and (optionally) initial content. See [Creating a Knowledge Base](/docs/agents/knowledge/creating).
+  </Step>
+  <Step title="Add content">
+    Upload documents, paste text, or point at URLs. TruGen extracts, cleans, chunks, and indexes each piece automatically. See [Adding Content](/docs/agents/knowledge/uploading).
+  </Step>
+  <Step title="Attach to agents">
+    Reference the Knowledge Base by ID from one or more agents (or a template). Agents pick up changes on the next session. See [Attaching to Agents](/docs/agents/knowledge/attaching).
+  </Step>
+</Steps>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Creating a Knowledge Base" icon="plus" href="/docs/agents/knowledge/creating">
+    Create your first KB in the Studio or via the API.
+  </Card>
+  <Card title="Adding Content" icon="upload" href="/docs/agents/knowledge/uploading">
+    Supported formats, size limits, and how content is processed.
+  </Card>
+</CardGroup>

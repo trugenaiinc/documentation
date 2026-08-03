@@ -1,0 +1,118 @@
+---
+title: "Upload Content"
+sidebarTitle: "Upload Content"
+description: "Upload PDFs and DOCX files, paste plain text, or point at URLs — TruGen extracts, chunks, and indexes everything automatically."
+---
+
+Once a Knowledge Base exists, you fill it with content. TruGen accepts three kinds of source material and handles all the extraction, cleaning, chunking, and indexing under the hood.
+
+## Content types
+
+| Type | Formats | Where to add |
+| --- | --- | --- |
+| **File upload** | `.pdf`, `.docx` | Studio or API |
+| **Plain text** | Raw text (any length) | Studio |
+| **URL** | Single page or full-site crawl | Studio |
+
+## Size limits
+
+| Scope | Limit |
+| --- | --- |
+| Single document upload (`POST /v1/ext/kb/{kbId}/doc`) | **10 MB** per file |
+| Bulk KB creation with attached files (`POST /v1/ext/kb`) | **100 MB** total request size |
+
+Files above these limits are rejected with a 400 error. For larger source material, split into smaller documents before uploading — smaller focused docs also retrieve better than one big file.
+
+## Uploading a file via API
+
+Upload a single document to an existing Knowledge Base using its `kbId`:
+
+```bash
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/kb/{kbId}/doc \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --form 'file=@/path/to/document.pdf'
+```
+
+Response includes the created document's ID:
+
+```json
+{
+  "doc_id": "doc_abc123",
+  "message": "Document added successfully"
+}
+```
+
+Full endpoint reference: [Add Documents to Knowledge Base](/api-reference/endpoint/knowledgebaseadddoc).
+
+## Adding plain text
+
+Plain text lives inline in the KB — no file is created. Best for FAQs, scripted responses, or short reference content you want to control word-for-word. Add plain text in the Studio's Knowledge Base editor.
+
+<Note>
+  Prefer plain text when the content is short and you want precise wording. Prefer file uploads when the content is long, already lives in a document, or needs to survive versioning outside TruGen.
+</Note>
+
+## Adding a URL or website
+
+Point the Studio's URL input at a webpage and TruGen fetches, cleans, and indexes it. You can either:
+
+- **Add a single URL** — fetches and indexes just that page
+- **Crawl a root URL** — walks the site and indexes every reachable page under that root
+
+Best for public documentation, help centres, changelogs, and product pages.
+
+<Note>
+  URL and crawl support is currently a Studio feature. If you need to add URLs programmatically at scale, contact [support@trugen.ai](mailto:support@trugen.ai).
+</Note>
+
+## How content is processed
+
+Every piece of content passes through the same pipeline:
+
+<Steps>
+  <Step title="Extract">
+    Text is pulled from the file, page, or plain-text input. Layout, images, and formatting are stripped down to the underlying content.
+  </Step>
+  <Step title="Clean">
+    Boilerplate (nav, footers, page numbers) and low-signal noise are removed.
+  </Step>
+  <Step title="Chunk">
+    The document is split into semantically coherent chunks sized for embedding retrieval.
+  </Step>
+  <Step title="Index">
+    Each chunk is embedded and stored in the vector index. Once indexed, the content is searchable by any agent the KB is attached to.
+  </Step>
+</Steps>
+
+Processing is asynchronous. For large PDFs or full-site crawls, indexing may take a minute or two. During that window, the document exists in the KB but isn't yet retrievable — attached agents keep answering from the rest of the KB's indexed content.
+
+## Removing a document
+
+Delete a specific document from a KB by its `docId`:
+
+```bash
+curl --request DELETE \
+  --url https://api.trugen.ai/v1/ext/kb/doc/{docId} \
+  --header 'x-api-key: YOUR_API_KEY'
+```
+
+The document is removed from the index immediately. Attached agents stop retrieving from it on the next session.
+
+## Best practices
+
+- **Clean text beats fancy PDFs.** PDFs with unusual layouts, multi-column pages, or footnotes retrieve poorly. Convert to Markdown or a clean PDF export when you can.
+- **Split large documents.** A 100-page master PDF retrieves worse than 10 well-scoped 10-page documents.
+- **Use descriptive filenames.** `hr-leave-policy-2026.pdf` beats `document-final-v2.pdf`. Filenames show up in retrieval reasoning.
+- **Re-upload changed docs rather than editing.** Delete the old version, upload the new one. Cleaner than trying to overwrite in place.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Attaching to Agents" icon="link" href="/docs/agents/knowledge/attaching">
+    Wire your Knowledge Base to one or many agents.
+  </Card>
+  <Card title="Creating a Knowledge Base" icon="plus" href="/docs/agents/knowledge/creating">
+    Back to the setup guide.
+  </Card>
+</CardGroup>

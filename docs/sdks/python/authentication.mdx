@@ -1,0 +1,96 @@
+---
+title: "Authentication"
+sidebarTitle: "Authentication"
+description: "Secure your API keys and manage session tokens."
+---
+
+TruGen AI uses a two-tier authentication system: **API keys** for server-side requests and **session tokens** for client-side connections.
+
+## Tier 1: API Key
+
+Your API key authenticates server-side requests to the TruGen AI API. API keys can be created and managed from the [TruGen AI Dashboard](https://app.trugen.ai/).
+
+### Creating an API Key
+
+From the [API Keys page](https://app.trugen.ai/api-keys), click **Create API Key**, give it a name, and click **Create**. Copy and store it securely — you will not be able to view it again.
+
+<Warning>
+  Never expose your API key in a client bundle, script shipped to end users, or public repository. Store it only in server-side environment variables or a secrets manager. If you lose your API key, you will need to create a new one — they cannot be recovered.
+</Warning>
+
+## Tier 2: Session Tokens
+
+Session tokens are temporary JWT credentials (valid for 5 minutes) that let clients connect to TruGen's streaming infrastructure without exposing your API key.
+
+### How session tokens work
+
+<Steps>
+  <Step title="Token Request">
+    Your server requests a session token from TruGen using your API key and agent ID.
+  </Step>
+  <Step title="Token Generation">
+    TruGen generates a temporary JWT tied to that specific agent configuration.
+  </Step>
+  <Step title="Client Connection">
+    Your Python client uses the session token to establish the WebRTC connection.
+  </Step>
+  <Step title="Real-time Communication">
+    Once connected, the client streams video/audio and receives events.
+  </Step>
+</Steps>
+
+## Development vs. production
+
+There are two accepted patterns depending on where your Python code runs.
+
+### Development / trusted environment
+
+For local development, backend jobs, and any environment that already trusts the machine, pass your API key directly to `TruGenClient`. The SDK handles the token exchange internally on every `create_session()` call.
+
+```python
+import os
+from trugen import TruGenClient
+
+client = TruGenClient(api_key=os.getenv("TRUGEN_API_KEY", ""))
+session = await client.create_session(agent_id=os.getenv("TRUGEN_AGENT_ID", ""))
+await session.connect()
+```
+
+This is the pattern used in the [Quickstart](/docs/sdks/python/quickstart) and the shipped example scripts.
+
+### Production / shipped desktop apps
+
+If you're shipping a Python desktop application to end users (Windows/Mac/Linux binaries), do **not** embed your API key in the binary. Instead:
+
+1. Run a small server-side endpoint that holds the API key.
+2. Have your desktop app request a short-lived session token from your server.
+3. Use the token to authenticate — see [Usage in Production](/docs/sdks/python/production) for the full pattern.
+
+## Environment configuration
+
+Set your credentials in a `.env` file (loaded via `python-dotenv`) or export them directly:
+
+```bash
+export TRUGEN_API_KEY="your-api-key"
+export TRUGEN_AGENT_ID="your-agent-id"
+```
+
+```python
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+api_key = os.getenv("TRUGEN_API_KEY", "")
+agent_id = os.getenv("TRUGEN_AGENT_ID", "")
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Usage in Production" icon="shield-halved" href="/docs/sdks/python/production">
+    Ship desktop apps securely with server-side session tokens.
+  </Card>
+  <Card title="Basic Usage" icon="book" href="/docs/sdks/python/reference/basic-usage">
+    Full SDK reference for initializing, streaming, and disconnecting.
+  </Card>
+</CardGroup>

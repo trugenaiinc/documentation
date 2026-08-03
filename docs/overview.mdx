@@ -1,141 +1,169 @@
 ---
 title: "Overview"
-description: "TruGen lets you build AI video teammates that see, hear, and respond in real time — human-like presence, at any scale."
+description: "Build face-to-face AI agents that see, hear, and speak with your users in real time — powered by the Huma family of models."
 ---
 
-TruGen lets you build **AI video teammates** that see, hear, and respond in real time — human-like presence, at any scale.
-
-Deploy conversational agents that go beyond text and voice. TruGen combines expressive avatar rendering with real-world vision to create face-to-face AI experiences that feel genuinely human.
-
-<Frame>
+<div
+  style={{
+    overflow: "hidden",
+    borderRadius: "12px",
+    lineHeight: 0,
+    marginLeft: "-1.5rem",
+    marginRight: "-1.5rem",
+    marginTop: "1rem",
+    marginBottom: "1rem",
+  }}
+>
   <img
     src="/images/avatar-pipeline.jpg"
-    alt="TruGen avatar pipeline overview"
+    alt="TruGen conversational video pipeline — WebRTC capture, STT, Hawkeye-1 vision, LLM, TTS, Huma-2 render"
+    style={{
+      width: "100%",
+      display: "block",
+      transform: "scale(1.11)",
+      transformOrigin: "center center",
+      marginTop: "-2px",
+      marginBottom: "-2px",
+    }}
   />
-</Frame>
+</div>
 
-## What TruGen Does
+**TruGen is a platform for building real-time AI video teammates** — agents that hold live, face-to-face conversations with your users through a photorealistic avatar. A teammate sees the user through their camera, hears them through their microphone, and answers with lip-synced speech in under a second — grounded in your data, wired to your tools, and speaking whichever of 60+ languages the user chose.
+
+Underneath: TruGen's proprietary **Huma** avatar renderer, the **Hawkeye** vision model, a fully pluggable **STT → LLM → TTS** pipeline, and enterprise-ready primitives for auth, sessions, and compliance. Ship with a single iFrame, a drop-in React widget, or the JavaScript / Python SDK — every path runs on the same infrastructure underneath.
+
+## What you can build
 
 <CardGroup cols={2}>
-
-<Card title="Human-Level Realism" icon="face-smile">
-  Expressive avatars that mirror natural human emotion and delivery.
-</Card>
-
-<Card title="Vision-Based Awareness" icon="eye">
-  Agents that recognise real-world actions and respond contextually.
-</Card>
-
-<Card title="≤ 1 Second Response" icon="bolt">
-  End-to-end latency that makes conversations feel instant and natural.
-</Card>
-
-<Card title="Global Scale" icon="globe">
-  Unlimited concurrent sessions with 99.9% uptime, anywhere in the world.
-</Card>
-
+  <Card title="Customer support agents" icon="headset">
+    Handle inbound questions with brand-accurate answers grounded in your docs.
+  </Card>
+  <Card title="Sales & lead qualification" icon="chart-line">
+    Qualify inbound leads, demo products, and hand off to a human when the
+    conversation calls for it.
+  </Card>
+  <Card title="Interviewers & assessors" icon="clipboard-question">
+    Run structured interviews, score responses, and produce transcripts you can
+    review.
+  </Card>
+  <Card title="Onboarding & training" icon="graduation-cap">
+    Walk new hires or customers through a guided flow with vision-aware
+    coaching.
+  </Card>
+  <Card title="Healthcare intake" icon="stethoscope">
+    Collect symptoms, history, and consent before the appointment — in the
+    patient's own language.
+  </Card>
+  <Card title="Language & skills tutors" icon="book-open">
+    Practice, correct, and coach with a patient teacher that never runs out of
+    hours.
+  </Card>
+  <Card title="Financial concierges" icon="building-columns">
+    Guide users through applications, KYC, and product selection with a calm,
+    compliant voice.
+  </Card>
+  <Card title="In-store & kiosk agents" icon="store">
+    Turn any screen with a camera into a helpful teammate that greets and
+    assists customers.
+  </Card>
 </CardGroup>
 
-## How It Works
+Anywhere a human once had to have a conversation, an agent can. [See real-world examples →](/docs/examples/ai-interviewer)
+
+## How it works
+
+Every agent runs through the same five-stage pipeline. Each stage is pluggable, and every stage can be configured per agent.
 
 <Steps>
-  <Step title="User Speaks or Acts">
-    The user talks or performs an action in front of the camera.
+  <Step title="Capture — WebRTC in">
+    The user's audio and video stream into the pipeline with sub-100 ms
+    transport, from any modern browser or mobile web.
   </Step>
-  <Step title="Hawkeye-1 Recognises">
-    Our vision model processes real-time video to detect actions, gestures, and context.
+  <Step title="Perceive — STT + Hawkeye-1">
+    Speech-to-text transcribes audio in real time. Hawkeye-1 analyses the video
+    stream for gaze, gesture, and scene context — and hands both to the LLM.
   </Step>
-  <Step title="LLM Reasons">
-    The agent's language model generates a contextually accurate, knowledge-grounded response.
+  <Step title="Reason — LLM">
+    The language model generates a response using the agent's system prompt,
+    attached knowledge base, memory, and available tools.
   </Step>
-  <Step title="Huma-2 Renders">
-    Our avatar renderer animates a lifelike response in real time, synced to voice.
+  <Step title="Speak — TTS">
+    Text-to-speech renders the response as natural, expressive audio in the
+    language the user spoke.
   </Step>
-  <Step title="Agent Responds">
-    The user receives a face-to-face response in under one second.
+  <Step title="Render — Huma-2 + WebRTC out">
+    Huma-2 generates the avatar video frame-by-frame, synced to the audio, and
+    streams both back to the user — closing the loop in under a second.
   </Step>
 </Steps>
 
-## Foundation Models
+[Read the full pipeline breakdown →](/docs/agents/pipeline)
 
-TruGen is built on two proprietary models working in tandem:
+## Performance characteristics
 
-| Model | Role | What It Does |
-| --- | --- | --- |
-| **Huma-2** | Avatar Renderer | Generates expressive, lifelike avatar video synced to voice in real time |
-| **Hawkeye-1** | Vision Model | Recognises real-world user actions, gestures, and context from live video |
+| Metric                               | Value                                                       |
+| ------------------------------------ | ----------------------------------------------------------- |
+| End-to-end response latency (Huma-2) | ≤ 800 ms typical                                            |
+| Huma-2 render pipeline               | ≤ 500 ms (audio in → video out)                             |
+| Concurrent sessions                  | Scale-based; contact sales for high-concurrency plans       |
+| Uptime target                        | 99.9%                                                       |
+| Supported languages                  | 60+ (see [multilingual](/docs/agents/multilingual-support)) |
 
-[Learn more about our models →](/docs/models)
+Numbers are measured on the default Groq + ElevenLabs stack. Latency and quality vary with your chosen LLM, TTS, and network path.
 
-## Lightning-Fast Performance
+## Foundation models
 
-| Capability                     | Metric         |
-| ------------------------------ | -------------- |
-| End-to-End Agent Latency       | **≤ 1 second** |
-| Speech-to-Avatar Response Time | **≤ 80 ms**    |
-| Uptime                         | **> 99.9%**    |
-| Concurrent Sessions            | **Unlimited**  |
+TruGen ships three proprietary models. Each has a specific job — combine them or use them independently.
 
-TruGen delivers **10x faster response times** compared to traditional pipelines — proven at global scale.
+| Model         | Role                                | Notes                                                                                            |
+| ------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **Huma-2**    | Real-time avatar renderer           | Gaussian-splatting based. Trainable from 2–3 min of source video. ≤ 500 ms render pipeline.      |
+| **Huma-1**    | Expressive avatar renderer (legacy) | Higher expressiveness at slightly higher latency. Recommended for pre-recorded video generation. |
+| **Hawkeye-1** | Vision action recognition           | Continuous scene, gaze, gesture, and multi-face analysis fed into the LLM as context.            |
 
-## Real-Time Knowledge & Intelligence
+[Compare models in depth →](/docs/models/overview)
 
-Connect your agents to internal docs, support articles, product data, or APIs. Responses are **context-aware**, **brand-true**, and **factual** — not generic guesses.
-
-Agents adapt dynamically based on:
-
-- Knowledge bases
-- Real-time user actions
-- Tool / API calls
-
-## Who Uses TruGen
+## Three ways to build
 
 <CardGroup cols={3}>
-
-<Card title="Customer Support" icon="headset">
-  Deploy always-on agents that resolve queries instantly with brand-accurate answers.
-</Card>
-
-<Card title="HR & Onboarding" icon="people-group">
-  Guide new hires through onboarding with interactive, knowledgeable AI teammates.
-</Card>
-
-<Card title="Sales Enablement" icon="chart-line">
-  Equip sales teams with AI agents that demo products and answer questions live.
-</Card>
-
+  <Card
+    title="No-code — Studio"
+    icon="wand-magic-sparkles"
+    href="https://app.trugen.ai"
+  >
+    Create, configure, and test an agent in the TruGen Studio. Ship with an
+    iFrame in a single line.
+  </Card>
+  <Card
+    title="Low-code — Widget"
+    icon="puzzle-piece"
+    href="/docs/integrations/widget-integration"
+  >
+    Drop the React widget into any app with an `agentId`. Full theming, no
+    WebRTC handling.
+  </Card>
+  <Card
+    title="Full-code — SDKs"
+    icon="code"
+    href="/docs/sdks/javascript/overview"
+  >
+    Use the JavaScript or Python SDK for custom UIs, custom event pipelines, or
+    server-driven agent orchestration.
+  </Card>
 </CardGroup>
 
-## API Integration
-
-Launch branded AI agents in minutes. TruGen's white-label APIs are available in REST and support SDKs for popular platforms. You get complete control of:
-
-- Personality and tone
-- Knowledge sources
-- Visual avatars
-- Voice and language
-- UI experience
-
-[Explore the API Reference →](/api-reference)
-
-## What's Next?
+## Next steps
 
 <CardGroup cols={2}>
-
-<Card title="Quickstart" icon="rocket" href="/docs/quickstart">
-  Create your first video agent in minutes.
-</Card>
-
-<Card title="Avatars" icon="user" href="/docs/avatars/gallery">
-  Browse and customize lifelike avatars for your agents.
-</Card>
-
-<Card title="AI Teammates" icon="robot" href="/docs/agents/conversational-video-agents">
-  Learn the architecture behind real-time conversational AI teammates.
-</Card>
-
-<Card title="Knowledge Base" icon="database" href="/docs/agents/knowledge-base">
-  Connect your data and documents for intelligent answers.
-</Card>
-
+  <Card title="Quickstart" icon="rocket" href="/docs/quickstart">
+    Create your first agent and embed it in under 5 minutes.
+  </Card>
+  <Card
+    title="Agent concepts"
+    icon="robot"
+    href="/docs/agents/conversational-video-agents"
+  >
+    Understand what an agent is, how conversations flow, and what's
+    configurable.
+  </Card>
 </CardGroup>

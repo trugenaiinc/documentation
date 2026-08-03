@@ -6,54 +6,51 @@ description: "The end-to-end architecture powering TruGen's real-time conversati
 
 TruGen's conversational pipeline connects speech, perception, reasoning, and expressive video response into a single continuous flow — optimised for speed and natural interaction, delivering responses in **under one second**.
 
-<Frame>
-  <img src="/images/e2e-banner.png" alt="End-to-end conversational pipeline: WebRTC, STT, LLM, TTS, and Huma-2 avatar generation" />
-</Frame>
+## Pipeline stages
 
-## Pipeline Stages
+### 1. Communication protocol (WebRTC)
 
-<Steps>
-  <Step title="Communication Protocol (WebRTC)">
-    Provides real-time two-way audio and video streaming. This layer captures microphone and camera input directly from the user and transports it to TruGen's inference engine with minimal latency. It also streams back rendered avatar video in real time, enabling fluid face-to-face interaction.
-  </Step>
-  <Step title="STT — Speech to Text">
-    Converts the user's spoken audio into text instantly using advanced streaming transcription. STT runs continuously and incrementally, capturing partial and final utterances so the agent can begin reasoning before the user finishes speaking.
-  </Step>
-  <Step title="Turn Detection">
-    Detects natural conversation boundaries — pauses, interruptions, and handovers. This enables the agent to know when to listen, when to speak, and how to gracefully interrupt or yield, replicating natural human conversational flow.
-  </Step>
-  <Step title="LLM — Language Model">
-    Generates intelligent, contextually relevant responses using large language models powered by your preferred provider. The LLM understands conversation memory, tone, context, and intent to produce meaningful and personalised responses.
-  </Step>
-  <Step title="Knowledge Base">
-    Enhances reasoning with structured and unstructured organisational knowledge — documents, FAQs, APIs, databases, and custom content — ensuring answers are factual, brand-aligned, and grounded in real data rather than generic assumptions.
-  </Step>
-  <Step title="TTS — Text to Speech">
-    Converts the generated response into natural, expressive speech. TTS models produce high-quality voice output in real time, supporting multiple languages, tones, and emotional expressions.
-  </Step>
-  <Step title="Avatar Rendering (Huma-2)">
-    Generates expressive video frames synchronised with speech. Using TruGen's **Huma-2** neural avatar model, the system produces realistic facial expressions, micro-expressions, lip sync, gaze direction, and emotional nuance — resulting in human-like communication.
-  </Step>
-</Steps>
+Provides real-time two-way audio and video streaming. This layer captures microphone and camera input directly from the user and transports it to TruGen's inference engine with minimal latency. It also streams back rendered avatar video in real time, enabling fluid face-to-face interaction.
+
+### 2. STT — Speech to Text
+
+Converts the user's spoken audio into text instantly using advanced streaming transcription. STT runs continuously and incrementally, capturing partial and final utterances so the agent can begin reasoning before the user finishes speaking.
+
+### 3. Turn detection
+
+Detects natural conversation boundaries — pauses, interruptions, and handovers. This enables the agent to know when to listen, when to speak, and how to gracefully interrupt or yield, replicating natural human conversational flow.
+
+### 4. LLM — Language Model
+
+Generates intelligent, contextually relevant responses using large language models powered by your preferred provider. The LLM understands conversation memory, tone, context, and intent to produce meaningful and personalised responses.
+
+### 5. Knowledge Base
+
+Enhances reasoning with structured and unstructured organisational knowledge — documents, FAQs, APIs, databases, and custom content — ensuring answers are factual, brand-aligned, and grounded in real data rather than generic assumptions.
+
+### 6. TTS — Text to Speech
+
+Converts the generated response into natural, expressive speech. TTS models produce high-quality voice output in real time, supporting multiple languages, tones, and emotional expressions.
+
+### 7. Avatar rendering (Huma-2)
+
+Generates expressive video frames synchronised with speech. Using TruGen's **Huma-2** neural avatar model, the system produces realistic facial expressions, micro-expressions, lip sync, gaze direction, and emotional nuance — resulting in human-like communication.
 
 This tightly optimised pipeline enables **sub-second agent reactions**, face-to-face realism, and natural conversational dynamics.
 
-<Note>STT, LLM, TTS, and Knowledge Base modules are **agent-agnostic** — each agent can choose its own model provider, configuration, or customisation independently.</Note>
+<Note>
+  STT, LLM, TTS, and Knowledge Base modules are **agent-agnostic** — each agent
+  can choose its own model provider, configuration, or customisation
+  independently.
+</Note>
 
-## What's Next?
+## Next steps
 
-<CardGroup cols={3}>
-
-<Card title="Developer Portal" icon="browser" href="https://app.trugen.ai">
-  Create and manage agents visually — no code required.
-</Card>
-
-<Card title="Get Started" icon="rocket" href="/docs/quickstart">
-  Step-by-step guide to creating and embedding your first agent.
-</Card>
-
-<Card title="API Reference" icon="book" href="/api-reference/overview">
-  Full set of APIs for automated agent creation and orchestration.
-</Card>
-
+<CardGroup cols={2}>
+  <Card title="Models" icon="brain" href="/docs/models/overview">
+    Deep dive on the Huma family — the models powering the render stage of this pipeline.
+  </Card>
+  <Card title="Providers" icon="cloud" href="/docs/providers/overview">
+    Every STT, LLM, and TTS provider you can slot into the pipeline.
+  </Card>
 </CardGroup>

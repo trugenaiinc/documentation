@@ -1,0 +1,86 @@
+---
+title: "WordPress"
+description: "Embed a TruGen agent in a WordPress site with a block, shortcode, or theme edit."
+---
+
+TruGen agents work on WordPress through the standard iframe embed. Works in classic and block editors, on any theme.
+
+## Prerequisites
+
+- A TruGen agent with an `agent_id` — see the [quickstart](/docs/quickstart)
+- Access to a WordPress site with content-edit or theme-edit permissions
+
+## Add via the Block Editor (recommended)
+
+<Steps>
+  <Step title="Open the page or post">
+    Edit the page or post where you want the agent.
+  </Step>
+  <Step title="Add a Custom HTML block">
+    Click **+ Add block** and search for **Custom HTML**.
+  </Step>
+  <Step title="Paste the iframe">
+    ```html
+    <iframe
+      src="https://app.trugen.ai/embed/YOUR_AGENT_ID?username=USER_NAME&id=USER_ID&context=CONTEXT"
+      width="100%"
+      height="600"
+      frameborder="0"
+      allow="camera; microphone; autoplay; display-capture; fullscreen"
+    ></iframe>
+    ```
+
+    Replace `YOUR_AGENT_ID` with your agent ID, and substitute `USER_NAME`, `USER_ID`, and `CONTEXT` with values that identify the visitor.
+  </Step>
+  <Step title="Preview and publish">
+    Publish the page. Visitors will be prompted for camera + mic permissions on first load.
+  </Step>
+</Steps>
+
+## Add via the Classic Editor
+
+Switch the editor to **Text** mode, then paste the iframe HTML directly. Return to Visual mode to preview.
+
+## Add via theme (sitewide floating widget)
+
+For a floating widget across the entire site:
+
+<Steps>
+  <Step title="Open the theme editor">
+    Go to **Appearance → Theme File Editor**, or use a child theme.
+  </Step>
+  <Step title="Edit footer.php">
+    Add before the closing `</body>` tag:
+
+    ```html
+    <iframe
+      src="https://app.trugen.ai/embed/YOUR_AGENT_ID"
+      style="position: fixed; bottom: 20px; right: 20px; width: 380px; height: 560px; border: 0; z-index: 9999;"
+      allow="camera; microphone; autoplay; display-capture; fullscreen"
+    ></iframe>
+    ```
+  </Step>
+</Steps>
+
+<Note>Prefer a child theme so your changes survive theme updates.</Note>
+
+## Common gotchas
+
+- **Security plugins** (Wordfence, iThemes) may strip iframes from post content. Whitelist `app.trugen.ai` in the plugin's allowed sources.
+- **Caching plugins** (WP Rocket, W3 Total Cache) don't affect the iframe itself but can cache your page — clear cache after editing.
+- **HTTPS required.** Browsers refuse to grant camera/mic on non-HTTPS pages, and modern WordPress hosts enforce HTTPS by default.
+
+## Domain allowlist
+
+If your agent has an `allowed_domains` list, add your WordPress domain (`example.com`, `www.example.com`) to it.
+
+## What's next
+
+<CardGroup cols={2}>
+<Card title="iFrame reference" icon="code" href="/docs/integrations/embed-via-iFrame">
+Every iframe parameter documented.
+</Card>
+<Card title="Widget (React)" icon="react" href="/docs/integrations/widget-integration">
+For WordPress sites built as headless React apps.
+</Card>
+</CardGroup>
