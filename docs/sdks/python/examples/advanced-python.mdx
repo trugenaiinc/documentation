@@ -1,0 +1,374 @@
+---
+title: "Advanced GUI Example"
+sidebarTitle: "Advanced GUI"
+description: "Full-feature TruGen SDK demo — captions, speaking states, connection quality, mic permissions, reconnect handling, and WAV audio injection."
+---
+
+Every SDK feature in one runnable example. Adapted verbatim from `examples/advanced_session_ui.py` in the [official Python SDK repository](https://github.com/trugenai/python-sdk).
+
+## Features demonstrated
+
+- Live video avatar display
+- Audio output with Acoustic Echo Cancellation (AEC)
+- Agent captions overlay
+- Mic mute/unmute
+- Agent speaking detection
+- User speaking detection
+- Connection quality monitoring
+- Mic permission events (pending / granted / denied)
+- Reconnect handling
+- **Custom WAV audio injection** (press **A** or pass `--wav` flag)
+- Input audio stream events
+
+## Controls
+
+Click the video window first to focus it, then:
+
+| Key | Action |
+| --- | --- |
+| **M** | Toggle mic mute / unmute |
+| **A** | Inject WAV audio (requires `--wav` flag at launch) |
+| **Q** / **Esc** | Close window and quit |
+
+## Requirements
+
+```bash
+uv add trugen-sdk --extra display
+# or: pip install trugen-sdk[display]
+# or: pip install opencv-python sounddevice numpy python-dotenv
+```
+
+Set your credentials in a `.env`:
+
+```bash
+TRUGEN_API_KEY=your-api-key
+TRUGEN_AGENT_ID=your-agent-id
+```
+
+## Run
+
+```bash
+# Basic (no WAV injection)
+uv run --extra display python examples/advanced_session_ui.py
+
+# With a WAV file ready to inject on 'A' key press
+uv run --extra display python examples/advanced_session_ui.py --wav /path/to/audio.wav
+```
+
+## Full source
+
+```python
+"""
+TruGen Advanced Avatar Viewer — Full SDK Features
+==================================================
+Demonstrates every available TruGen SDK feature in one example.
+"""
+
+import os
+import sys
+import time
+import asyncio
+import textwrap
+import numpy as np
+import cv2
+from dotenv import load_dotenv
+
+from trugen import TruGenClient, TruGenRunner, TruGenState, TruGenEvent
+
+load_dotenv()
+
+# ── Config ────────────────────────────────────────────────────────────────────
+
+_wav_idx = sys.argv.index("--wav") + 1 if "--wav" in sys.argv else None
+WAV_FILE = sys.argv[_wav_idx] if _wav_idx and _wav_idx < len(sys.argv) else None
+
+WINDOW_TITLE      = "TruGen AI — Full SDK Demo"
+FRAME_W, FRAME_H  = 1280, 720
+CAPTION_MAX_CHARS = 80
+CAPTION_HOLD_SECS = 5.0
+FONT              = cv2.FONT_HERSHEY_DUPLEX
+FONT_SCALE        = 0.60
+FONT_THICK        = 1
+
+C_WHITE   = (255, 255, 255)
+C_BLACK   = (0,   0,   0)
+C_GREEN   = (80,  200, 80)
+C_RED     = (60,  60,  220)
+C_YELLOW  = (0,   220, 220)
+C_GRAY    = (180, 180, 180)
+C_BLUE    = (220, 130, 60)
+C_OVERLAY = (20,  20,  20)
+
+# ── Runtime state (main-thread only — no lock needed) ─────────────────────────
+
+agent_speaking  = False
+user_speaking   = False
+audio_injecting = False
+conn_quality    = "—"
+
+
+# ── GUI helpers ───────────────────────────────────────────────────────────────
+
+def _overlay_rect(frame, x1, y1, x2, y2, color=C_OVERLAY, alpha=0.55):
+    roi = frame[y1:y2, x1:x2]
+    cv2.addWeighted(np.full_like(roi, color), alpha, roi, 1 - alpha, 0, roi)
+    frame[y1:y2, x1:x2] = roi
+
+
+def _put_text(frame, text, x, y, color=C_WHITE, scale=FONT_SCALE, thick=FONT_THICK):
+    cv2.putText(frame, text, (x, y), FONT, scale, C_BLACK, thick + 1, cv2.LINE_AA)
+    cv2.putText(frame, text, (x, y), FONT, scale, color,   thick,     cv2.LINE_AA)
+
+
+def _placeholder() -> np.ndarray:
+    frame = np.zeros((FRAME_H, FRAME_W, 3), dtype=np.uint8)
+    msg = "Waiting for video avatar…"
+    tw, th = cv2.getTextSize(msg, FONT, 0.9, 2)[0]
+    cv2.putText(frame, msg, ((FRAME_W - tw) // 2, (FRAME_H + th) // 2),
+                FONT, 0.9, C_GRAY, 2, cv2.LINE_AA)
+    return frame
+
+
+# ── Session factory ───────────────────────────────────────────────────────────
+
+async def create_session():
+    """Creates, connects, and returns a TruGenSession."""
+    client  = TruGenClient(api_key=os.getenv("TRUGEN_API_KEY", ""))
+    session = await client.create_session(agent_id=os.getenv("TRUGEN_AGENT_ID", ""))
+    await session.connect()
+    await session.enable_audio_output()   # AEC + speaker output in one call
+    return session
+
+
+# ── Runner ────────────────────────────────────────────────────────────────────
+
+runner = TruGenRunner(session_factory=create_session)
+
+cv2.namedWindow(WINDOW_TITLE, cv2.WINDOW_NORMAL)
+cv2.resizeWindow(WINDOW_TITLE, FRAME_W, FRAME_H)
+
+
+# ── Event handlers ────────────────────────────────────────────────────────────
+
+@runner.on_state
+def on_state(state: TruGenState) -> None:
+    pass
+
+
+# Buffer streaming tokens for the caption overlay
+_caption_buffer: str = ""
+
+@runner.on_caption
+def on_caption(text: str) -> None:
+    global _caption_buffer
+    _caption_buffer = text   # drives the GUI caption overlay
+
+
+# Terminal transcript logs — final, complete utterances only
+@runner.on_event("user.transcription_received")
+def on_user_transcript(text: str) -> None:
+    print(f"[User]  {text}")
+
+
+@runner.on_event("agent.transcription_final")
+def on_agent_transcript(text: str) -> None:
+    print(f"[Agent] {text}")
+
+
+# Microphone permission lifecycle
+@runner.on_event(TruGenEvent.MIC_PERMISSION_PENDING)
+def on_mic_pending() -> None:
+    pass
+
+
+@runner.on_event(TruGenEvent.MIC_PERMISSION_GRANTED)
+def on_mic_granted() -> None:
+    pass
+
+
+@runner.on_event(TruGenEvent.MIC_PERMISSION_DENIED)
+def on_mic_denied() -> None:
+    pass
+
+
+@runner.on_event(TruGenEvent.INPUT_AUDIO_STREAM_STARTED)
+def on_input_audio() -> None:
+    pass
+
+
+# Agent speaking state
+@runner.on_event(TruGenEvent.AGENT_SPEAKING_STARTED)
+def on_agent_speak_start() -> None:
+    global agent_speaking
+    agent_speaking = True
+
+
+@runner.on_event(TruGenEvent.AGENT_SPEAKING_ENDED)
+def on_agent_speak_end() -> None:
+    global agent_speaking, _caption_buffer
+    agent_speaking = False
+    _caption_buffer = ""
+
+
+# User speaking state
+@runner.on_event(TruGenEvent.USER_SPEECH_STARTED)
+def on_user_speak_start() -> None:
+    global user_speaking
+    user_speaking = True
+
+
+@runner.on_event(TruGenEvent.USER_SPEECH_ENDED)
+def on_user_speak_end() -> None:
+    global user_speaking
+    user_speaking = False
+
+
+# Connection resilience
+@runner.on_event("connection.reconnecting")
+def on_reconnecting() -> None:
+    pass
+
+
+@runner.on_event("connection.reconnected")
+def on_reconnected() -> None:
+    pass
+
+
+@runner.on_event("connection.quality_changed")
+def on_quality(participant, quality) -> None:
+    global conn_quality
+    conn_quality = str(quality).split(".")[-1]
+
+
+# ── WAV audio injection ───────────────────────────────────────────────────────
+
+def inject_wav() -> None:
+    """
+    Schedules WAV injection into the session.
+
+    Auto-mutes the mic before injection and restores it after.
+    This prevents AEC breakdown: without muting, the agent's response
+    to the WAV audio loops back through the mic and floods the STT pipeline.
+    """
+    global audio_injecting
+
+    if not WAV_FILE:
+        print("[Audio]      ⚠️  No WAV file — pass --wav /path/to/file.wav")
+        return
+    if not os.path.isfile(WAV_FILE):
+        print(f"[Audio]      ❌ File not found: {WAV_FILE}")
+        return
+
+    session = runner.session
+    if session is None:
+        print("[Audio]      ❌ Session not ready yet")
+        return
+
+    async def _do_inject():
+        global audio_injecting
+        audio_injecting = True
+
+        was_muted = runner.mic_muted
+        if not was_muted:
+            session.mute_input_audio()
+            runner._shared.set_mic_muted(True)
+            print("[Audio]      🔇 Mic muted for injection")
+
+        print(f"[Audio]      🎵 Injecting: {os.path.basename(WAV_FILE)}")
+        try:
+            await session.upload_audio(WAV_FILE)
+            print("[Audio]      ✅ Injection complete")
+        except Exception as exc:
+            print(f"[Audio]      ❌ Error: {exc}")
+        finally:
+            audio_injecting = False
+            if not was_muted:
+                session.unmute_input_audio()
+                runner._shared.set_mic_muted(False)
+                print("[Audio]      🎤 Mic restored")
+
+    loop = runner._loop
+    if loop and loop.is_running():
+        asyncio.run_coroutine_threadsafe(_do_inject(), loop)
+
+
+# ── Frame handler ─────────────────────────────────────────────────────────────
+
+@runner.on_frame
+def on_frame(frame: np.ndarray | None) -> None:
+    display = frame.copy() if frame is not None else _placeholder()
+    h, w    = display.shape[:2]
+
+    # Top status bar
+    _overlay_rect(display, 0, 0, w, 36)
+
+    # Left: session state
+    state_color = C_GREEN if runner.session_state == TruGenState.CONNECTED else C_YELLOW
+    _put_text(display, f"  {runner.session_state.value}", 10, 23, color=state_color, scale=0.52)
+
+    # Right: mic status
+    mic_txt   = "🔇 MUTED [M]" if runner.mic_muted else "🎤 ON  [M]"
+    mic_color = C_RED if runner.mic_muted else C_GREEN
+    _put_text(display, mic_txt, w - 180, 23, color=mic_color, scale=0.48)
+
+    # Audio injection banner
+    if audio_injecting:
+        _overlay_rect(display, 0, 36, w, 60)
+        _put_text(display, f"🎵 Injecting: {os.path.basename(WAV_FILE or '')}",
+                  10, 53, color=C_BLUE, scale=0.50)
+
+    # Captions overlay
+    caption, caption_ts = runner.get_caption()
+    if caption and time.monotonic() - caption_ts < CAPTION_HOLD_SECS:
+        lines  = textwrap.wrap(caption, width=CAPTION_MAX_CHARS)
+        line_h = 28
+        y0     = h - (len(lines) * line_h + 16) - 10
+        _overlay_rect(display, 0, y0, w, h - 10)
+        for i, line in enumerate(lines):
+            tw = cv2.getTextSize(line, FONT, FONT_SCALE, FONT_THICK)[0][0]
+            _put_text(display, line, (w - tw) // 2, y0 + 20 + i * line_h)
+
+    # Key hint bar at bottom — reminds user to focus the window
+    hint = "Click this window first, then:  M=mute   A=inject WAV   Q=quit"
+    _put_text(display, hint, 10, h - 10, color=C_GRAY, scale=0.40)
+
+    # Render
+    cv2.imshow(WINDOW_TITLE, display)
+    key = cv2.waitKey(1) & 0xFF
+    if key in (ord("q"), ord("Q"), 27):
+        runner.stop()
+    elif key in (ord("m"), ord("M")):
+        runner.toggle_mute()
+    elif key in (ord("a"), ord("A")):
+        inject_wav()
+    if cv2.getWindowProperty(WINDOW_TITLE, cv2.WND_PROP_VISIBLE) < 1:
+        runner.stop()
+
+
+# ── Main ──────────────────────────────────────────────────────────────────────
+
+if __name__ == "__main__":
+    wav_hint = f"WAV loaded: {WAV_FILE}" if WAV_FILE else "pass --wav /path/to/file.wav to enable audio injection"
+    print(f"Controls: M = mute | A = inject WAV | Q = quit  (click the video window first)")
+    print(f"Audio:    {wav_hint}\n")
+    runner.run()
+    cv2.destroyAllWindows()
+```
+
+## Notable patterns to steal
+
+- **`inject_wav()`** schedules audio injection safely using `asyncio.run_coroutine_threadsafe` — the correct way to bridge from your main GUI thread into the SDK's async loop.
+- **Mic muting during injection** — this is critical for AEC. Without it, the agent responds to its own injected audio via the mic, spiraling into feedback.
+- **`connection.quality_changed`** gives you a live signal from LiveKit about the participant's connection quality — display it as a small badge for user awareness.
+- **`_caption_buffer`** on `TEXT_CHUNK_RECEIVED` is cleared when the agent stops speaking, so stale captions don't linger.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Basic GUI Example" icon="code" href="/docs/sdks/python/examples/basic-python">
+    The minimal viewer this one is built on.
+  </Card>
+  <Card title="Audio Control" icon="microphone" href="/docs/sdks/python/reference/audio-control">
+    Deeper reference on injection and mic control.
+  </Card>
+</CardGroup>

@@ -1,0 +1,119 @@
+---
+title: "Setup"
+sidebarTitle: "Setup"
+description: "Create a Knowledge Base in the Studio or via the API — and name it so the agent can find it."
+---
+
+Every Knowledge Base starts with a **name** and a **description**. Both fields matter more than most people expect: the agent reads them to decide *whether* to search this KB for a given user question. A vague name or an empty description means the LLM never picks the KB, no matter how good the content is.
+
+## In the Studio
+
+<Steps>
+  <Step title="Open Knowledge Base">
+    Go to [app.trugen.ai](https://app.trugen.ai) and click **Knowledge Base** in the left panel under **Configure**.
+  </Step>
+  <Step title="Create a new Knowledge Base">
+    Click **Create New**. Give it a clear **Name** and a specific **Description**.
+  </Step>
+  <Step title="Add your content">
+    You can add content at creation time or later. See [Adding Content](/docs/agents/knowledge/uploading) for supported formats.
+  </Step>
+  <Step title="Save">
+    Click **Save & Create**. Content is queued for indexing. Once processing completes, the KB is ready to attach to agents.
+  </Step>
+</Steps>
+
+## Via API
+
+Create a Knowledge Base with a name and description:
+
+```bash
+curl --location 'https://api.trugen.ai/v1/ext/kb' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --form 'name="HR-Policies"' \
+  --form 'description="Use this whenever the user asks about HR policies, leave entitlements, benefits, or employee guidelines."' \
+  --form 'is_active="true"'
+```
+
+The response returns a Knowledge Base `id` — save it. You'll use it to add documents and attach the KB to agents.
+
+```json
+{
+  "id": "kb_abc123",
+  "message": "Knowledge base created successfully"
+}
+```
+
+<Note>
+  Requests use `multipart/form-data` (not JSON) because the same endpoint accepts optional file uploads at creation time. Total request size is capped at **100 MB**.
+</Note>
+
+Full endpoint reference: [Create Knowledge Base](/api-reference/endpoint/knowledgebasecreate).
+
+## Naming and describing well
+
+The Name and Description drive retrieval routing. Write them the way you'd write a prompt for a colleague deciding which folder to open.
+
+### Good
+
+```
+Name: HR-Policies
+Description: Use this whenever the user asks about HR policies, leave
+entitlements, benefits, or employee guidelines.
+```
+
+```
+Name: Product-Docs
+Description: Use this when the user asks about product features, setup
+instructions, integrations, or technical specifications.
+```
+
+```
+Name: Pricing-2026
+Description: Use this for questions about plan pricing, seat costs,
+discounts, and Enterprise custom quotes.
+```
+
+### Bad
+
+```
+Name: KB1
+Description: Company info
+```
+
+Both are too vague. The LLM has no signal to pick this KB over another.
+
+## Organization strategy
+
+You'll almost always get better results with **multiple focused Knowledge Bases** than one large mixed one.
+
+| Approach | When it works | When it doesn't |
+| --- | --- | --- |
+| **One KB per domain** (recommended) | Users ask questions clearly rooted in one topic. Each KB has ~5–50 focused documents. | — |
+| **One giant KB with all content** | You have very little content and it's all closely related. | Retrieval quality drops sharply once mixed content exceeds ~50 documents. |
+
+Practical splits that work well:
+
+- **Product-Docs + Pricing + Support-FAQs** (SaaS)
+- **HR-Policies + IT-Support + Facilities** (internal ops)
+- **API-Reference + Getting-Started + Troubleshooting** (developer tools)
+
+## Managing your Knowledge Bases
+
+- **List all KBs**: `GET /v1/ext/kbs`
+- **Get a specific KB**: `GET /v1/ext/kb/{kbId}` (returns metadata plus attached documents)
+- **Update name/description**: `PUT /v1/ext/kb/{kbId}`
+- **Delete a KB**: `DELETE /v1/ext/kb/{kbId}`
+
+See the full [Knowledge Base API Reference](/api-reference/endpoint/knowledgebasecreate).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Adding Content" icon="upload" href="/docs/agents/knowledge/uploading">
+    Upload documents, add plain text, or scrape URLs.
+  </Card>
+  <Card title="Attaching to Agents" icon="link" href="/docs/agents/knowledge/attaching">
+    Wire your KB to one or many agents.
+  </Card>
+</CardGroup>

@@ -2,4 +2,60 @@
 title: 'Create Persona Template'
 openapi: 'POST /ext/template'
 ---
- 
+
+Create a reusable [template](/docs/agents/templates) — the shared configuration that many agents can derive from. Use templates to enforce consistent behavior across a fleet of agents.
+
+## What belongs in a template
+
+- The shared system prompt
+- Attached knowledge bases
+- LLM, STT, TTS configuration
+- Default avatar (individual agents can override)
+- Callback configuration
+
+## What doesn't
+
+- Per-user or per-agent identifiers (avatar assignments, meeting emails, agent names)
+- Runtime session data
+
+## Example
+
+```bash
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/template \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "template_name": "Customer Support Template",
+    "template_system_prompt": "You are a friendly support agent. Answer in 1-2 sentences and always confirm before taking action.",
+    "config": {
+      "timeout": 300,
+      "conversationalContext": "support"
+    },
+    "knowledge_base": [
+      { "id": "kb_prod_docs", "name": "Product Docs" },
+      { "id": "kb_faqs",      "name": "FAQs" }
+    ],
+    "is_active": true,
+    "record": true
+  }'
+```
+
+Response:
+
+```json
+{
+  "id": "tpl_abc123",
+  "message": "Template created successfully"
+}
+```
+
+## Using the template
+
+Once created, spin up agents from it with [Create Agent by Template](/api-reference/endpoint/agentcreatebytemplate).
+
+## Next steps
+
+- [List templates](/api-reference/endpoint/templateget)
+- [Update template](/api-reference/endpoint/templateupdate)
+- [Templates concept](/docs/agents/templates)

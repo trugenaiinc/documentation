@@ -1,0 +1,191 @@
+---
+title: "Event Handling"
+sidebarTitle: "Event Handling"
+description: "Listen to real-time session, media, speech, and transcription events with decorator-based handlers."
+---
+
+Every `TruGenSession` and `TruGenRunner` is event-driven. Register handlers with decorators; the SDK invokes them on the correct thread as events fire.
+
+You have two entry points:
+
+- **`@runner.on_*`** decorators on a `TruGenRunner` — main-thread callbacks, ideal for UI updates
+- **`@session.on()`** decorator on a `TruGenSession` — low-level async callbacks, run on the session's event loop
+
+Use runner decorators for GUI apps. Use session decorators when you're driving the session directly from your own async code.
+
+## Runner Decorators
+
+### `@runner.on_frame`
+
+Receives BGR video frames (NumPy arrays) or `None` on the main thread. Fired on every new frame.
+
+```python
+@runner.on_frame
+def on_frame(frame):
+    if frame is not None:
+        cv2.imshow("Avatar", frame)
+```
+
+### `@runner.on_caption`
+
+Receives real-time streaming caption chunks — ideal for UI overlays.
+
+```python
+@runner.on_caption
+def on_caption(text: str):
+    # Fired for each caption chunk as it arrives
+    pass
+```
+
+### `@runner.on_state`
+
+Called when the session's connection state transitions.
+
+```python
+from trugen import TruGenState
+
+@runner.on_state
+def on_state(state: TruGenState):
+    print(f"Status: {state.value}")
+```
+
+### `@runner.on_event`
+
+Handles any standard `TruGenEvent` enum or custom string event.
+
+```python
+from trugen import TruGenEvent
+
+# Log final complete transcripts
+@runner.on_event("user.transcription_received")
+def on_user_transcript(text: str):
+    print(f"[User]  {text}")
+
+@runner.on_event("agent.transcription_final")
+def on_agent_transcript(text: str):
+    print(f"[Agent] {text}")
+
+# Handle speaking state changes
+@runner.on_event(TruGenEvent.AGENT_SPEAKING_STARTED)
+def on_speak_start():
+    print("Agent started speaking…")
+```
+
+## Session Decorators
+
+If you're not using `TruGenRunner`, listen to events directly on the `TruGenSession` using `@session.on()`:
+
+```python
+from trugen import TruGenEvent
+
+# Final complete transcripts
+@session.on("user.transcription_received")
+def on_user_speech(text: str):
+    print(f"[User]  {text}")
+
+@session.on("agent.transcription_final")
+def on_agent_speech(text: str):
+    print(f"[Agent] {text}")
+
+# Speaking state changes
+@session.on(TruGenEvent.AGENT_SPEAKING_STARTED)
+def agent_speech_start():
+    print("Agent started speaking...")
+```
+
+<Warning>
+  Register handlers before calling `session.connect()`. Startup events like microphone permission, connection, and stream initialization can fire while `connect()` is running. Late listeners will not receive events that already fired.
+</Warning>
+
+## Common patterns
+
+### Connection lifecycle
+
+```python
+from trugen import TruGenState, TruGenEvent
+
+@runner.on_state
+def on_state(state: TruGenState):
+    if state == TruGenState.CONNECTED:
+        print("Live!")
+    elif state == TruGenState.DISCONNECTED:
+        print("Session ended.")
+    elif state == TruGenState.ERROR:
+        print("Something broke.")
+
+@runner.on_event(TruGenEvent.ERROR)
+def on_error(err):
+    print(f"Session error: {err}")
+```
+
+### Reconnection handling
+
+Transient network drops emit `connection.reconnecting` and `connection.reconnected` as string events:
+
+```python
+@runner.on_event("connection.reconnecting")
+def on_reconnecting():
+    print("Reconnecting…")
+
+@runner.on_event("connection.reconnected")
+def on_reconnected():
+    print("Back online.")
+```
+
+### Speaking indicators
+
+```python
+from trugen import TruGenEvent
+
+agent_speaking = False
+user_speaking = False
+
+@runner.on_event(TruGenEvent.AGENT_SPEAKING_STARTED)
+def _agent_start():
+    global agent_speaking
+    agent_speaking = True
+
+@runner.on_event(TruGenEvent.AGENT_SPEAKING_ENDED)
+def _agent_end():
+    global agent_speaking
+    agent_speaking = False
+
+@runner.on_event(TruGenEvent.USER_SPEECH_STARTED)
+def _user_start():
+    global user_speaking
+    user_speaking = True
+
+@runner.on_event(TruGenEvent.USER_SPEECH_ENDED)
+def _user_end():
+    global user_speaking
+    user_speaking = False
+```
+
+### Microphone permission lifecycle
+
+```python
+from trugen import TruGenEvent
+
+@runner.on_event(TruGenEvent.MIC_PERMISSION_PENDING)
+def on_mic_pending():
+    print("Waiting for microphone permission…")
+
+@runner.on_event(TruGenEvent.MIC_PERMISSION_GRANTED)
+def on_mic_granted():
+    print("Microphone granted.")
+
+@runner.on_event(TruGenEvent.MIC_PERMISSION_DENIED)
+def on_mic_denied():
+    print("Microphone denied — the agent won't hear the user.")
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="List all events" icon="list" href="/docs/sdks/python/reference/list-all-events">
+    Complete reference of every event the SDK emits.
+  </Card>
+  <Card title="Audio Control" icon="microphone" href="/docs/sdks/python/reference/audio-control">
+    Programmatically control the mic and inject audio.
+  </Card>
+</CardGroup>

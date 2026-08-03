@@ -1,0 +1,72 @@
+---
+title: "Widget SDK Reference"
+sidebarTitle: "Widget Reference"
+description: "Every prop the @aiteammate/agent-widget React component accepts."
+---
+
+The `@aiteammate/agent-widget` package exposes a single React component, `TrugenAgentWidget`. Its full appearance and behavior are configured server-side via the agent's [widget config](/docs/integrations/widget-customization) — the props below are what you pass at render time from your app.
+
+## Install
+
+```bash
+npm install @aiteammate/agent-widget
+```
+
+Import the stylesheet once (typically in your app's root layout):
+
+```tsx
+import "@aiteammate/agent-widget/styles.css";
+```
+
+Then render the component with your agent ID:
+
+```tsx
+import { TrugenAgentWidget } from "@aiteammate/agent-widget";
+
+export default function AgentPage() {
+  return (
+    <TrugenAgentWidget
+      agentId="agt_12345"
+      userName="Jane"
+      userId="user_123"
+      context="Jane opened the pricing page"
+    />
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `agentId` | `string` | Yes | ID of the agent to load. Copy from the [Developer Portal](https://app.trugen.ai) or from `POST /v1/ext/agent`. |
+| `context` | `string` | No | Free-form context string appended to the agent's system prompt for this session. |
+| `userName` | `string` | No | Display name for the participant. Also passed to the agent so it can address the user by name. |
+| `userId` | `string` | No | Your internal user identifier. Attaches to the resulting `conversation` record for analytics and lookup. |
+
+## Requirements
+
+- **React 19+** — the widget declares React 19 as a peer dependency
+- **Modern browser** — Chrome 90+, Edge 90+, Firefox 88+, Safari 14+
+- **HTTPS** — camera and microphone access is only granted on HTTPS origins (or `localhost` in development)
+
+## What's configured server-side
+
+Everything about how the widget looks — colors, position, buttons, branding, allowed domains — lives on the agent's `widget` config. Change it in the Studio or via the API and every embed of the widget picks up the change on the next session.
+
+Server-side settings covered on separate pages:
+
+- [Widget Customization](/docs/integrations/widget-customization) — colors, position, buttons, branding
+- [Allowed origins](/docs/integrations/widget-customization#allowed-origins) — only listed domains can embed the widget and hold a conversation
+- [System messages](/docs/agents/system-messages) — welcome, idle, exit messages
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Widget Customization" icon="palette" href="/docs/integrations/widget-customization">
+    Configure colors, position, buttons, and branding for the widget.
+  </Card>
+  <Card title="Install the widget" icon="puzzle-piece" href="/docs/integrations/widget-integration">
+    Full setup guide for the React widget.
+  </Card>
+</CardGroup>

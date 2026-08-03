@@ -41,9 +41,18 @@ Tools are powered by **LLM function calling** — the agent decides when a tool 
 
 ## Testing a Tool
 
-Every tool has a **Test** button in the Developer Studio. Once a tool is connected or created, you can run a live test directly from the portal — provide the inputs the tool expects, fire the request, and verify the response before deploying.
+Every tool has a **Test** button in the Studio. Once you configure a tool, you can run it in a live sandbox directly from the Tools tab — provide the inputs the tool expects, fire the request, and see the exact response before saving to your agent.
 
-This lets you confirm the tool is correctly configured and the agent can reach the endpoint, without needing to start a full conversation.
+The test flow supports all four tool types:
+
+- **API / Webhook** — sends a real HTTP request to your endpoint and shows the status code + response body
+- **MCP** — lists the tools exposed by your MCP server and lets you invoke any of them with test parameters
+- **Client tools** — validates the schema and simulates the handler
+- **Integrations** — lets you fire a real Composio action with test inputs against your connected account
+
+The response is displayed with the HTTP status colored green (2xx), amber (3xx), or red (4xx/5xx) so you can catch misconfigured auth, wrong URLs, or bad payload shapes without ever starting a conversation.
+
+<Tip>Test tools **before** attaching them to a production agent. A misconfigured tool that only fails mid-conversation is a bad first impression for users.</Tip>
 
 ## What's Next?
 

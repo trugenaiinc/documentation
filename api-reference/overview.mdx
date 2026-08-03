@@ -1,56 +1,137 @@
-The TruGen Agent Platform API lets you programmatically create, configure, and manage conversational video agents-including their personas, knowledge, and visual avatars.
-
-Use these APIs to:
-- Spin up video agents tailored to your brand
-- Define reusable persona templates for consistent behavior
-- Connect agents to your own data
-- Retrieve available providers and avatar options
-
+---
+title: "API Overview"
+description: "Server-to-server REST API for creating and managing TruGen agents, sessions, and knowledge."
 ---
 
-## Core Components
+The TruGen REST API is how you programmatically create agents, manage templates, ground them in your data, register tools, and read session records. Everything you can do in the [Developer Portal](https://app.trugen.ai), you can do here.
 
-The API is organized around a few core components:
+## Base URL
 
-- **Video Agents** - Create, fetch, update, and delete conversational video agents.
-- **Persona Templates** - Define reusable system prompts, behaviors, and flows.
-- **Knowledge Base** - Attach documents and data sources that ground agent responses.
-- **Providers** - Inspect which LLM, TTS, and other providers are available.
-- **Avatars** - Discover avatar configurations for visual rendering.
-- **Text to Video Generation** - Generate avatar videos from a script and track their render status.
+```
+https://api.trugen.ai/v1
+```
 
----
+All responses are `application/json` unless otherwise noted.
 
-## Documentation Map
+## Authentication
+
+Every request must include an `X-API-Key` header. Create keys in the [Developer Portal](https://app.trugen.ai/api-keys).
+
+```bash
+curl https://api.trugen.ai/v1/ext/agent \
+  --header 'X-API-Key: YOUR_API_KEY'
+```
+
+<Warning>Your API key is server-only. Never embed it in browser or mobile client code. For client-side use, exchange the API key for a short-lived session token via the [JS SDK Authentication](/docs/sdks/javascript/authentication) or [Python SDK Authentication](/docs/sdks/python/authentication) flow.</Warning>
+
+## Two-tier authentication model
+
+TruGen uses two credentials, each with a different purpose:
+
+| Credential | Where it lives | What it can do |
+| --- | --- | --- |
+| **API Key** | Your server (`X-API-Key` header) | Every REST endpoint. Create agents, manage templates, read conversations. |
+| **Session Token** | Passed to the browser | Join one live conversation. |
+
+See [JS SDK Authentication](/docs/sdks/javascript/authentication) or [Python SDK Authentication](/docs/sdks/python/authentication) for the full pattern.
+
+## Resource model
+
+The API is organized around a small set of resources:
+
+| Resource | Purpose |
+| --- | --- |
+| **Agents** | The primary object — a configured conversational video agent with a prompt, avatar, voice, LLM, and tools |
+| **Templates** | Reusable blueprints — share prompt, knowledge, and behavior across many agents |
+| **Knowledge Bases** | Document collections your agents ground answers in via RAG |
+| **Tools** | Callable actions your agents invoke during conversations (webhooks, MCP, integrations, client actions) |
+| **MCPs** | Model Context Protocol server configurations |
+| **Providers** | The set of LLM, STT, and TTS providers available in your environment |
+| **Avatars** | Visual identities — stock or custom |
+| **Conversations** | Session records — including full chat history, feedback, and usage |
+
+## Common patterns
+
+### Create an agent → embed it
+
+1. `POST /v1/ext/agent` — create the agent, get an `agent_id`
+2. Drop the [widget](/docs/integrations/widget-integration) or [iframe](/docs/integrations/embed-via-iFrame) with that ID
+3. Users interact — sessions are automatically tracked
+
+### Personalize per user
+
+1. Create an agent once with the shared prompt
+2. On each session, mint a session token with `userId`, `userName`, and `context`
+3. The agent sees this context and personalizes accordingly
+
+### Use a template across many agents
+
+1. `POST /v1/ext/template` — create the template with the shared config
+2. `POST /v1/ext/agentbytemplate` — spin up a new agent from the template
+
+### Access session results
+
+1. Handle the `call_ended` webhook — see [Event Callbacks](/docs/agents/callback)
+2. Fetch the conversation record with [`GET /v1/ext/conversation/{id}`](/api-reference/endpoint/conversationgetbyid) — includes `chat_history`, `snippets`, `feedback`, `usage_json`
+
+## Errors
+
+Errors are returned as JSON with an `error` field:
+
+```json
+{
+  "error": "Unauthorized: not a valid authorization api key"
+}
+```
+
+## Pagination
+
+List endpoints use `offset` + `perpage` query parameters:
+
+```
+GET /v1/ext/conversation?offset=0&perpage=20
+```
+
+The response includes an `X-Total-Count` header with the total match count for the query.
+
+Additional filters vary per endpoint — check the individual endpoint page.
+
+## Versioning
+
+The API is versioned in the URL path (`/v1/…`, `/v2/…`). Breaking changes ship as new versions. Non-breaking additions ship in place; watch the [changelog](/docs/changelog) for notice.
+
+## Documentation map
 
 <CardGroup cols={2}>
-
 <Card title="Video Agents" icon="robot" href="/api-reference/endpoint/agentcreate">
-Create and manage conversational video agents, including configuration, retrieval, updates, and deletion.
+Create, fetch, update, and delete conversational agents.
 </Card>
-
-<Card title="Persona Templates" icon="id-card" href="/api-reference/endpoint/templatecreate">
-Define reusable personas with system prompts, entry/exit messages, and behavior settings.
+<Card title="Templates" icon="shapes" href="/api-reference/endpoint/templatecreate">
+Reusable persona blueprints.
 </Card>
-
 <Card title="Knowledge Base" icon="database" href="/api-reference/endpoint/knowledgebasecreate">
-Attach documents and data sources, update them over time, and keep your agents grounded in your content.
+Ground answers in your documents and URLs.
 </Card>
-
+<Card title="Conversations" icon="messages" href="/api-reference/endpoint/conversationgetbyid">
+Session records, transcripts, and speak commands.
+</Card>
+<Card title="Tools" icon="screwdriver-wrench" href="/api-reference/endpoint/toolcreate">
+Register callable actions for agents.
+</Card>
 <Card title="Providers" icon="cloud" href="/api-reference/endpoint/providerget">
-Query which AI providers, models, or services are available in your Trugen environment.
+List available STT, LLM, and TTS providers.
 </Card>
-
 <Card title="Avatars" icon="user" href="/api-reference/endpoint/avatarget">
-Browse and select avatars to render your conversational agents visually.
+Browse stock and custom avatars.
 </Card>
-
-<Card title="Text to Video Generation" icon="video" href="/api-reference/endpoint/texttovideo">
-Generate real-life avatar videos from a script and poll for render status using a generation ID.
+<Card title="Text to Video" icon="video" href="/api-reference/endpoint/texttovideo">
+Async video generation from a script.
 </Card>
-
 </CardGroup>
 
----
+Each endpoint page includes the full request/response schema, an example, and cross-links to related concepts.
 
-Each endpoint page includes **request/response schemas, example payloads, and usage notes** so you can integrate TruGen’s Agent Platform directly into your existing applications and pipelines.
+## Quick links
+
+- **[JS SDK Authentication](/docs/sdks/javascript/authentication)** — client-safe token exchange
+- **[Callbacks](/docs/agents/callback)** — real-time event webhooks

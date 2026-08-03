@@ -404,10 +404,10 @@ Triggered when the user stops speaking (end of an utterance).
 
 ## Best Practices
 
-- **Always return 2xx quickly** — acknowledge webhooks immediately and offload heavy work to background jobs.
-- **Design for idempotency** — handlers should safely process the same event more than once.
-- **Log by `conversation_id`** — makes debugging and analytics far easier.
-- **Use HTTPS** — restrict your endpoint by IP or signing secret where your infrastructure supports it.
+- **Return 2xx quickly.** Acknowledge in a couple of seconds; offload heavy work to background jobs.
+- **Be idempotent.** Design your handlers so processing the same event more than once is safe.
+- **Log by `conversation_id`.** Makes debugging and analytics much easier.
+- **Use HTTPS.** Your endpoint must be reachable over HTTPS.
 
 ## What's Next?
 

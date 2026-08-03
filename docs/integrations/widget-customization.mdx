@@ -1,0 +1,228 @@
+---
+title: "Widget Customization"
+description: "Theme, position, and configure the TruGen embed widget — colors, buttons, layout, and domain restrictions."
+---
+
+The widget config controls how the TruGen embed looks and behaves on your site. Every option below is set on the agent's `widget` object in the agent config, and can be edited in the Studio or via the API.
+
+## The widget object
+
+The widget config lives on your agent under the `widget` field:
+
+```json
+{
+  "agent_name": "My Agent",
+  "widget": {
+    "widget_type": "dual",
+    "position": "full",
+    "default_theme": "dark",
+    "color": "#11E59E",
+    "color_mode": "solid",
+    "start_call_button_text": "Start Chat",
+    "show_talk_button": true,
+    "talk_button_text": "Talk",
+    "show_chat_button": true,
+    "chat_button_text": "Chat"
+  }
+}
+```
+
+Everything on this page is a field on that object.
+
+## Position
+
+Controls where the widget renders on the page.
+
+| Value | Behavior |
+| --- | --- |
+| `full` | Fills the entire container (used when embedded inline via iframe) |
+| `left` | Docks to the bottom-left corner as a floating widget |
+| `right` | Docks to the bottom-right corner as a floating widget |
+| `center` | Centered floating widget |
+| `center-mini` | Smaller centered variant |
+
+```json
+"widget": { "position": "right" }
+```
+
+Use `full` when you're dropping the agent into a dedicated section of your page (a whole panel or full page). Use `right` (or `left`) for the classic floating chat-widget look.
+
+## Widget type and buttons
+
+The `widget_type` determines what the launcher shows the user before they start a session.
+
+| Value | What the launcher shows |
+| --- | --- |
+| `dual` | Both a **Talk** button (starts a voice/video call) and a **Chat** button (starts a text chat) |
+| `talk` | Only the Talk button |
+| `chat` | Only the Chat button |
+
+You can also individually toggle and rename the buttons:
+
+```json
+"widget": {
+  "widget_type": "dual",
+  "show_talk_button": true,
+  "talk_button_text": "Talk to us",
+  "show_chat_button": true,
+  "chat_button_text": "Ask a question"
+}
+```
+
+The `start_call_button_text` field controls the primary call-to-action inside the widget (default: `"Start Chat"`).
+
+## Theming
+
+### Colors
+
+```json
+"widget": {
+  "default_theme": "dark",
+  "color_mode": "solid",
+  "color": "#11E59E",
+  "button_text_color": "#0B0B0B"
+}
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `default_theme` | `"dark"` \| `"light"` | Base theme for the widget UI |
+| `color_mode` | `"solid"` \| `"gradient"` | Solid color or two-stop gradient |
+| `color` | hex string | Primary color (used when `color_mode: "solid"`) |
+| `gradient_color_start` | hex string | Gradient start (used when `color_mode: "gradient"`) |
+| `gradient_color_end` | hex string | Gradient end |
+| `button_text_color` | hex string | Foreground color for text on the primary button |
+
+### Gradient example
+
+```json
+"widget": {
+  "color_mode": "gradient",
+  "gradient_color_start": "#11E59E",
+  "gradient_color_end": "#5A7CFF",
+  "button_text_color": "#0B0B0B"
+}
+```
+
+## Branding
+
+Add your company logo, name, and supporting text to the widget:
+
+```json
+"widget": {
+  "company_name": "Acme Corp",
+  "company_logo": "https://assets.acme.com/logo.svg",
+  "sub_text": [
+    "Powered by Acme"
+  ]
+}
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `company_name` | string | Displayed in widget header |
+| `company_logo` | URL | Public HTTPS URL to the logo image |
+| `sub_text` | string[] | Additional lines shown under the header |
+| `agent_name` | string | Display name of the agent inside the widget |
+| `website_url` | string | Optional link back to your site from the widget |
+
+## View mode
+
+```json
+"widget": { "view_mode": "iframe" }
+```
+
+| Value | Behavior |
+| --- | --- |
+| `iframe` | Widget renders inside an iframe on your page (fully isolated) |
+| `widget` | Widget renders in a shadow DOM directly in your page (shared page, isolated styles) |
+
+Use `iframe` for maximum isolation and simplicity. Use `widget` when you want the launcher to visually blend with your page.
+
+## Suggested topics
+
+Show a short list of starter prompts under the widget's welcome UI to nudge users toward useful conversations.
+
+```json
+"widget": {
+  "suggested_topics_enabled": true,
+  "hide_suggested_topics": false,
+  "initial_suggested_topics": [
+    "Tell me about your pricing",
+    "How do I integrate the API?",
+    "Book a demo"
+  ]
+}
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `suggested_topics_enabled` | boolean | Show the suggested-topics list at all |
+| `hide_suggested_topics` | boolean | Hide them by default; user can expand |
+| `initial_suggested_topics` | string[] | The topics themselves |
+
+## Allowed origins
+
+Control which domains are allowed to embed this agent's widget. **Only requests from the origins you list can load the widget and start a conversation with the agent** — every other domain is refused with `403 origin_not_allowed`.
+
+```json
+"widget": {
+  "allowed_domains_enabled": true,
+  "allowed_domains": [
+    "https://www.acme.com",
+    "https://app.acme.com"
+  ]
+}
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `allowed_domains_enabled` | boolean | Turn the origin check on. When `false`, any origin can embed the widget. |
+| `allowed_domains` | string[] | List of allowed origins. Only requests coming from these domains can load the widget and hold a conversation with the agent. Include the scheme (`https://`). |
+
+**Best practices**
+
+- Turn `allowed_domains_enabled: true` on for any production agent — otherwise anyone can embed your agent on their own site and consume your usage.
+- Include every origin the same agent will be used from — your marketing site, app, staging environment, etc.
+- Include the exact scheme (`https://` vs `http://`) and subdomain (`www.` matters).
+- After enabling, verify the widget still loads on every intended origin.
+
+## Full example
+
+An agent with a floating right-side widget, gradient theming, both buttons visible, and domain restrictions on:
+
+```json
+"widget": {
+  "widget_type": "dual",
+  "position": "right",
+  "view_mode": "widget",
+  "default_theme": "dark",
+  "color_mode": "gradient",
+  "gradient_color_start": "#11E59E",
+  "gradient_color_end": "#5A7CFF",
+  "button_text_color": "#0B0B0B",
+  "start_call_button_text": "Start Chat",
+  "show_talk_button": true,
+  "talk_button_text": "Talk",
+  "show_chat_button": true,
+  "chat_button_text": "Chat",
+  "company_name": "Acme",
+  "agent_name": "Support",
+  "allowed_domains_enabled": true,
+  "allowed_domains": [
+    "https://www.acme.com",
+    "https://app.acme.com"
+  ]
+}
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Widget SDK reference" icon="react" href="/docs/integrations/widget-reference">
+    Every prop the React widget accepts.
+  </Card>
+  <Card title="Install the widget" icon="puzzle-piece" href="/docs/integrations/widget-integration">
+    Drop the React widget into your app in a few lines.
+  </Card>
+</CardGroup>

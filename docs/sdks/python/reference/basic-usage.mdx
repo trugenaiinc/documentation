@@ -1,0 +1,194 @@
+---
+title: "Basic Usage"
+sidebarTitle: "Basic Usage"
+description: "Install, initialize, and manage the TruGen AI Python SDK."
+---
+
+The core primitives of the Python SDK are `TruGenClient`, `TruGenSession`, and `TruGenRunner`. This page walks each one from bottom to top so you understand what's happening under the hood before adopting the higher-level `TruGenRunner` in your app.
+
+## Installation
+
+```bash
+uv add trugen-sdk
+# or with GUI extras:
+uv add trugen-sdk --extra display
+
+# pip equivalent:
+pip install trugen-sdk[display]
+```
+
+## Requirements
+
+- Python 3.10+
+- **Core:** `livekit` (>= 0.11.0), `aiohttp` (>= 3.8.0)
+- **`[display]` extras:** `opencv-python` (>= 4.8.0), `sounddevice` (>= 0.4.6), `numpy` (>= 1.24.0)
+
+## TruGenClient
+
+The entry point for starting TruGen AI sessions.
+
+```python
+from trugen import TruGenClient
+
+# Initialize with your API key
+client = TruGenClient(api_key="your-api-key")
+
+# Create a session with your Agent ID
+session = await client.create_session(agent_id="your-agent-id")
+```
+
+`create_session()` is `async` — call it from an event loop.
+
+## TruGenSession
+
+Represents an active connection to a streaming room. Everything below is a method or attribute on the session returned from `create_session()`.
+
+### Connection
+
+- `await session.connect()` — Connect to the streaming room and publish the local microphone.
+- `await session.disconnect()` — Disconnect and cleanly release all hardware/stream resources.
+
+### Audio Output
+
+- `await session.enable_audio_output()` — Activates speaker playback with built-in echo cancellation. Call this once after `connect()`.
+
+### Video & Audio Generators
+
+- `session.video_frames_bgr()` — Async generator yielding NumPy arrays (`NDArray`) in BGR format, ready for OpenCV.
+- `session.video_frames()` — Async generator yielding raw LiveKit `VideoFrame` objects.
+- `session.audio_frames()` — Async generator yielding raw LiveKit `AudioFrame` objects.
+
+### Low-Level Accessors
+
+- `session.get_video_track()` — Returns the remote `RemoteVideoTrack` object (or `None`).
+- `session.get_audio_track()` — Returns the remote `RemoteAudioTrack` object (or `None`).
+- `session.room` — Returns the underlying `livekit.rtc.Room` instance for advanced operations.
+
+## Direct session usage (async only)
+
+If you're already inside an event loop and don't need thread-safety, use the session directly with `async for`:
+
+```python
+import asyncio
+import cv2
+import os
+from trugen import TruGenClient
+
+async def main():
+    client  = TruGenClient(api_key=os.getenv("TRUGEN_API_KEY", ""))
+    session = await client.create_session(agent_id=os.getenv("TRUGEN_AGENT_ID", ""))
+    await session.connect()
+    await session.enable_audio_output()
+
+    async for frame in session.video_frames_bgr():
+        cv2.imshow("Avatar", frame)
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+
+    await session.disconnect()
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+This works but blocks the async loop on OpenCV's `imshow`. For real GUI apps, use `TruGenRunner` instead.
+
+## TruGenRunner
+
+`TruGenRunner` handles the multi-threading dance for you — the async session event loop runs on a background thread while your main thread stays free to drive rendering (OpenCV, Pygame, PyQt/PySide, or any custom engine).
+
+### Basic setup
+
+```python
+from trugen import TruGenClient, TruGenRunner
+
+async def create_session():
+    client = TruGenClient(api_key="…")
+    session = await client.create_session(agent_id="…")
+    await session.connect()
+    await session.enable_audio_output()
+    return session
+
+runner = TruGenRunner(session_factory=create_session)
+```
+
+### Controls
+
+- `runner.run()` — Starts the runner and blocks the main thread to run the rendering loop.
+- `runner.stop()` — Safely stops the background loop and disconnects the session (thread-safe).
+- `runner.toggle_mute()` — Toggles the microphone mute state (thread-safe).
+
+### Properties & Accessors
+
+- `runner.mic_muted` — Returns `True` if the microphone is currently muted.
+- `runner.session_state` — Returns the current session state enum (`TruGenState`).
+- `runner.session` — Access the active `TruGenSession` instance (returns `None` until connected).
+- `runner.get_caption()` — Returns a tuple `(text, timestamp)` containing the last received caption chunk and the monotonic timestamp it arrived.
+
+### The frame callback
+
+Register a function to be called with every new BGR video frame on the main thread:
+
+```python
+@runner.on_frame
+def on_frame(frame):
+    if frame is not None:
+        cv2.imshow("Avatar", frame)
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        runner.stop()
+```
+
+The callback receives either a NumPy `ndarray` (a BGR frame) or `None` when no frame is currently available.
+
+## Session states
+
+| Enum Value | Description |
+|---|---|
+| `TruGenState.INITIALIZING` | Session created but not yet connected |
+| `TruGenState.CONNECTING` | WebRTC handshake and connection in progress |
+| `TruGenState.CONNECTED` | Connection established; actively streaming media |
+| `TruGenState.DISCONNECTED` | Session ended and connection closed |
+| `TruGenState.ERROR` | Unrecoverable error occurred |
+
+Check the current state at any time:
+
+```python
+if runner.session_state == TruGenState.CONNECTED:
+    print("Live!")
+```
+
+## Error handling
+
+Wrap `create_session()` and `connect()` with standard try/except blocks:
+
+```python
+import asyncio
+from trugen import TruGenClient
+
+client = TruGenClient(api_key="invalid-key")
+
+async def main():
+    try:
+        session = await client.create_session(agent_id="my-agent")
+        await session.connect()
+    except RuntimeError as e:
+        print(f"Connection failed: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+asyncio.run(main())
+```
+
+For runtime errors during a live session, subscribe to `TruGenEvent.ERROR` — see [Event Handling](/docs/sdks/python/reference/event-handling).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Audio Control" icon="microphone" href="/docs/sdks/python/reference/audio-control">
+    Microphone lifecycle, mute controls, and custom audio injection.
+  </Card>
+  <Card title="Event Handling" icon="bolt" href="/docs/sdks/python/reference/event-handling">
+    Subscribe to connection, speaking, and transcription events.
+  </Card>
+</CardGroup>

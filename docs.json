@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Trugen AI API Documentation",
+  "name": "TruGen AI Documentation",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -24,44 +24,63 @@
   "redirects": [
     {
       "source": "/docs/agents/knowledgebase",
-      "destination": "/docs/agents/knowledge-base"
+      "destination": "/docs/agents/knowledge/overview"
+    },
+    {
+      "source": "/docs/agents/knowledge-base",
+      "destination": "/docs/agents/knowledge/overview"
     },
     {
       "source": "/docs/avatars/overview",
       "destination": "/docs/avatars/gallery"
+    },
+    {
+      "source": "/docs/models",
+      "destination": "/docs/models/overview"
     }
   ],
   "navigation": {
     "tabs": [
       {
-        "tab": "Overview",
-        "icon": "book-open",
+        "tab": "Build",
+        "icon": "cube",
         "groups": [
           {
             "group": "Introduction",
             "icon": "flag",
             "pages": [
               "docs/overview",
-              "docs/quickstart",
               "docs/agents/pipeline",
-              "docs/models",
-              "docs/providers/overview"
+              "docs/quickstart"
             ]
           },
           {
-            "group": "AI Teammates",
+            "group": "Models",
+            "icon": "brain",
+            "pages": [
+              "docs/models/overview",
+              "docs/models/huma-2",
+              "docs/models/huma-1",
+              "docs/models/hawkeye-1"
+            ]
+          },
+          {
+            "group": "AI Teammates (Avatars)",
             "icon": "robot",
             "pages": [
               "docs/agents/conversational-video-agents",
               {
-                "group": "Avatars",
+                "group": "AI Avatars",
                 "icon": "user",
                 "pages": [
-                  "docs/avatars/gallery"
+                  "docs/avatars/gallery",
+                  "docs/avatars/voice-only",
+                  "docs/avatars/custom",
+                  "docs/avatars/best-practices"
                 ]
               },
               {
-                "group": "Voices",
+                "group": "AI Voices",
                 "icon": "microphone",
                 "pages": [
                   "docs/agents/voices/overview",
@@ -70,21 +89,15 @@
                 ]
               },
               {
-                "group": "LLMs",
+                "group": "Language Models",
                 "icon": "brain",
                 "pages": [
                   "docs/agents/available-llms",
-                  "docs/resources/byo-llm",
-                  "docs/agents/prompting-strategies"
+                  "docs/resources/byo-llm"
                 ]
               },
               {
-                "group": "Knowledge",
-                "icon": "database",
-                "pages": ["docs/agents/knowledge-base"]
-              },
-              {
-                "group": "Tools",
+                "group": "Agent Tools",
                 "icon": "screwdriver-wrench",
                 "pages": [
                   "docs/agents/tools/overview",
@@ -94,18 +107,47 @@
                 ]
               },
               {
-                "group": "Vision",
+                "group": "Vision Understanding",
                 "icon": "eye",
                 "pages": ["docs/agents/vision/overview"]
               },
               {
-                "group": "Meetings",
-                "icon": "users",
-                "pages": ["docs/agents/meetings/overview"]
+                "group": "Agent Widget",
+                "icon": "puzzle-piece",
+                "pages": [
+                  "docs/agents/widget",
+                  "docs/integrations/widget-customization",
+                  "docs/integrations/widget-reference"
+                ]
               },
+              {
+                "group": "Visual Presentations",
+                "icon": "presentation-screen",
+                "pages": ["docs/presentations/overview"]
+              },
+              {
+                "group": "Knowledge Base",
+                "icon": "database",
+                "pages": [
+                  "docs/agents/knowledge/overview",
+                  "docs/agents/knowledge/creating",
+                  "docs/agents/knowledge/uploading",
+                  "docs/agents/knowledge/attaching"
+                ]
+              },
+              "docs/agents/memory",
+
+              "docs/agents/meetings/overview",
+              "docs/agents/system-messages",
               "docs/agents/templates",
-              "docs/agents/memory"
+              "docs/providers/overview",
+              "docs/agents/prompting-strategies"
             ]
+          },
+          {
+            "group": "Text to Video",
+            "icon": "video",
+            "pages": ["docs/agents/text_to_video"]
           }
         ]
       },
@@ -140,39 +182,82 @@
                 ]
               }
             ]
+          },
+          {
+            "group": "Python SDK",
+            "icon": "python",
+            "pages": [
+              "docs/sdks/python/overview",
+              "docs/sdks/python/quickstart",
+              "docs/sdks/python/authentication",
+              "docs/sdks/python/production",
+              {
+                "group": "Examples",
+                "icon": "code",
+                "pages": [
+                  "docs/sdks/python/examples/basic-python",
+                  "docs/sdks/python/examples/advanced-python"
+                ]
+              },
+              {
+                "group": "Reference",
+                "icon": "book",
+                "pages": [
+                  "docs/sdks/python/reference/basic-usage",
+                  "docs/sdks/python/reference/audio-control",
+                  "docs/sdks/python/reference/event-handling",
+                  "docs/sdks/python/reference/list-all-events"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Embed",
+        "icon": "puzzle-piece",
+        "groups": [
+          {
+            "group": "Widget",
+            "icon": "code",
+            "pages": ["docs/integrations/widget-integration"]
+          },
+          {
+            "group": "iFrame",
+            "icon": "window",
+            "pages": ["docs/integrations/embed-via-iFrame"]
+          },
+          {
+            "group": "Site Builders",
+            "icon": "layer-group",
+            "pages": [
+              "docs/deploy/platforms/framer",
+              "docs/deploy/platforms/shopify",
+              "docs/deploy/platforms/wordpress",
+              "docs/deploy/platforms/wix",
+              "docs/deploy/platforms/squarespace"
+            ]
           }
         ]
       },
       {
         "tab": "Integrations",
         "icon": "plug",
-        "groups": [
+        "menu": [
           {
-            "group": "Embed",
-            "icon": "code",
-            "pages": [
-              "docs/integrations/widget-integration",
-              "docs/integrations/embed-via-iFrame"
-            ]
+            "item": "LiveKit",
+            "pages": ["docs/voice-to-video/livekit"]
           },
           {
-            "group": "Platforms",
-            "icon": "plug-circle-plus",
-            "pages": [
-              "docs/voice-to-video/livekit"
-            ]
+            "item": "n8n",
+            "pages": ["docs/integrations/n8n"]
           },
           {
-            "group": "Workflows",
-            "icon": "diagram-project",
-            "pages": [
-              "docs/integrations/n8n",
-              "docs/integrations/make"
-            ]
+            "item": "Make",
+            "pages": ["docs/integrations/make"]
           },
           {
-            "group": "AI Tools",
-            "icon": "robot",
+            "item": "MCP Server",
             "pages": ["docs/ai-tools/mcp"]
           }
         ]
@@ -230,6 +315,11 @@
               "api-reference/endpoint/conversationspeak",
               "api-reference/endpoint/conversationdelete"
             ]
+          },
+          {
+            "group": "External Meetings",
+            "icon": "users",
+            "pages": ["api-reference/endpoint/externalmeeting"]
           },
           {
             "group": "Knowledge Base",

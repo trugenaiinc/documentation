@@ -1,0 +1,170 @@
+---
+title: "System Messages"
+description: "Configure the greeting, exit, idle, and heads-up messages your agent uses to open, close, and hold a conversation."
+---
+
+Every conversation with an agent has recurring moments the LLM doesn't need to reason about — the greeting when a user first joins, the wrap-up before a call ends, the polite check-in when things go quiet. **System messages** let you script these moments explicitly so the agent handles them consistently.
+
+Each system message is a short list of lines. If more than one is provided, the agent picks one at session time so repeat visitors don't hear the same phrase every call.
+
+## The four system messages
+
+| Message | When it fires | Configured via |
+| --- | --- | --- |
+| **Welcome message** | When the user joins the session | `welcome_message` |
+| **Idle callout** | When the user has been silent for a configured time | `idle_timeout` |
+| **Exit heads-up** | Shortly before `max_call_duration` is reached | `exit_heads_up_message` (also `warning_exit_message`) |
+| **Exit message** | When the call ends (either user leaves or duration is hit) | `exit_message` |
+
+## Welcome message
+
+Fires as soon as the agent joins the session and the user's media is ready. This is the first thing your agent says.
+
+```json
+"welcome_message": {
+  "messages": [
+    "Hi, how are you doing today?"
+  ],
+  "wait_time": 1
+}
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `messages` | string[] | One or more greetings. One is chosen per session. |
+| `wait_time` | number | Seconds to wait after the user joins before speaking (avoids talking over a still-loading page). Default `1`. |
+
+**Best practices**
+
+- Keep it short — one sentence at most. It's the first impression.
+- Match the agent's persona from the system prompt. A support agent's greeting should sound different from a coach's.
+- Provide 2–4 variants so the greeting doesn't feel canned to returning users.
+
+## Idle callout
+
+Fires when the user has been silent for `timeout` seconds. Useful to check whether the user is still there before ending the session.
+
+```json
+"idle_timeout": {
+  "timeout": 30,
+  "filler_phrases": [
+    "Hey it's been a while since we last spoke, are we still connected?"
+  ]
+}
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `timeout` | number | Seconds of silence before the callout fires. Default `30`. |
+| `filler_phrases` | string[] | One or more callout lines. One is chosen when the timeout hits. |
+
+**Best practices**
+
+- Don't set the timeout too low — 20–30 s is natural. Lower feels twitchy.
+- Provide friendly, warm phrases. This moment often feels awkward if scripted robotically.
+- Have 3–5 variants so a user idling twice in one call doesn't hear the same line.
+
+## Exit heads-up
+
+Fires a configurable number of seconds before the session hits `max_call_duration`. Gives the user a gentle warning that time is almost up.
+
+```json
+"exit_heads_up_message": {
+  "callout_before": 10,
+  "messages": [
+    "We are almost at the end of our call, thank you for your time."
+  ]
+}
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `callout_before` | number | Seconds before session end at which the heads-up fires. Default `10`. |
+| `messages` | string[] | One or more heads-up lines. |
+
+## Exit message
+
+Fires when the session ends — either the user leaves or `max_call_duration` is hit.
+
+```json
+"exit_message": {
+  "messages": [
+    "We are at the end of our call, thank you for your time."
+  ],
+  "max_call_duration": 300
+}
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `messages` | string[] | One or more closing lines. |
+| `max_call_duration` | number | Seconds the session can run before this message fires and the call ends. Default `300`. |
+
+<Note>The equivalent field `warning_exit_message` also exists in the API for backward compatibility — use `exit_heads_up_message` for new agents.</Note>
+
+## Toggling messages on and off
+
+Each of the four messages can be independently enabled or disabled via `config.systemConfig`:
+
+```json
+"config": {
+  "systemConfig": {
+    "entryMessageToggle2": true,
+    "idleCalloutToggle2": true,
+    "exitHeadsUpToggle2": true,
+    "exitMessageToggle2": true
+  }
+}
+```
+
+Set any toggle to `false` to keep the message configured but suppress it at runtime.
+
+## Full example
+
+Configuring all four messages in a single `avatars[]` block:
+
+```json
+"avatars": [
+  {
+    "avatar_key_id": "665a1170",
+    "welcome_message": {
+      "messages": [
+        "Hi, I'm Priya. What brought you here today?",
+        "Hey there — good to see you. What can I help with?"
+      ],
+      "wait_time": 1
+    },
+    "idle_timeout": {
+      "timeout": 30,
+      "filler_phrases": [
+        "Still with me?",
+        "Take your time — I'm here whenever you're ready."
+      ]
+    },
+    "exit_heads_up_message": {
+      "callout_before": 15,
+      "messages": [
+        "Heads up — we've got about fifteen seconds left before this call wraps."
+      ]
+    },
+    "exit_message": {
+      "messages": [
+        "Thanks for chatting today. Take care!",
+        "That's our time — great talking with you. Bye for now."
+      ],
+      "max_call_duration": 300
+    }
+  }
+]
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Prompting" icon="pen" href="/docs/agents/prompting-strategies">
+    Write a system prompt whose voice matches your system messages.
+  </Card>
+  <Card title="Templates" icon="shapes" href="/docs/agents/templates">
+    Share your system messages across many agents via a template.
+  </Card>
+</CardGroup>

@@ -1,0 +1,121 @@
+---
+title: "Usage in Production"
+sidebarTitle: "Usage in Production"
+description: "Securely deploy TruGen AI in production Python environments."
+---
+
+For any Python application shipped to end users — desktop binaries, packaged distributions, or apps you don't fully control — do not embed your API key. Follow the two-step pattern below:
+
+1. Exchange your API key for a short-lived session token **on the server side**.
+2. Return the token to the client and use it in place of the API key.
+
+## Getting a Session Token
+
+Session tokens are valid for 5 minutes by default. Request a new token per user session rather than caching them long-term.
+
+<Warning>
+  The session token endpoint must be called from your server, not from your desktop app. Making this request from a shipped binary would expose your API key.
+</Warning>
+
+### Fetching a Session Token on Your Server
+
+From your server (Python, Node, Go — anything), call TruGen's `/v1/auth/conversation` endpoint with your API key and the target agent ID.
+
+<CodeGroup>
+```python server.py (FastAPI)
+import os
+import httpx
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class TokenRequest(BaseModel):
+    agentId: str
+    userName: str | None = None
+    userId: str | None = None
+
+@app.post("/api/session-token")
+async def create_session_token(req: TokenRequest):
+    async with httpx.AsyncClient() as client:
+        r = await client.post(
+            "https://api.trugen.ai/v1/auth/conversation",
+            headers={"X-API-Key": os.environ["TRUGEN_API_KEY"]},
+            json=req.model_dump(exclude_none=True),
+        )
+        if r.status_code != 200:
+            raise HTTPException(r.status_code, r.text)
+        return r.json()
+```
+
+```python server.py (Flask)
+import os
+import httpx
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route("/api/session-token", methods=["POST"])
+def create_session_token():
+    payload = request.get_json()
+    with httpx.Client() as client:
+        r = client.post(
+            "https://api.trugen.ai/v1/auth/conversation",
+            headers={"X-API-Key": os.environ["TRUGEN_API_KEY"]},
+            json={
+                "agentId": payload["agentId"],
+                "userName": payload.get("userName"),
+                "userId": payload.get("userId"),
+            },
+        )
+        return jsonify(r.json()), r.status_code
+```
+</CodeGroup>
+
+The response contains a `token` field, plus the `conversationId`, the LiveKit `url`, and the avatar metadata.
+
+## Using the Token in Your Desktop App
+
+Once your app receives the token from your backend, use it in place of a `create_session()` call by connecting to LiveKit with the returned token/URL directly.
+
+<Note>
+  The Python SDK's `TruGenClient.create_session()` currently expects an API key. For a token-based flow in Python, contact [support@trugen.ai](mailto:support@trugen.ai) for the recommended pattern for your deployment shape.
+</Note>
+
+## User Identity Configuration
+
+When generating a session token, you can optionally supply details about the user connecting:
+
+- **`userName`** — Display name (defaults to `"JS SDK"` if omitted; safe to override).
+- **`userId`** — Unique user identifier. If omitted, TruGen auto-generates a timestamp-based ID.
+
+These are included in the JSON body sent to `https://api.trugen.ai/v1/auth/conversation`.
+
+### Example Request Body
+
+```json
+{
+  "agentId": "your-agent-id-here",
+  "userName": "Alice Smith",
+  "userId": "user_alice_123"
+}
+```
+
+## Common Error Responses
+
+| Status Code | Meaning | Solution |
+| :--- | :--- | :--- |
+| **400** | Invalid request body or malformed `agentId` | Check your JSON shape and verify the agent ID is a valid UUID |
+| **401** | Invalid, missing, or expired API key | Verify your API key and its inclusion in the `X-API-Key` header |
+| **500** | Agent not found or database error | Confirm the agent exists and belongs to your account |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="lock" href="/docs/sdks/python/authentication">
+    Full two-tier authentication overview.
+  </Card>
+  <Card title="Basic Usage" icon="book" href="/docs/sdks/python/reference/basic-usage">
+    Full SDK reference for initializing, streaming, and disconnecting.
+  </Card>
+</CardGroup>

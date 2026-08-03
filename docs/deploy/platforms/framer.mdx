@@ -1,0 +1,58 @@
+---
+title: "Framer"
+description: "Embed a TruGen agent in a Framer site with a code component or embed block."
+---
+
+Framer sites can host a live TruGen agent using the standard iframe embed. Setup takes about 5 minutes.
+
+## Prerequisites
+
+- A TruGen agent with an `agent_id` — see the [quickstart](/docs/quickstart) if you don't have one
+- Access to a Framer project you can edit
+
+## Add the embed
+
+<Steps>
+  <Step title="Add an Embed component in Framer">
+    In your Framer canvas, insert a new **Embed** component from the Insert menu.
+  </Step>
+  <Step title="Paste the TruGen iframe">
+    Set the Embed component's HTML to:
+
+    ```html
+    <iframe
+      src="https://app.trugen.ai/embed/YOUR_AGENT_ID?username=USER_NAME&id=USER_ID&context=CONTEXT"
+      width="100%"
+      height="600"
+      frameborder="0"
+      allow="camera; microphone; autoplay; display-capture; fullscreen"
+    ></iframe>
+    ```
+
+    Replace `YOUR_AGENT_ID` with your agent ID, and swap `USER_NAME`, `USER_ID`, and `CONTEXT` with values you want to identify the visitor by.
+  </Step>
+  <Step title="Publish">
+    Publish the Framer site. Visitors will be prompted for camera + microphone permissions the first time they land on the page.
+  </Step>
+</Steps>
+
+## Verify domain access
+
+If your agent has an `allowed_domains` list configured, add your Framer site's custom domain (or the default `.framer.website` URL) to it. Otherwise requests from Framer will be blocked with `403 origin_not_allowed`.
+
+## Sizing tips
+
+- Full-screen agent: set the Embed's height to `100vh` and width to `100%`.
+- Panel-style agent: constrain the Embed size and place it inside a stack with the rest of your page content.
+- Mobile: keep height at least `500px` — anything less crops the avatar.
+
+## What's next
+
+<CardGroup cols={2}>
+<Card title="Widget (React)" icon="react" href="/docs/integrations/widget-integration">
+For custom React apps, use the widget instead of the raw iframe.
+</Card>
+<Card title="iFrame reference" icon="code" href="/docs/integrations/embed-via-iFrame">
+Every iframe parameter documented.
+</Card>
+</CardGroup>

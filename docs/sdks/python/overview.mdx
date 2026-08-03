@@ -1,34 +1,75 @@
 ---
 title: "Python SDK"
-description: "Integrate TruGen conversational video agents into Python applications."
+sidebarTitle: "Overview"
+description: "Official Python SDK for TruGen AI — real-time avatar streaming for desktop, GUI, and backend applications."
 ---
 
-The TruGen Python SDK lets you drive agent sessions from Python — ideal for backend orchestration, automation scripts, and server-side integrations that need to spin up or manage agents programmatically.
+The **TruGen AI Python SDK** (`trugen-sdk`) is the official Python client for building real-time avatar experiences in Python. Everything WebRTC- and audio-related — LiveKit transport, Acoustic Echo Cancellation, decoding, threading — is handled under the hood. You only ever import from `trugen`.
 
-<Note>Detailed SDK reference and code samples are coming soon. The Python SDK is currently in preview.</Note>
+## When to use it
 
-## Install
+- **Desktop and GUI applications** — OpenCV, Pygame, PyQt/PySide, or custom game engines
+- **Backend orchestration** — spin up sessions from Python workers, cron jobs, or queue consumers
+- **Audio injection pipelines** — pump pre-recorded WAV or raw PCM into a live agent conversation
+- **Automation & data workflows** — connect avatar sessions to your existing Python stack
+
+If you're building a browser-facing UI, use the [JavaScript SDK](/docs/sdks/javascript/overview) instead.
+
+## What the SDK provides
+
+- 🎥 **Real-time audio/video streaming** — synchronised high-quality frames from the avatar
+- 🔇 **Built-in Acoustic Echo Cancellation** — one call to `enable_audio_output()` handles APM sync so the avatar never hears itself
+- 🟩 **BGR OpenCV frames** — zero-boilerplate async iterator yielding pre-converted NumPy arrays
+- ⚙️ **GUI runner support** — thread-safe `TruGenRunner` wrapper for blocking rendering loops
+- 🎵 **Custom audio injection** — inject WAV files or raw 16-bit PCM directly into the room
+- 🎙️ **Microphone lifecycle management** — mute/unmute, permission monitoring, device control
+- 💬 **Real-time captions** — event hooks for streaming caption chunks and final transcripts
+- 📡 **Async iterator API** — stream raw audio and video natively via async generators
+- 🎯 **Event-driven architecture** — decorator-based handlers for connection, tracks, and speech events
+- 📝 **Fully typed** — complete type hints for IDE autocompletion and safety
+
+## Requirements
+
+- **Python 3.10+**
+- **Core dependencies** (installed automatically):
+  - `livekit` (>= 0.11.0)
+  - `aiohttp` (>= 3.8.0)
+- **Optional `[display]` extras** (for GUI examples):
+  - `opencv-python` (>= 4.8.0)
+  - `sounddevice` (>= 0.4.6)
+  - `numpy` (>= 1.24.0)
+
+## Installation
 
 ```bash
-pip install trugen
+# Using uv (recommended)
+uv add trugen-sdk
+
+# With optional display utilities (OpenCV, audio playback)
+uv add trugen-sdk --extra display
+
+# Using pip
+pip install trugen-sdk
+
+# With optional display utilities
+pip install trugen-sdk[display]
 ```
 
-## When to use the SDK
+## Package exports
 
-- **Backend orchestration** — kick off agent sessions in response to server-side events (webhooks, cron jobs, queue workers).
-- **Automation scripts** — batch-create agents, load knowledge bases, or run analytics over past sessions.
-- **Data science workflows** — pull session transcripts and analytics into notebooks.
+Everything you need is re-exported from the top-level `trugen` package:
+
+```python
+from trugen import TruGenClient, TruGenSession, TruGenRunner, TruGenState, TruGenEvent
+```
 
 ## Next steps
 
 <CardGroup cols={2}>
-
-<Card title="Quickstart" icon="rocket" href="/docs/sdks/python/quickstart">
-Stream your first agent from a Python application.
-</Card>
-
-<Card title="API Reference" icon="book" href="/api-reference/overview">
-Explore the underlying REST endpoints the SDK wraps.
-</Card>
-
+  <Card title="Quickstart" icon="rocket" href="/docs/sdks/python/quickstart">
+    Stream your first avatar in a Python GUI in under 5 minutes.
+  </Card>
+  <Card title="Authentication" icon="lock" href="/docs/sdks/python/authentication">
+    Secure your API key and manage session tokens.
+  </Card>
 </CardGroup>

@@ -1,211 +1,169 @@
 ---
 title: "Multilingual Support"
-description: "Configure speech-to-text and text-to-speech languages for your AI Teammates."
+description: "Configure speech-to-text and text-to-speech across 60+ languages, with automatic language detection and dialect support."
 ---
 
-AI Teammates support conversations in a wide range of global languages. The speech pipeline is powered by **Deepgram** and **ElevenLabs** for high-accuracy transcription (STT), and **ElevenLabs** and **Cartesia** for lifelike voice synthesis (TTS) — both of which automatically adapt to the detected language when using `multi` mode.
+TruGen supports conversations in 60+ languages. The speech pipeline uses **ElevenLabs** and **Deepgram** for transcription (STT) and **ElevenLabs** and **Cartesia** for voice synthesis (TTS) — all of which auto-adapt when you use `multi` mode.
 
-## Supported Languages
+## Quick start
 
-Languages supported across the Deepgram Nova-3 STT model. Dialect-level codes are available for many languages.
+For agents that need broad language coverage without picking a specific language, use `multi`:
+
+```json
+"stt": { "language": "multi" }
+```
+
+The STT engine auto-detects the spoken language, and TTS renders in the same language. Works for the most common cross-language flows.
+
+For a specific language, use its code (see tables below):
+
+```json
+"stt": { "language": "en-IN" }
+```
+
+## Supported languages
 
 ### European
 
-| Language       | Code | Dialect Variants                            |
-| -------------- | ---- | ------------------------------------------- |
-| **Bulgarian**  | `bg` | —                                           |
-| **Catalan**    | `ca` | —                                           |
-| **Czech**      | `cs` | —                                           |
-| **Danish**     | `da` | `da-DK`                                     |
-| **Dutch**      | `nl` | `nl-BE` (Flemish)                           |
-| **English**    | `en` | `en-US`, `en-GB`, `en-AU`, `en-NZ`, `en-IN` |
-| **Estonian**   | `et` | —                                           |
-| **Finnish**    | `fi` | —                                           |
-| **French**     | `fr` | `fr-CA` (Canada)                            |
-| **German**     | `de` | `de-CH` (Switzerland)                       |
-| **Greek**      | `el` | —                                           |
-| **Hungarian**  | `hu` | —                                           |
-| **Italian**    | `it` | —                                           |
-| **Latvian**    | `lv` | —                                           |
-| **Lithuanian** | `lt` | —                                           |
-| **Norwegian**  | `no` | —                                           |
-| **Polish**     | `pl` | —                                           |
-| **Portuguese** | `pt` | `pt-BR` (Brazil), `pt-PT` (Portugal)        |
-| **Romanian**   | `ro` | —                                           |
-| **Russian**    | `ru` | —                                           |
-| **Slovak**     | `sk` | —                                           |
-| **Spanish**    | `es` | `es-419` (Latin America)                    |
-| **Swedish**    | `sv` | `sv-SE`                                     |
-| **Turkish**    | `tr` | —                                           |
-| **Ukrainian**  | `uk` | —                                           |
+| Language | Code | Dialect variants |
+| --- | --- | --- |
+| **Bulgarian** | `bg` | — |
+| **Catalan** | `ca` | — |
+| **Czech** | `cs` | — |
+| **Danish** | `da` | `da-DK` |
+| **Dutch** | `nl` | `nl-BE` (Flemish) |
+| **English** | `en` | `en-US`, `en-GB`, `en-AU`, `en-NZ`, `en-IN` |
+| **Estonian** | `et` | — |
+| **Finnish** | `fi` | — |
+| **French** | `fr` | `fr-CA` (Canada) |
+| **German** | `de` | `de-CH` (Switzerland) |
+| **Greek** | `el` | — |
+| **Hungarian** | `hu` | — |
+| **Italian** | `it` | — |
+| **Latvian** | `lv` | — |
+| **Lithuanian** | `lt` | — |
+| **Norwegian** | `no` | — |
+| **Polish** | `pl` | — |
+| **Portuguese** | `pt` | `pt-BR`, `pt-PT` |
+| **Romanian** | `ro` | — |
+| **Russian** | `ru` | — |
+| **Slovak** | `sk` | — |
+| **Spanish** | `es` | `es-419` (Latin America) |
+| **Swedish** | `sv` | `sv-SE` |
+| **Turkish** | `tr` | — |
+| **Ukrainian** | `uk` | — |
 
 ### Asian & Pacific
 
-| Language                            | Code    | Dialect Variants   |
-| ----------------------------------- | ------- | ------------------ |
-| **Chinese (Mandarin, Simplified)**  | `zh`    | `zh-CN`, `zh-Hans` |
-| **Chinese (Mandarin, Traditional)** | `zh-TW` | `zh-Hant`          |
-| **Chinese (Cantonese)**             | `zh-HK` | —                  |
-| **Hindi**                           | `hi`    | —                  |
-| **Indonesian**                      | `id`    | —                  |
-| **Japanese**                        | `ja`    | —                  |
-| **Korean**                          | `ko`    | `ko-KR`            |
-| **Malay**                           | `ms`    | —                  |
-| **Thai**                            | `th`    | `th-TH`            |
-| **Vietnamese**                      | `vi`    | —                  |
+| Language | Code | Dialect variants |
+| --- | --- | --- |
+| **Chinese (Mandarin, Simplified)** | `zh` | `zh-CN`, `zh-Hans` |
+| **Chinese (Mandarin, Traditional)** | `zh-TW` | `zh-Hant` |
+| **Chinese (Cantonese)** | `zh-HK` | — |
+| **Hindi** | `hi` | — |
+| **Indonesian** | `id` | — |
+| **Japanese** | `ja` | — |
+| **Korean** | `ko` | `ko-KR` |
+| **Malay** | `ms` | — |
+| **Thai** | `th` | `th-TH` |
+| **Vietnamese** | `vi` | — |
 
 ### Arabic
 
-| Language                  | Code    | Variant      |
-| ------------------------- | ------- | ------------ |
-| **Arabic (Generic)**      | `ar`    | —            |
-| **Arabic — Gulf**         | `ar-AE` | UAE          |
-| **Arabic — Gulf**         | `ar-SA` | Saudi Arabia |
-| **Arabic — Gulf**         | `ar-QA` | Qatar        |
-| **Arabic — Gulf**         | `ar-KW` | Kuwait       |
-| **Arabic — Levantine**    | `ar-SY` | Syria        |
-| **Arabic — Levantine**    | `ar-LB` | Lebanon      |
-| **Arabic — Levantine**    | `ar-PS` | Palestine    |
-| **Arabic — Levantine**    | `ar-JO` | Jordan       |
-| **Arabic — Nile**         | `ar-EG` | Egypt        |
-| **Arabic — Nile**         | `ar-SD` | Sudan        |
-| **Arabic — Maghrebi**     | `ar-MA` | Morocco      |
-| **Arabic — Maghrebi**     | `ar-DZ` | Algeria      |
-| **Arabic — Maghrebi**     | `ar-TN` | Tunisia      |
-| **Arabic — Mesopotamian** | `ar-IQ` | Iraq         |
-| **Arabic — Peripheral**   | `ar-TD` | Chad         |
-| **Arabic — Peripheral**   | `ar-IR` | Iran         |
+| Language | Code | Variant |
+| --- | --- | --- |
+| **Arabic (Generic)** | `ar` | — |
+| **Gulf — UAE** | `ar-AE` | Emirati |
+| **Gulf — Saudi Arabia** | `ar-SA` | Saudi |
+| **Gulf — Qatar** | `ar-QA` | Qatari |
+| **Gulf — Kuwait** | `ar-KW` | Kuwaiti |
+| **Levantine — Syria** | `ar-SY` | Syrian |
+| **Levantine — Lebanon** | `ar-LB` | Lebanese |
+| **Levantine — Palestine** | `ar-PS` | Palestinian |
+| **Levantine — Jordan** | `ar-JO` | Jordanian |
+| **Nile — Egypt** | `ar-EG` | Egyptian |
+| **Nile — Sudan** | `ar-SD` | Sudanese |
+| **Maghrebi — Morocco** | `ar-MA` | Moroccan |
+| **Maghrebi — Algeria** | `ar-DZ` | Algerian |
+| **Maghrebi — Tunisia** | `ar-TN` | Tunisian |
+| **Mesopotamian — Iraq** | `ar-IQ` | Iraqi |
+| **Peripheral — Chad** | `ar-TD` | — |
+| **Peripheral — Iran** | `ar-IR` | — |
 
-<Note>
-  For broad multilingual coverage without specifying a language, set `language`
-  to `multi`. Deepgram will auto-detect the spoken language and ElevenLabs /
-  Cartesia TTS will adapt its output accordingly.
-</Note>
+<Note>For code-switching or unknown language input, use `language: "multi"`. The STT engine auto-detects on each utterance, and TTS renders accordingly.</Note>
 
-<CardGroup cols={3}>
-
-<Card
-  title="Deepgram — Language Docs"
-  href="https://developers.deepgram.com/docs/models-languages-overview#nova-3"
->
-  Full list of supported languages and models.
-</Card>
-
-<Card
-  title="ElevenLabs — TTS Languages"
-  href="https://elevenlabs.io/docs/overview/capabilities/text-to-speech#supported-languages"
->
-  Full list of supported voices and languages.
-</Card>
-
-<Card
-  title="Cartesia — TTS Models"
-  href="https://docs.cartesia.ai/build-with-cartesia/tts-models/latest"
->
-  Full list of languages supported by Sonic models.
-</Card>
-
-</CardGroup>
-
-## Setting the Language
-
-Set the STT provider and language when creating an agent via API:
+## Setting the language
 
 <CodeGroup>
-```bash cURL
-curl --request POST \
-  --url https://api.trugen.ai/v1/ext/agent \
-  --header 'Content-Type: application/json' \
-  --header 'x-api-key: YOUR_API_KEY' \
-  --data @- <<EOF
-{
-  "agent_name": "Multilingual Agent",
-  "config": { "timeout": 240 },
-  "avatars": [
-    {
-      "stt": {
-        "provider": "elevenlabs",
-        "model": "scribe_v2_realtime",
-        "language": "multi",
-        "fallback_model": "nova-2-general",
-        "allow_interm_results_interruption": true,
-        "min_endpointing_delay": 0.4,
-        "max_endpointing_delay": 0.3
-      },
-      "turn_detector": true,
-      "llm": {
-        "provider": "azure-openai",
-        "model": "gpt-5.4-mini",
-        "fallback_model": "gpt-4.1-nano",
-        "use_nltk": false
-      },
-      "tts": {
-        "provider": "elevenlabs",
-        "model_id": "eleven_turbo_v2_5",
-        "language": "a",
-        "voice_id": "ZUrEGyu8GFMwnHbvLhv2",
-        "customPronounciation": [
-          {
-            "word": "AI",
-            "pronounciation": "AI"
-          },
-          {
-            "word": "TRUGEN",
-            "pronounciation": "TRUE GEN"
-          },
-          {
-            "word": "API",
-            "pronounciation": "A P I"
-          },
-          {
-            "word": "SQL",
-            "pronounciation": "Sequel"
-          },
-          {
-            "word": "UI",
-            "pronounciation": "U I"
-          },
-          {
-            "word": "URL",
-            "pronounciation": "U R L"
-          }
-        ],
-        "pitch": 0,
-        "effects_profile_id": "small-bluetooth-speaker-class-device",
-        "speaking_rate": 1,
-        "stability": 0.5,
-        "similarity_boost": 0.75,
-        "sample_rate": 16000,
-        "encoding": "pcm_s16le",
-        "gender": "female",
-        "fallback_voice_id": "am_puck"
-      }
-    }
-  ]
+```json Specific language
+"stt": {
+  "provider": "elevenlabs",
+  "model": "scribe_v2_realtime",
+  "language": "fr-CA"
 }
-EOF
+```
+
+```json Multi-language (auto-detect)
+"stt": {
+  "provider": "elevenlabs",
+  "model": "scribe_v2_realtime",
+  "language": "multi"
+}
+```
+
+```json With fallback
+"stt": {
+  "provider": "elevenlabs",
+  "model": "scribe_v2_realtime",
+  "language": "en",
+  "fallback_model": "nova-2-general"
+}
 ```
 </CodeGroup>
 
-<Tip>
-  When using `multi` mode, ElevenLabs and Cartesia TTS automatically adjust
-  output to match the detected language — no extra configuration needed.
-</Tip>
+Full agent creation with a multilingual configuration — see the [Create Agent reference](/api-reference/endpoint/agentcreate) for every field.
 
-## What's Next?
+## Provider language coverage
+
+Provider language coverage evolves. Always check the source docs for the very latest list.
+
+<CardGroup cols={3}>
+<Card
+  title="ElevenLabs Scribe"
+  icon="microphone-lines"
+  href="https://elevenlabs.io/docs/overview/capabilities/text-to-speech#supported-languages"
+>
+Multilingual STT model — full language and voice list.
+</Card>
+<Card
+  title="Deepgram Nova-3"
+  icon="waveform-lines"
+  href="https://developers.deepgram.com/docs/models-languages-overview#nova-3"
+>
+Broadest STT language coverage.
+</Card>
+<Card
+  title="Cartesia Sonic"
+  icon="volume-high"
+  href="https://docs.cartesia.ai/build-with-cartesia/tts-models/latest"
+>
+Low-latency multilingual TTS.
+</Card>
+</CardGroup>
+
+## Prompt considerations for multilingual agents
+
+- **Respond in the same language as the user.** Add this instruction explicitly — LLMs sometimes default to English.
+- **Watch for code-switching.** Users often mix languages ("Book me a table para dos"). Multi mode handles input; instruct the LLM to match the dominant language in output.
+- **Test dialect variants.** A single `es` model may transcribe `es-MX` fine but stumble on `es-AR`. If accuracy matters, pick the dialect explicitly.
+
+## What's next
 
 <CardGroup cols={2}>
-
-<Card
-  title="Prompting Strategies"
-  icon="pen"
-  href="/docs/agents/prompting-strategies"
->
-  Write system prompts that guide language and tone effectively.
+<Card title="Voices" icon="microphone" href="/docs/agents/voices/overview">
+Voice IDs and provider-specific settings.
 </Card>
-
 <Card title="Providers" icon="cloud" href="/docs/providers/overview">
-  See all supported STT, LLM, and TTS providers.
+Every supported STT, LLM, and TTS provider.
 </Card>
-
 </CardGroup>

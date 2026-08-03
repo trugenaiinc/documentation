@@ -2,4 +2,72 @@
 title: 'Create Agent By Template'
 openapi: 'POST /ext/agentbytemplate'
 ---
- 
+
+Create a new agent from a saved [template](/docs/agents/templates). The template supplies the shared configuration (prompt, knowledge, LLM, TTS); you pass in the per-agent overrides (avatar, email, per-user context).
+
+## Why templates
+
+Templates keep configuration consistent across many agents. If you run 50 agents that share the same behavior but differ in avatar and per-user context, define the behavior once as a template and spawn agents from it.
+
+## Required fields
+
+- `template_id` — the template to instantiate from
+- `avatar_key_id` — the visual identity for this specific agent
+
+## Optional fields
+
+- `email` — used for [external meetings](/docs/agents/meetings/overview) as the meeting invite identity
+- `context_override` — inject per-agent context that will be appended to the shared system prompt
+
+## Example
+
+```bash
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/agentbytemplate \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "template_id": "tpl_abc123",
+    "avatar_key_id": "665a1170",
+    "email": "priya@example.com",
+    "context_override": "User is on the Growth plan, 30 seats, last ticket about SSO."
+  }'
+```
+
+Response:
+
+```json
+{
+  "id": "agt_98765example",
+  "message": "Agent created successfully"
+}
+```
+
+## Common patterns
+
+### Per-customer rollout
+
+Loop over your customer list; for each customer, spin up a template-derived agent with per-customer context:
+
+```typescript
+for (const customer of customers) {
+  await fetch("https://api.trugen.ai/v1/ext/agentbytemplate", {
+    method: "POST",
+    headers: {
+      "x-api-key": process.env.TRUGEN_API_KEY!,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      template_id: "tpl_customer_support",
+      avatar_key_id: "665a1170",
+      email: `support-${customer.slug}@meetings.trugen.ai`,
+      context_override: `Customer: ${customer.name}. Plan: ${customer.plan}.`,
+    }),
+  });
+}
+```
+
+## Next steps
+
+- [Manage templates](/api-reference/endpoint/templatecreate)
+- [Templates concept](/docs/agents/templates)

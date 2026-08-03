@@ -1,0 +1,61 @@
+---
+title: "Wix"
+description: "Embed a TruGen agent on a Wix site using the HTML iframe element."
+---
+
+Wix supports third-party iframes through the **Embed HTML** element in the editor. Adding a TruGen agent takes a couple of minutes.
+
+## Prerequisites
+
+- A TruGen agent with an `agent_id` — see the [quickstart](/docs/quickstart)
+- Access to your Wix Editor
+
+## Steps
+
+<Steps>
+  <Step title="Add an Embed HTML element">
+    In the Wix Editor, click **+ Add** in the left panel → **Embed Code** → **Embed HTML**. Drag it onto the page.
+  </Step>
+  <Step title="Enter the iframe">
+    Click the element, then **Enter Code**. Paste:
+
+    ```html
+    <iframe
+      src="https://app.trugen.ai/embed/YOUR_AGENT_ID?username=USER_NAME&id=USER_ID&context=CONTEXT"
+      width="100%"
+      height="600"
+      frameborder="0"
+      allow="camera; microphone; autoplay; display-capture; fullscreen"
+    ></iframe>
+    ```
+
+    Replace `YOUR_AGENT_ID` and swap `USER_NAME`, `USER_ID`, `CONTEXT` with your values.
+  </Step>
+  <Step title="Resize the container">
+    Wix uses a fixed-size embed container by default. Drag the element to at least 400×600 to fit the avatar comfortably.
+  </Step>
+  <Step title="Publish">
+    Click **Publish** in the top right. Visit the published URL to test.
+  </Step>
+</Steps>
+
+## Wix-specific limits
+
+- **Premium plan required** — Wix restricts external iframes on free plans. Upgrade to any Premium tier to unlock Embed HTML.
+- **Editor preview may not work** — Wix's editor preview iframe often blocks nested iframes and camera/mic access. Always test on the published URL, not in the editor.
+- **Fixed sizing** — the Embed HTML element doesn't fluidly resize. Choose a fixed width and height that works on both desktop and mobile.
+
+## Domain allowlist
+
+Add your Wix domain (custom or `.wixsite.com`) to your agent's `allowed_domains` list if you're using one.
+
+## What's next
+
+<CardGroup cols={2}>
+<Card title="iFrame reference" icon="code" href="/docs/integrations/embed-via-iFrame">
+Every iframe parameter documented.
+</Card>
+<Card title="Prompting" icon="pen" href="/docs/agents/prompting-strategies">
+Write a system prompt that fits your Wix site's context.
+</Card>
+</CardGroup>
