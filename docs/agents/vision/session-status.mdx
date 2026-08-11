@@ -1,0 +1,88 @@
+---
+title: "Get Vision Session Status"
+sidebarTitle: "Session Status"
+description: "Check the state of a running Hawkeye session or read the final billing duration after it ends."
+---
+
+`GET /v2/vision/{session_id}` returns the current state of a Hawkeye vision session — queued, running, or ended — along with the modules that are active and how long the session has been alive.
+
+## Endpoint
+
+```bash
+GET https://api.trugen.ai/v2/vision/{session_id}
+Header: x-api-key: <api-key>
+```
+
+`session_id` is the id returned by [Start a Vision Session](/docs/agents/vision/start-session).
+
+## Example
+
+```bash
+curl --request GET \
+  --url https://api.trugen.ai/v2/vision/8f2a1e5b-4c9d-4a3f-9c11-2c07be7d1c22 \
+  --header 'x-api-key: <api-key>'
+```
+
+## Response
+
+```json
+{
+  "session_id": "8f2a1e5b-4c9d-4a3f-9c11-2c07be7d1c22",
+  "status": "IN_PROGRESS",
+  "livekit_url": "wss://your-livekit-domain.livekit.cloud",
+  "participant": "auto",
+  "max_duration": 10,
+  "elapsed_duration_seconds": 148,
+  "modules": [
+    "emotion_recognition",
+    "eyegaze_tracking",
+    "face_count",
+    "face_out_of_focus",
+    "face_pose_detection"
+  ],
+  "started_at": "2026-08-11T14:22:03Z",
+  "ended_at": ""
+}
+```
+
+### Response fields
+
+| Field                      | Description                                                                                     |
+| -------------------------- | ----------------------------------------------------------------------------------------------- |
+| `session_id`               | The id you passed in the URL.                                                                   |
+| `status`                   | `IN_QUEUE` → `IN_PROGRESS` → `COMPLETED` (or `FAILED` / `CANCELLED`).                           |
+| `livekit_url`              | The LiveKit room Hawkeye is analysing.                                                          |
+| `participant`              | The participant identity being analysed. `"auto"` means Hawkeye chose the first non-agent one.  |
+| `max_duration`             | Session cap in minutes, as originally requested.                                                |
+| `elapsed_duration_seconds` | Seconds since `started_at`. Frozen at the end when the session finishes.                        |
+| `modules`                  | Modules active on this session.                                                                 |
+| `started_at`               | RFC3339 UTC timestamp when Hawkeye joined the room.                                             |
+| `ended_at`                 | RFC3339 UTC timestamp when the session terminated. Empty while `status` is `IN_QUEUE`/`IN_PROGRESS`. |
+
+### Status values
+
+| Status         | Meaning                                                                                       |
+| -------------- | --------------------------------------------------------------------------------------------- |
+| `IN_QUEUE`     | Session accepted, worker not yet started.                                                     |
+| `IN_PROGRESS`  | Hawkeye is in the room and analysing video.                                                   |
+| `COMPLETED`    | Session ended cleanly (either `max_duration` hit or the room closed).                         |
+| `FAILED`       | Worker errored — check logs / retry with a fresh access token if it looks like an auth issue. |
+| `CANCELLED`    | Explicitly cancelled.                                                                         |
+
+## Polling Guidance
+
+The status endpoint refreshes from Hawkeye on every call, so you never need to poll more often than roughly once every few seconds. Once a session reaches a terminal state (`COMPLETED`, `FAILED`, `CANCELLED`), further calls just replay the final response — no extra work is done backend-side.
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Start a Vision Session" icon="play" href="/docs/agents/vision/start-session">
+  Kick off a new session with the modules and triggers you need.
+</Card>
+
+<Card title="Overview" icon="eye" href="/docs/agents/vision/overview">
+  What Vision Understanding does and when to use it.
+</Card>
+
+</CardGroup>

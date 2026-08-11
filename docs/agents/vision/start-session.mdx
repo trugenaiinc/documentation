@@ -1,0 +1,206 @@
+---
+title: "Start a Vision Session"
+sidebarTitle: "Start Session"
+description: "Attach Hawkeye-1 to any LiveKit room and start real-time video analysis with the modules you choose."
+---
+
+`POST /v2/vision` starts a new Hawkeye session on a LiveKit room you already have. Hawkeye joins as a subscriber, analyses the target participant's video, and streams alerts to your callback URL whenever a trigger fires.
+
+<Note>Billing is a flat **1¢ per minute** per session. Sessions stop automatically once `max_duration` (in minutes) is reached.</Note>
+
+## Endpoint
+
+```bash
+POST https://api.trugen.ai/v2/vision
+Header: x-api-key: <api-key>
+Content-Type: application/json
+```
+
+## Full Request Payload
+
+The full config Hawkeye needs is shown below. Every module ships with sensible defaults, so you can strip a module down to `{}` and Hawkeye will fill in the defaults for you — but everything the platform will run is explicit here.
+
+```json
+{
+  "livekit_url": "wss://your-livekit-domain.livekit.cloud",
+  "access_token": "eyJhbGciOi...",
+  "participant": "auto",
+  "callback_url": "wss://your-callback-endpoint.example.com/vision",
+  "max_duration": 10,
+  "modules": {
+    "face_pose_detection": {
+      "trigger": [
+        { "Looking Left":  { "type": "count", "op": "gt", "value": 1 } },
+        { "Looking Right": { "type": "count", "op": "gt", "value": 1 } }
+      ]
+    },
+    "emotion_recognition": {
+      "trigger": [
+        { "angry":    { "type": "count", "op": "gt", "value": 1 } },
+        { "sad":      { "type": "count", "op": "gt", "value": 1 } },
+        { "disgust":  { "type": "count", "op": "gt", "value": 1 } },
+        { "fear":     { "type": "count", "op": "gt", "value": 1 } },
+        { "happy":    { "type": "count", "op": "gt", "value": 1 } },
+        { "surprise": { "type": "count", "op": "gt", "value": 1 } },
+        { "neutral":  { "type": "count", "op": "gt", "value": 1 } }
+      ]
+    },
+    "eyegaze_tracking": {
+      "trigger": [
+        { "Looking left":  { "type": "count", "op": "gt", "value": 1 } },
+        { "Looking right": { "type": "count", "op": "gt", "value": 1 } }
+      ]
+    },
+    "face_count": {
+      "trigger": [
+        { "2": { "type": "count", "op": "gte", "value": 1 } }
+      ]
+    },
+    "face_out_of_focus": {
+      "trigger": [
+        { "out_of_frame": { "type": "count", "op": "gte", "value": 1 } }
+      ]
+    }
+  }
+}
+```
+
+<Note>Every module runs at a fixed evaluation frequency of once per second. You don't set it.</Note>
+
+### Top-level fields
+
+| Field           | Required | Description                                                                                                                                                        |
+| --------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `livekit_url`   | ✅       | `wss://` URL of the LiveKit room Hawkeye should join.                                                                                                             |
+| `access_token`  | ✅       | LiveKit access token with `roomJoin: true` for that room. Hawkeye connects with this identity.                                                                     |
+| `participant`   | ➖       | Identity of the participant to analyse. Defaults to `"auto"` — Hawkeye picks the first non-agent participant in the room. Set explicitly to lock onto a specific identity. |
+| `callback_url`  | ➖       | WebSocket URL to receive real-time alerts when triggers fire. Omit if you only intend to poll the [Get Session Status](/docs/agents/vision/session-status) endpoint. |
+| `max_duration`  | ✅       | Hard cap in **minutes**. Hawkeye disconnects when reached.                                                                                                          |
+| `modules`       | ➖       | Modules to enable, keyed by module name. Omit to run all defaults. Pass `{}` for a module to use that module's default trigger set.                                 |
+
+## Modules
+
+Every module can be included, excluded, or configured. If you don't send `modules` at all, Hawkeye enables all of them with sensible defaults.
+
+### `face_pose_detection` — head orientation
+
+Fires when the participant's head turns away from centre. Trigger signals: `Looking Left`, `Looking Right`.
+
+### `emotion_recognition` — expression classification
+
+Classifies the participant's facial expression each second. Trigger signals: `angry`, `sad`, `disgust`, `fear`, `happy`, `surprise`, `neutral`.
+
+### `eyegaze_tracking` — pupil direction
+
+Independent of head pose — catches subtle off-screen glances. Trigger signals: `Looking left`, `Looking right`.
+
+### `face_count` — number of visible faces
+
+Counts distinct faces in the frame. Trigger signal is the exact face count you care about (e.g. `"2"`, `"3"`). Useful for proctoring.
+
+### `face_out_of_focus` — participant left the frame
+
+Fires when the target participant's face moves out of the camera view. Trigger signal: `out_of_frame`.
+
+## Trigger Shape
+
+Every trigger entry is `{ "<signal_name>": { ...rule } }`.
+
+| Field    | Description                                                                                                                    |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `type`   | How the signal is aggregated. Always `"count"` today — Hawkeye counts how many times the signal fires inside the evaluation window. |
+| `op`     | Comparison between the aggregated count and `value`. See table below.                                                          |
+| `value`  | Threshold that `count` is compared against.                                                                                    |
+
+### `op` shorthand
+
+The `op` field uses short comparison codes.
+
+| Shorthand | Meaning                    | Fires when…                                          |
+| --------- | -------------------------- | ---------------------------------------------------- |
+| `gt`      | greater than               | `count > value`                                      |
+| `gte`     | greater than or equal to   | `count >= value`                                     |
+| `lt`      | less than                  | `count < value`                                      |
+| `lte`     | less than or equal to      | `count <= value`                                     |
+| `eq`      | equal to                   | `count == value`                                     |
+
+## Customising a Module
+
+Include only the modules you care about and Hawkeye ignores the rest. You can tune thresholds by adjusting `value` or filter down to just the signals you want:
+
+```json
+{
+  "livekit_url": "wss://your-livekit-domain.livekit.cloud",
+  "access_token": "eyJhbGciOi...",
+  "callback_url": "wss://your-callback-endpoint.example.com/vision",
+  "max_duration": 15,
+  "modules": {
+    "emotion_recognition": {
+      "trigger": [
+        { "angry": { "type": "count", "op": "gt",  "value": 3 } },
+        { "happy": { "type": "count", "op": "gte", "value": 5 } }
+      ]
+    },
+    "face_count": {
+      "trigger": [
+        { "3": { "type": "count", "op": "gte", "value": 1 } }
+      ]
+    }
+  }
+}
+```
+
+Passing an empty object like `"emotion_recognition": {}` uses that module's default triggers.
+
+## Response
+
+```json
+{
+  "session_id": "8f2a1e5b-4c9d-4a3f-9c11-2c07be7d1c22",
+  "status": "IN_QUEUE",
+  "max_duration": 10,
+  "modules": [
+    "emotion_recognition",
+    "eyegaze_tracking",
+    "face_count",
+    "face_out_of_focus",
+    "face_pose_detection"
+  ]
+}
+```
+
+| Field         | Description                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------------- |
+| `session_id`  | TruGen session identifier — use this to poll [Get Session Status](/docs/agents/vision/session-status). |
+| `status`      | Initial lifecycle state, usually `IN_QUEUE`. Transitions to `IN_PROGRESS` when the worker joins. |
+| `max_duration`| Echoed back in minutes.                                                                          |
+| `modules`     | Sorted list of module names that were resolved for this session.                                 |
+
+## Alert Format
+
+When a trigger fires, Hawkeye pushes a JSON message to your `callback_url`:
+
+```json
+{
+  "session_id": "8f2a1e5b-4c9d-4a3f-9c11-2c07be7d1c22",
+  "module": "emotion_recognition",
+  "signal": "angry",
+  "timestamp": "2026-08-11T14:24:11Z"
+}
+```
+
+Use this to drive dashboards, escalate to a moderator, or feed downstream analytics — Hawkeye handles the vision, you handle the reaction.
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Get Session Status" icon="heart-pulse" href="/docs/agents/vision/session-status">
+  Poll a running session, or check the final state after it ends.
+</Card>
+
+<Card title="Overview" icon="eye" href="/docs/agents/vision/overview">
+  What Vision Understanding does and when to use it.
+</Card>
+
+</CardGroup>
