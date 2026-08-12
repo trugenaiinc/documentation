@@ -109,7 +109,11 @@
               {
                 "group": "Vision Understanding",
                 "icon": "eye",
-                "pages": ["docs/agents/vision/overview"]
+                "pages": [
+                  "docs/agents/vision/overview",
+                  "docs/agents/vision/start-session",
+                  "docs/agents/vision/session-status"
+                ]
               },
               {
                 "group": "Agent Widget",
@@ -305,6 +309,14 @@
             "group": "Avatars",
             "icon": "user",
             "pages": ["api-reference/endpoint/avatarget"]
+          },
+          {
+            "group": "Vision",
+            "icon": "eye",
+            "pages": [
+              "api-reference/endpoint/visionstart",
+              "api-reference/endpoint/visionstatus"
+            ]
           },
           {
             "group": "Conversations",

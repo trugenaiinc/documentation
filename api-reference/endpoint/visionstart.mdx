@@ -1,0 +1,79 @@
+---
+title: 'Start Vision Session'
+description: 'Attach Hawkeye-1 to a LiveKit room and begin real-time video analysis. Billed at 1¢/minute.'
+---
+
+Start a new Hawkeye vision session on a LiveKit room you already have. Hawkeye joins as a subscriber, analyses the target participant's video, and streams alerts to your callback URL whenever a chosen class is detected.
+
+For the full walkthrough — module descriptions, class lists per module, alert format — see [Start a Vision Session](/docs/agents/vision/start-session).
+
+## Endpoint
+
+```bash
+POST https://api.trugen.ai/v2/vision
+Header: x-api-key: <api-key>
+Content-Type: application/json
+```
+
+## Request
+
+| Field           | Type                       | Required | Description                                                                                                                                    |
+| --------------- | -------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `livekit_url`   | string                     | ✅       | `wss://` URL of the LiveKit room Hawkeye should join.                                                                                         |
+| `access_token`  | string                     | ✅       | LiveKit access token with `roomJoin: true` for that room.                                                                                      |
+| `participant`   | string                     | ➖       | Participant identity to analyse. Defaults to `"auto"` — first non-agent participant in the room. Set to a specific LiveKit identity to lock analysis onto that participant. |
+| `callback_url`  | string                     | ➖       | WebSocket URL to receive real-time class-detection alerts.                                                                                    |
+| `max_duration`  | integer                    | ✅       | Session cap in **minutes**. Hawkeye disconnects when reached.                                                                                  |
+| `modules`       | object<string, string[]>   | ➖       | Modules to enable. Each key is a module name; each value is the list of classes to alert on. Omit `modules` entirely for all defaults.         |
+
+### Example
+
+```bash
+curl --request POST \
+  --url https://api.trugen.ai/v2/vision \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "livekit_url": "wss://your-livekit-domain.livekit.cloud",
+    "access_token": "eyJhbGciOi...",
+    "participant": "auto",
+    "callback_url": "wss://your-callback-endpoint.example.com/vision",
+    "max_duration": 10,
+    "modules": {
+      "face_pose_detection":  ["Looking Left", "Looking Right"],
+      "emotion_recognition":  ["angry", "sad", "happy"],
+      "eyegaze_tracking":     ["Looking left", "Looking right"],
+      "face_count":           ["2"],
+      "face_out_of_focus":    ["out_of_frame"]
+    }
+  }'
+```
+
+Pass an empty array (e.g. `"emotion_recognition": []`) to enable a module with all its default classes.
+
+## Response
+
+```json
+{
+  "session_id": "8f2a1e5b-4c9d-4a3f-9c11-2c07be7d1c22",
+  "status": "IN_QUEUE",
+  "max_duration": 10,
+  "modules": [
+    "emotion_recognition",
+    "eyegaze_tracking",
+    "face_count",
+    "face_out_of_focus",
+    "face_pose_detection"
+  ]
+}
+```
+
+Persist `session_id` and use it with [Get Vision Session](/api-reference/endpoint/visionstatus) to check progress.
+
+## Errors
+
+| Status | Meaning                                                                            |
+| ------ | ---------------------------------------------------------------------------------- |
+| `400`  | Missing / invalid field (e.g. `livekit_url`, `access_token`, unknown module or class name). |
+| `401`  | Missing or invalid `x-api-key`.                                                    |
+| `502`  | Hawkeye backend rejected the request. Retry with fresh LiveKit credentials.        |
