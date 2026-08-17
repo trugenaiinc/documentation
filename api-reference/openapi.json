@@ -1570,6 +1570,435 @@
         }
       }
     },
+    "/ext/guardrail": {
+      "post": {
+        "summary": "Create a new Guardrail",
+        "description": "Creates a new guardrail rule for use within the TruGen AI system. Guardrails are workspace-scoped and reusable across agents - creating one does not attach it anywhere.",
+        "operationId": "createGuardrail",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Human-readable label. Also used to derive the permanent `key` used at runtime (lowercased, punctuation replaced with underscores, deduplicated with a numeric suffix on collision).",
+                    "example": "Hate Speech Filter"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Free-text tag for grouping guardrails. No fixed list - any string is accepted, including an empty one.",
+                    "example": "Content Safety"
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "The rule text the agent's LLM evaluates a user's message against to decide whether this guardrail applies.",
+                    "example": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group."
+                  },
+                  "response_message": {
+                    "type": "string",
+                    "description": "Spoken to the user verbatim when this guardrail fires. If omitted, the guardrail falls back to a moderation-endpoint check instead of a canned response.",
+                    "example": "I'm sorry, but I can't help with that. Let's keep things respectful."
+                  },
+                  "callback_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Where a `guardrail_triggered` event is POSTed when this guardrail fires. Must be a well-formed http(s):// URL if present. Delivery is fire-and-forget - no retries.",
+                    "example": "https://yourapp.com/webhooks/guardrail"
+                  },
+                  "is_active": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Set to false to exclude this guardrail from live conversations without deleting it."
+                  }
+                },
+                "required": [
+                  "name",
+                  "prompt"
+                ]
+              },
+              "example": {
+                "name": "Hate Speech Filter",
+                "category": "Content Safety",
+                "prompt": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group.",
+                "response_message": "I'm sorry, but I can't help with that. Let's keep things respectful.",
+                "callback_url": "https://yourapp.com/webhooks/guardrail",
+                "is_active": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Guardrail created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Guardrail created"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body - missing name/prompt, or a malformed callback_url",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "missingName": {
+                    "value": {
+                      "error": "name is required"
+                    }
+                  },
+                  "missingPrompt": {
+                    "value": {
+                      "error": "prompt is required"
+                    }
+                  },
+                  "badCallbackUrl": {
+                    "value": {
+                      "error": "callback_url must be a valid http(s) URL"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid API key"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all Guardrails",
+        "description": "Fetches all guardrails in your workspace. Requires `x-api-key` authentication.",
+        "operationId": "getGuardrails",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of guardrails",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "Permanent slug derived from name at creation time. Never regenerated, even if name changes later. This is the identifier the running agent uses as the tool name.",
+                        "example": "hate_speech_filter"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Hate Speech Filter"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "Content Safety"
+                      },
+                      "prompt": {
+                        "type": "string",
+                        "example": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group."
+                      },
+                      "response_message": {
+                        "type": "string",
+                        "example": "I'm sorry, but I can't help with that. Let's keep things respectful."
+                      },
+                      "callback_url": {
+                        "type": "string",
+                        "example": "https://yourapp.com/webhooks/guardrail"
+                      },
+                      "is_active": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-08-14T11:38:46.479224Z"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-08-14T11:38:46.479224Z"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "key",
+                      "name",
+                      "category",
+                      "prompt",
+                      "response_message",
+                      "callback_url",
+                      "is_active",
+                      "created_at",
+                      "updated_at"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid API key"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/ext/guardrail/{id}": {
+      "put": {
+        "summary": "Update Guardrail",
+        "description": "Replaces an existing guardrail's configuration by its unique ID. This is a full replace of every client-settable field, not a partial patch. `key` is never changed by an update, even if `name` changes.",
+        "operationId": "updateGuardrailById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The UUID of the guardrail",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+            }
+          }
+        ],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Human-readable label. Also used to derive the permanent `key` used at runtime (lowercased, punctuation replaced with underscores, deduplicated with a numeric suffix on collision).",
+                    "example": "Hate Speech Filter"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Free-text tag for grouping guardrails. No fixed list - any string is accepted, including an empty one.",
+                    "example": "Content Safety"
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "The rule text the agent's LLM evaluates a user's message against to decide whether this guardrail applies.",
+                    "example": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group."
+                  },
+                  "response_message": {
+                    "type": "string",
+                    "description": "Spoken to the user verbatim when this guardrail fires. If omitted, the guardrail falls back to a moderation-endpoint check instead of a canned response.",
+                    "example": "I'm sorry, but I can't help with that. Let's keep things respectful."
+                  },
+                  "callback_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Where a `guardrail_triggered` event is POSTed when this guardrail fires. Must be a well-formed http(s):// URL if present. Delivery is fire-and-forget - no retries.",
+                    "example": "https://yourapp.com/webhooks/guardrail"
+                  },
+                  "is_active": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Set to false to exclude this guardrail from live conversations without deleting it."
+                  }
+                },
+                "required": [
+                  "name",
+                  "prompt"
+                ]
+              },
+              "example": {
+                "name": "Hate Speech Filter",
+                "category": "Content Safety",
+                "prompt": "Updated prompt text.",
+                "response_message": "Let's keep things respectful.",
+                "callback_url": "",
+                "is_active": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Guardrail updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Guardrail updated"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid API key"
+          },
+          "404": {
+            "description": "Guardrail not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Guardrail not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Guardrail",
+        "description": "Deletes a guardrail by its unique ID. Deletion does not cascade - if the guardrail is still attached to one or more agents, the attachment reference is left dangling. It's excluded automatically at runtime (harmless), but not cleaned up. Detach it first if you want a clean state.",
+        "operationId": "deleteGuardrailById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The UUID of the guardrail",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+            }
+          }
+        ],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Guardrail deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Guardrail deleted"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid API key"
+          },
+          "404": {
+            "description": "Guardrail not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Guardrail not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/ext/template": {
       "post": {
         "summary": "Create a new Template",

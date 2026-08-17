@@ -1,0 +1,104 @@
+---
+title: "Runtime Behavior"
+sidebarTitle: "Runtime Behavior"
+description: "What actually happens when a guardrail fires during a live call: the three outcomes, the webhook payload, and the caveats worth knowing before you rely on either."
+---
+
+This page covers what happens **after** a guardrail is [created](/docs/agents/guardrails/creating) and [attached](/docs/agents/guardrails/attaching): the moment-by-moment behavior during a live conversation.
+
+## How a guardrail becomes available
+
+When a conversation starts, the backend fetches every **active** guardrail attached to that agent and embeds it into the agent's dispatch config:
+
+```json
+{
+  "actions": {
+    "guardrails": [
+      {
+        "name": "hate_speech_filter",
+        "description": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group.",
+        "category": "Content Safety",
+        "event_messages": { "on_trigger": { "message": "Let's keep things respectful." } },
+        "callback_url": "https://yourapp.com/webhooks/guardrail"
+      }
+    ]
+  }
+}
+```
+
+`event_messages` only appears if `response_message` was set on the guardrail; `callback_url` only appears if one was configured. This happens **once**, at conversation creation. See [When updates take effect](/docs/agents/guardrails/attaching#when-updates-take-effect).
+
+From there, the LLM decides, turn by turn and based on the guardrail's `prompt`/`description`, whether a given user message warrants calling it. Nothing in the platform forces this check; it's LLM judgment, same as any other [tool](/docs/agents/tools/overview).
+
+## The three outcomes
+
+A triggered guardrail is never silent. The user always hears something. Which of these three happens depends entirely on how the guardrail is configured, not on anything the LLM decides:
+
+| # | Path | Condition | What the user hears |
+| --- | --- | --- | --- |
+| 1 | **Canned response** | `response_message` is set | The agent speaks that exact line, then the turn ends immediately. Deterministic, with no LLM improvisation added on top. |
+| 2 | **Moderation check** | `response_message` is empty *and* a moderation backend is configured | The check result is handed to the LLM as the tool's result, and the LLM writes its own reply based on it. |
+| 3 | **Error fallback** | The moderation check can't run, or fails | The LLM receives a tool error and reacts however its prompting leads it to: typically an apology or a generic response. Not scripted, not guaranteed. |
+
+## The `verdict` field
+
+If the moderation path fires (path 2), `verdict` has **no fixed schema**. It's a raw pass-through of whatever the moderation endpoint returns:
+
+- Valid JSON response → parsed and passed through as-is.
+- Non-JSON response → wrapped as `{"raw": "<the raw text>"}`.
+- The check itself fails → an error dict instead, such as `{"error": "check request failed"}` or `{"error": "<exception message>"}`.
+
+Nothing in the platform inspects `verdict`'s contents. There's no automatic "if flagged, block" logic anywhere in the pipeline. It's handed to the LLM as a tool result, and whether the agent refuses, warns, or continues normally is entirely up to the LLM's own judgment and your system prompt, not something TruGen enforces for you.
+
+## The webhook event
+
+<Note>
+  This is a **separate mechanism** from the agent-level `callback_url` / `callback_events` system documented in [Event Callbacks](/docs/agents/callback). That system is an opt-in list of pipeline events (`call_ended`, `tool_call`, etc.) configured once per agent. A guardrail's `callback_url` is configured **per guardrail**, is not part of `callback_events`, and fires automatically, with no opt-in list, any time that specific guardrail triggers.
+</Note>
+
+If a guardrail has `callback_url` set, a `guardrail_triggered` event is POSTed there every time it fires, regardless of which of the three outcomes above occurred:
+
+```json
+{
+  "event": "guardrail_triggered",
+  "guardrail": { "name": "hate_speech_filter", "category": "Content Safety" },
+  "content": "the exact text that was checked",
+  "response_message": "Let's keep things respectful.",
+  "verdict": null,
+  "conversation_id": "4cd87bec-d8f2-4b56-804b-bc3dcef0ee7e",
+  "speech_id": "speech_eea2b17d1c65",
+  "agent_id": "Clara",
+  "timestamp": "2026-08-14T11:38:46.479224Z"
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `event` | Always `"guardrail_triggered"`. |
+| `guardrail.name` | The guardrail's `key` (not the display `name`). |
+| `guardrail.category` | The `category` set at creation. |
+| `content` | The exact user text that was checked. |
+| `response_message` | The canned message spoken, if path 1 fired. `null`/absent otherwise. |
+| `verdict` | `null` unless the moderation path (path 2) fired (see above for its shape). |
+| `conversation_id` | The session this happened in. |
+| `speech_id` | Identifier for the specific turn. |
+| `agent_id` | **The agent's display name, not its UUID.** Despite the key name, sourced directly from the agent's `name` field. |
+| `timestamp` | When the guardrail fired. |
+
+<Warning>
+  Delivery is **fire-and-forget**: no retries, and failures are swallowed silently. If `callback_url` isn't set on a guardrail, nothing gets posted anywhere for it: not to this endpoint, not anywhere else. That's expected behavior, not a bug. Don't build logic that assumes guaranteed delivery; treat this as a best-effort notification, not an audit log.
+</Warning>
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Event Callbacks" icon="webhook" href="/docs/agents/callback">
+  The separate, agent-level webhook system this is easy to confuse with.
+</Card>
+
+<Card title="Attach to Agents" icon="link" href="/docs/agents/guardrails/attaching">
+  Wire a guardrail to an agent, and know when changes take effect.
+</Card>
+
+</CardGroup>

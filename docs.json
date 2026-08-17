@@ -107,6 +107,16 @@
                 ]
               },
               {
+                "group": "Guardrails",
+                "icon": "shield-halved",
+                "pages": [
+                  "docs/agents/guardrails/overview",
+                  "docs/agents/guardrails/creating",
+                  "docs/agents/guardrails/attaching",
+                  "docs/agents/guardrails/runtime-behavior"
+                ]
+              },
+              {
                 "group": "Vision Understanding",
                 "icon": "eye",
                 "pages": [
@@ -382,6 +392,16 @@
               "api-reference/endpoint/toolgetbyid",
               "api-reference/endpoint/toolupdate",
               "api-reference/endpoint/tooldelete"
+            ]
+          },
+          {
+            "group": "Guardrails",
+            "icon": "shield-halved",
+            "pages": [
+              "api-reference/endpoint/guardrailcreate",
+              "api-reference/endpoint/guardrailget",
+              "api-reference/endpoint/guardrailupdate",
+              "api-reference/endpoint/guardraildelete"
             ]
           },
           {
