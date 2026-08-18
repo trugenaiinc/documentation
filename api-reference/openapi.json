@@ -3503,6 +3503,18 @@
                           "description": "Enable turn-detection to decide when the agent should take the floor.",
                           "default": true
                         },
+                        "turn_handling": {
+                          "type": "string",
+                          "enum": ["proactive", "balanced", "deliberate"],
+                          "description": "How assertively the agent takes conversational turns. `proactive` — agent drives the conversation forward; `balanced` — natural back-and-forth; `deliberate` — agent waits and speaks only when clearly prompted.",
+                          "default": "proactive"
+                        },
+                        "interruptability": {
+                          "type": "string",
+                          "enum": ["low", "medium", "high"],
+                          "description": "How easily the user can interrupt the agent while it is speaking. `low` — agent finishes its thought before yielding; `medium` — yields on normal user speech; `high` — yields at the slightest sign of user speech.",
+                          "default": "medium"
+                        },
                         "llm": {
                           "type": "object",
                           "description": "Large Language Model settings used by the avatar.",
@@ -3743,6 +3755,8 @@
                       "max_endpointing_delay": 0.3
                     },
                     "turn_detector": true,
+                    "turn_handling": "proactive",
+                    "interruptability": "medium",
                     "llm": {
                       "provider": "azure-openai",
                       "model": "gpt-5.4-mini",
@@ -4338,6 +4352,18 @@
                                   "example": "ZUrEGyu8GFMwnHbvLhv2"
                                 }
                               }
+                            },
+                            "turn_handling": {
+                              "type": "string",
+                              "enum": ["proactive", "balanced", "deliberate"],
+                              "description": "How assertively the agent takes conversational turns. `proactive` — agent drives the conversation forward; `balanced` — natural back-and-forth; `deliberate` — agent waits and speaks only when clearly prompted.",
+                              "example": "proactive"
+                            },
+                            "interruptability": {
+                              "type": "string",
+                              "enum": ["low", "medium", "high"],
+                              "description": "How easily the user can interrupt the agent while it is speaking. `low` — agent finishes its thought before yielding; `medium` — yields on normal user speech; `high` — yields at the slightest sign of user speech.",
+                              "example": "medium"
                             }
                           }
                         }
@@ -4515,7 +4541,9 @@
                         "model_id": "eleven_turbo_v2_5",
                         "provider": "elevenlabs",
                         "voice_id": "ZUrEGyu8GFMwnHbvLhv2"
-                      }
+                      },
+                      "turn_handling": "proactive",
+                      "interruptability": "medium"
                     }
                   }
                 ],

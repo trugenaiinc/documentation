@@ -19,9 +19,9 @@ AI Teammates don't just wait for a user to finish speaking — they actively man
 | Mechanic | How It Works |
 | --- | --- |
 | **Speech Recognition** | Runs continuously and incrementally, capturing partial utterances so the agent can begin reasoning before the user finishes speaking |
-| **Turn Detection** | Detects natural pauses, interruptions, and handovers — the agent knows when to listen, when to speak, and when to yield |
+| **Turn Detection** | Detects natural pauses, interruptions, and handovers — the agent knows when to listen, when to speak, and when to yield. Tunable per agent via `turn_handling` (`proactive` / `balanced` / `deliberate`) |
 | **Backchanneling** | Issues short acknowledgement cues ("mm-hmm", nodding) to signal active listening during user speech |
-| **Interruption Handling** | Gracefully stops mid-response when the user interjects, rather than talking over them |
+| **Interruption Handling** | Gracefully stops mid-response when the user interjects, rather than talking over them. Sensitivity is tunable via `interruptability` (`low` / `medium` / `high`) |
 | **Silence Detection** | Monitors for user inactivity and responds with a configurable idle message or ends the session |
 | **Vision Awareness** | Hawkeye-1 continuously reads gestures, gaze, and body language to feed real-world context into responses |
 
