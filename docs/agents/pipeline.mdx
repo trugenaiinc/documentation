@@ -20,6 +20,11 @@ Converts the user's spoken audio into text instantly using advanced streaming tr
 
 Detects natural conversation boundaries — pauses, interruptions, and handovers. This enables the agent to know when to listen, when to speak, and how to gracefully interrupt or yield, replicating natural human conversational flow.
 
+Two settings on `avatars[0].config` tune this stage per agent:
+
+- **`turn_handling`** — how assertively the agent takes turns: `proactive` (drives the conversation), `balanced` (natural back-and-forth), or `deliberate` (waits and speaks only when clearly prompted). Defaults to `proactive`.
+- **`interruptability`** — how easily the user can interrupt the agent mid-speech: `low` (finishes its thought before yielding), `medium` (yields on normal user speech), or `high` (yields at the slightest sign of speech). Defaults to `medium`.
+
 ### 4. LLM — Language Model
 
 Generates intelligent, contextually relevant responses using large language models powered by your preferred provider. The LLM understands conversation memory, tone, context, and intent to produce meaningful and personalised responses.
