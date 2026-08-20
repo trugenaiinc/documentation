@@ -107,6 +107,10 @@ This section alone accounts for most of the difference between a prompt that wor
 
 Hard rules the agent must never break. Enforce them in the prompt itself and by keeping the prompt above user messages in your instruction hierarchy.
 
+<Note>
+  This section is about style: rules folded into the system prompt as text, with no enforcement beyond the LLM choosing to follow them. For rules that need their own callable check, a canned deterministic response, and an optional trigger webhook, use the dedicated [Guardrails](/docs/agents/guardrails/overview) feature instead. It's a separate object the agent calls as a tool, not prompt text. The two are complementary: keep style constraints here, and move anything safety- or compliance-critical to the real feature. Either way, the agent only checks a guardrail, prompt-based or the dedicated feature, when the prompt actually tells it to.
+</Note>
+
 ```markdown
 # Guardrails
 

@@ -1,0 +1,98 @@
+---
+title: "Attach to Agents"
+sidebarTitle: "Attaching"
+description: "Wire a guardrail to one or many agents via the Studio or the agent API, and know the difference between PUT and PATCH before you use either."
+---
+
+A guardrail sits idle until it's attached to an agent. Attach it in the Studio when creating or editing an agent, or via the API by including it in the agent's `guardrail` array, the same pattern used for `tool`, `mcp`, and `knowledge_base`.
+
+## In the Studio
+
+<Steps>
+  <Step title="Open the agent">
+    Open the agent you want to attach the guardrail to in [app.trugen.ai](https://app.trugen.ai), or start creating a new one.
+  </Step>
+  <Step title="Go to the Guardrails tab">
+    In the agent's configuration tabs, open **Guardrails**.
+  </Step>
+  <Step title="Select one or more guardrails">
+    Pick from your workspace's guardrail list. There's no cap. Attach as many as the conversation needs.
+  </Step>
+  <Step title="Save">
+    Save the agent. The change takes effect on the **next** session. See [When updates take effect](#when-updates-take-effect) below.
+  </Step>
+</Steps>
+
+## Via API
+
+Guardrail attachment goes through the same agent endpoints as everything else attached to an agent:
+
+```
+PUT /v1/ext/agent/{id}     - full replace of attached guardrails
+PATCH /v1/ext/agent/{id}   - additive only (adds without removing existing)
+```
+
+Body (either method):
+
+```json
+{
+  "guardrail": [
+    { "id": "dfbaa3c6-1e90-43df-869a-b023896a198c", "name": "Hate Speech Filter" }
+  ]
+}
+```
+
+An array of `{id, name}`, the same shape as the agent's `tool` and `mcp` keys. Add more objects to attach more guardrails in one call.
+
+| Endpoint | Behavior | Use when |
+| --- | --- | --- |
+| `PUT /v1/ext/agent/{id}` | Full replace: deletes all existing attachments, then inserts the array you sent | You want to declare the agent's complete guardrail set in one call |
+| `PATCH /v1/ext/agent/{id}` | Additive only: inserts anything not already attached, never removes | You want to add a guardrail without touching what's already there |
+
+```bash
+curl -X PATCH https://api.trugen.ai/v1/ext/agent/AGENT_ID \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"guardrail": [{"id": "dfbaa3c6-1e90-43df-869a-b023896a198c", "name": "Hate Speech Filter"}]}'
+```
+
+Attached guardrails then appear under the `"guardrail"` key in `GET /v1/ext/agent/{id}`, alongside `tool`, `mcp`, and `knowledge_base`.
+
+## Detaching a guardrail
+
+<Warning>
+  There's no partial-remove endpoint. `PATCH` is insert-only: it cannot detach anything. The only way to remove a single guardrail from an agent is `PUT` with the full `guardrail` array **minus** the entry you want gone, since `PUT` deletes and reinserts the whole list.
+</Warning>
+
+If you only have the guardrail's `id` you want to remove, fetch the agent first (`GET /v1/ext/agent/{id}`), drop that entry from the returned `guardrail` array, then `PUT` the rest back.
+
+## Deactivating vs. detaching
+
+These are two different levers, and they don't require each other:
+
+| Action | Scope | Effect |
+| --- | --- | --- |
+| Set the guardrail's `is_active: false` ([via update](/docs/agents/guardrails/creating#updating-a-guardrail)) | Every agent it's attached to, workspace-wide | Instantly excluded from dispatch on every attached agent's next session. The attachment rows themselves are untouched. |
+| Detach it from one agent (`PUT` without that entry) | That one agent only | Removed from that agent's `guardrail` array. Other agents it's attached to are unaffected. |
+
+Because deactivating doesn't touch the attachment rows, flipping `is_active` back to `true` later brings the guardrail back on every agent it was already attached to. No re-attaching required.
+
+## When updates take effect
+
+Guardrails are fetched and embedded into an agent's dispatch config **exactly once**, at the moment a new conversation is created. They're never re-fetched mid-call. Any attach, detach, edit, or deactivation you make after a call has already started has **zero effect on that running call**. It only applies to the next session.
+
+If you need a change to apply immediately, end the active session explicitly with [`DELETE /v1/conversation/{conversationId}`](/api-reference/endpoint/conversationdelete) after your update lands.
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Runtime Behavior" icon="webhook" href="/docs/agents/guardrails/runtime-behavior">
+  What happens the moment a guardrail fires, and the webhook payload it sends.
+</Card>
+
+<Card title="Creating a Guardrail" icon="shield-halved" href="/docs/agents/guardrails/creating">
+  Field reference and how to write a prompt the LLM will act on.
+</Card>
+
+</CardGroup>

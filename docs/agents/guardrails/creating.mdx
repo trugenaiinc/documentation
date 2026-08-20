@@ -1,0 +1,166 @@
+---
+title: "Creating a Guardrail"
+sidebarTitle: "Creating"
+description: "Field reference, validation rules, and how to write a guardrail prompt the LLM will actually act on."
+---
+
+Guardrails are created once per workspace and reused across as many agents as you like. Creating one is a separate step from [attaching it](/docs/agents/guardrails/attaching).
+
+## Endpoint
+
+```bash
+POST https://api.trugen.ai/v1/ext/guardrail
+Header: x-api-key: <api-key>
+Content-Type: application/json
+```
+
+## Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `name` | string | Yes | Human-readable label. Also used to derive the permanent `key` (see below). `400` if missing or empty. |
+| `category` | string | No | Free-text tag, no fixed list. See [example categories](/docs/agents/guardrails/overview#example-categories). Can be an empty string. |
+| `prompt` | string | Yes | The rule text: describes what user behavior should trigger this guardrail. This is what the LLM evaluates the conversation against. `400` if missing or empty. |
+| `response_message` | string | No | Spoken to the user verbatim when the guardrail fires. If empty, the guardrail falls back to a moderation-endpoint check instead. See [Runtime Behavior](/docs/agents/guardrails/runtime-behavior). |
+| `callback_url` | string (URL) | No | Where a `guardrail_triggered` event is POSTed when this guardrail fires. Must be a well-formed `http(s)://` URL if present (`400` if malformed). Omit it and nothing is ever posted for this guardrail. |
+| `is_active` | boolean | No, default `true` | Set to `false` to exclude the guardrail from live conversations without deleting it. Applies instantly, workspace-wide, to every agent it's attached to. |
+
+There are no length limits on `name`, `category`, `prompt`, or `response_message`; all stored as unbounded text.
+
+## Example
+
+```bash
+curl -X POST https://api.trugen.ai/v1/ext/guardrail \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Hate Speech Filter",
+    "category": "Content Safety",
+    "prompt": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group.",
+    "response_message": "I'\''m sorry, but I can'\''t help with that. Let'\''s keep things respectful.",
+    "callback_url": "https://yourapp.com/webhooks/guardrail",
+    "is_active": true
+  }'
+```
+
+Response (`201 Created`):
+
+```json
+{ "id": "dfbaa3c6-1e90-43df-869a-b023896a198c", "message": "Guardrail created" }
+```
+
+<Note>
+  **The `key`.** The server derives a URL/LLM-safe slug from `name` at creation time: lowercased, spaces and punctuation replaced with underscores (e.g. `"Hate Speech Filter"` becomes `hate_speech_filter`). If that slug collides with one already in your workspace, a numeric suffix is appended (`hate_speech_filter_2`). This `key` is permanent: renaming the guardrail later via `PUT` never changes it, and it's the identifier the running agent uses as the tool name.
+</Note>
+
+## Validation rules
+
+| Condition | Status | Body |
+| --- | --- | --- |
+| `name` missing or empty | `400` | `{"error": "name is required"}` |
+| `prompt` missing or empty | `400` | `{"error": "prompt is required"}` |
+| `callback_url` present but not a valid `http(s)://` URL | `400` | `{"error": "callback_url must be a valid http(s) URL"}` |
+| `category` or `response_message` is an empty string | N/A | Allowed, not an error |
+| `PUT`/`DELETE` on an unknown or foreign `id` | `404` | `{"message": "Guardrail not found"}` |
+
+## Listing guardrails
+
+```bash
+curl https://api.trugen.ai/v1/ext/guardrail -H "x-api-key: YOUR_API_KEY"
+```
+
+Response (`200 OK`), a plain array (not wrapped in a `data` key), scoped to your workspace only. `category`, `response_message`, and `callback_url` come back as `""`, never `null`, when unset:
+
+```json
+[
+  {
+    "id": "dfbaa3c6-1e90-43df-869a-b023896a198c",
+    "key": "hate_speech_filter",
+    "name": "Hate Speech Filter",
+    "category": "Content Safety",
+    "prompt": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group.",
+    "response_message": "I'm sorry, but I can't help with that. Let's keep things respectful.",
+    "callback_url": "https://yourapp.com/webhooks/guardrail",
+    "is_active": true,
+    "created_at": "2026-08-14T11:38:46.479224Z",
+    "updated_at": "2026-08-14T11:38:46.479224Z"
+  }
+]
+```
+
+<Note>There's no `GET /ext/guardrail/{id}`. List-all is the only read endpoint today.</Note>
+
+## Updating a guardrail
+
+`PUT /ext/guardrail/{id}` is a **full replace** of every client-settable field, not a partial patch. Send the complete body, not just the field you're changing.
+
+```bash
+curl -X PUT https://api.trugen.ai/v1/ext/guardrail/dfbaa3c6-1e90-43df-869a-b023896a198c \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Hate Speech Filter",
+    "category": "Content Safety",
+    "prompt": "Updated prompt text.",
+    "response_message": "Let'\''s keep things respectful.",
+    "callback_url": "",
+    "is_active": false
+  }'
+```
+
+Response (`200 OK`): `{ "id": "dfbaa3c6-1e90-43df-869a-b023896a198c", "message": "Guardrail updated" }`
+
+`key` is never changed by an update, even if `name` changes.
+
+## Deleting a guardrail
+
+```bash
+curl -X DELETE https://api.trugen.ai/v1/ext/guardrail/dfbaa3c6-1e90-43df-869a-b023896a198c \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+Response (`200 OK`): `{ "id": "dfbaa3c6-1e90-43df-869a-b023896a198c", "message": "Guardrail deleted" }`
+
+<Warning>
+  Deleting a guardrail **does not cascade** to the agents it's attached to. The attachment reference is left dangling. It's harmless at runtime (silently excluded from dispatch), but the dangling row persists indefinitely with no automatic cleanup. If you care about a clean state, [detach it](/docs/agents/guardrails/attaching#detaching-a-guardrail) from every agent first.
+</Warning>
+
+## Writing an effective guardrail prompt
+
+`prompt` is the only signal the LLM has for deciding whether to call this guardrail. Vague prompts get missed or over-triggered. Use the pattern:
+
+> **[who]** **[is doing what]** **[under what condition]**
+
+**Too vague:**
+```
+Trigger for anything inappropriate.
+```
+
+**Specific enough:**
+```
+Trigger when the user uses hateful, discriminatory, or abusive language
+toward a person or group, including slurs, dehumanizing language, or
+explicit calls for violence based on a protected characteristic.
+```
+
+```
+Trigger when the user shares or asks the agent to repeat a full credit
+card number, social security number, or government ID number in the
+conversation.
+```
+
+A guardrail's `prompt` competes with every other tool and instruction the LLM is weighing on a given turn. Specificity is what makes it win that competition reliably. It also has to be reachable in the first place: see [Reliability depends on your prompt](/docs/agents/guardrails/overview#how-it-works) for why the system prompt still needs to tell the agent to use its guardrails at all.
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Attach to Agents" icon="link" href="/docs/agents/guardrails/attaching">
+  Wire this guardrail to one or many agents.
+</Card>
+
+<Card title="Runtime Behavior" icon="webhook" href="/docs/agents/guardrails/runtime-behavior">
+  What happens the moment a guardrail fires.
+</Card>
+
+</CardGroup>

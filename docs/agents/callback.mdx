@@ -402,6 +402,12 @@ Triggered when the user stops speaking (end of an utterance).
 
 ---
 
+## Guardrail Events Are Separate
+
+If you've configured [guardrails](/docs/agents/guardrails/overview) on an agent, don't expect their triggers to show up in `callback_events` above: they don't. A guardrail's webhook is configured **per guardrail**, via its own `callback_url` field, not through this agent-level list. When a guardrail fires, TruGen POSTs a `guardrail_triggered` event straight to that URL, with no opt-in required and no relation to whatever you've set in `callback_events`.
+
+See [Guardrails → Runtime Behavior](/docs/agents/guardrails/runtime-behavior#the-webhook-event) for the full payload shape and its fire-and-forget delivery caveat.
+
 ## Best Practices
 
 - **Return 2xx quickly.** Acknowledge in a couple of seconds; offload heavy work to background jobs.

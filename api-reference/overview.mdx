@@ -45,6 +45,7 @@ The API is organized around a small set of resources:
 | **Templates** | Reusable blueprints — share prompt, knowledge, and behavior across many agents |
 | **Knowledge Bases** | Document collections your agents ground answers in via RAG |
 | **Tools** | Callable actions your agents invoke during conversations (webhooks, MCP, integrations, client actions) |
+| **Guardrails** | Safety-check rules your agents can call as a tool: canned responses, moderation checks, and trigger webhooks |
 | **MCPs** | Model Context Protocol server configurations |
 | **Providers** | The set of LLM, STT, and TTS providers available in your environment |
 | **Avatars** | Visual identities — stock or custom |
@@ -117,6 +118,9 @@ Session records, transcripts, and speak commands.
 </Card>
 <Card title="Tools" icon="screwdriver-wrench" href="/api-reference/endpoint/toolcreate">
 Register callable actions for agents.
+</Card>
+<Card title="Guardrails" icon="shield-halved" href="/api-reference/endpoint/guardrailcreate">
+Safety-check rules agents can call mid-conversation.
 </Card>
 <Card title="Providers" icon="cloud" href="/api-reference/endpoint/providerget">
 List available STT, LLM, and TTS providers.

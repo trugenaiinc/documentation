@@ -1,0 +1,81 @@
+---
+title: "Guardrails"
+sidebarTitle: "Overview"
+description: "Safety-check rules your agent can call mid-conversation: a canned response, a moderation check, and an optional webhook when something needs a second look."
+---
+
+A **guardrail** is a safety-check rule attached to an agent. During a live conversation, the agent's LLM can invoke a guardrail as a tool when it decides a user's message might need checking: hate speech, PII, misinformation, anything you describe. When a guardrail fires, the agent either speaks a canned response or falls back to a moderation check, and, if you've configured one, POSTs an event to a webhook URL you provide.
+
+Guardrails are global to your workspace and reusable across agents. Creating one doesn't do anything on its own: it has to be [attached to an agent](/docs/agents/guardrails/attaching) before it's live in any conversation.
+
+## How it works
+
+<Steps>
+  <Step title="You create a guardrail">
+    Define a `name`, a `prompt` describing what should trigger it, and a `response_message`. See [Creating a Guardrail](/docs/agents/guardrails/creating).
+  </Step>
+  <Step title="You attach it to an agent">
+    One guardrail can be attached to many agents. See [Attach to Agents](/docs/agents/guardrails/attaching).
+  </Step>
+  <Step title="The LLM decides whether to call it">
+    On each turn, the agent's LLM weighs the user's message against every attached guardrail's `prompt` and decides whether one applies, exactly like any other [tool](/docs/agents/tools/overview).
+  </Step>
+  <Step title="It fires">
+    The agent speaks the configured `response_message` and the turn ends immediately. If a `callback_url` is set, a `guardrail_triggered` event is POSTed to it. See [Runtime Behavior](/docs/agents/guardrails/runtime-behavior).
+  </Step>
+</Steps>
+
+<Note>
+  A guardrail only fires if the LLM decides to call it. There's no code-level enforcement forcing the check. Reliability depends heavily on your system prompt explicitly telling the agent to use its guardrails. See [Prompting Strategies](/docs/agents/prompting-strategies#5-guardrails).
+</Note>
+
+## Example categories
+
+`category` is a free-text field with no fixed list. Use whatever taxonomy makes sense for your workspace. A few common ones to start from:
+
+| Category | Example use |
+| --- | --- |
+| **Content Safety** | Hate speech, harassment, abusive language |
+| **PII & Privacy** | Requests to share SSNs, card numbers, medical records |
+| **Misinformation** | Claims the agent shouldn't confirm or deny |
+| **Compliance** | Regulated advice: medical, legal, financial |
+| **Brand Safety** | Off-topic, competitor mentions, politically sensitive topics |
+
+## Verifying a guardrail
+
+There's no test sandbox for guardrails yet. Attach it to an agent and talk to it directly:
+
+1. [Attach](/docs/agents/guardrails/attaching) the guardrail to a test agent.
+2. Start a session and send a message designed to trigger it.
+3. Confirm the agent responds with your exact `response_message`.
+4. If you set a `callback_url`, confirm the `guardrail_triggered` event arrived. See [Runtime Behavior](/docs/agents/guardrails/runtime-behavior#the-webhook-event).
+
+If the agent doesn't trigger it, the most common cause is the system prompt never mentioning that guardrails should be checked. See the reliability note above before assuming the guardrail itself is misconfigured.
+
+## Known limitations
+
+- **No single-item fetch.** Only `POST` (create), `GET` (list all), `PUT` (update), and `DELETE` exist. There's no `GET /ext/guardrail/{id}`.
+- **No partial detach.** Removing one guardrail from an agent means `PUT`-ing the full attached list minus that entry. See [Attaching](/docs/agents/guardrails/attaching#detaching-a-guardrail).
+- **No test/sandbox affordance.** Verify by attaching and talking to the agent.
+
+## What's Next?
+
+<CardGroup cols={2}>
+
+<Card title="Creating a Guardrail" icon="shield-halved" href="/docs/agents/guardrails/creating">
+  Field reference, validation rules, and how to write an effective guardrail prompt.
+</Card>
+
+<Card title="Attach to Agents" icon="link" href="/docs/agents/guardrails/attaching">
+  Wire a guardrail to one or many agents via the Studio, the API, or PATCH vs PUT.
+</Card>
+
+<Card title="Runtime Behavior" icon="webhook" href="/docs/agents/guardrails/runtime-behavior">
+  What actually happens when a guardrail fires, and the `guardrail_triggered` webhook payload.
+</Card>
+
+<Card title="Prompting Strategies" icon="pen" href="/docs/agents/prompting-strategies#5-guardrails">
+  Make sure your system prompt actually tells the agent to check its guardrails.
+</Card>
+
+</CardGroup>
