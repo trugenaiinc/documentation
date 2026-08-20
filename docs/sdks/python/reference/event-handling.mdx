@@ -8,8 +8,8 @@ Every `TruGenSession` and `TruGenRunner` is event-driven. Register handlers with
 
 You have two entry points:
 
-- **`@runner.on_*`** decorators on a `TruGenRunner` — main-thread callbacks, ideal for UI updates
-- **`@session.on()`** decorator on a `TruGenSession` — low-level async callbacks, run on the session's event loop
+- **`@runner.on_*`** decorators on a `TruGenRunner`: main-thread callbacks, ideal for UI updates
+- **`@session.on()`** decorator on a `TruGenSession`: low-level async callbacks, run on the session's event loop
 
 Use runner decorators for GUI apps. Use session decorators when you're driving the session directly from your own async code.
 
@@ -28,7 +28,7 @@ def on_frame(frame):
 
 ### `@runner.on_caption`
 
-Receives real-time streaming caption chunks — ideal for UI overlays.
+Receives real-time streaming caption chunks: ideal for UI overlays.
 
 ```python
 @runner.on_caption
@@ -176,7 +176,7 @@ def on_mic_granted():
 
 @runner.on_event(TruGenEvent.MIC_PERMISSION_DENIED)
 def on_mic_denied():
-    print("Microphone denied — the agent won't hear the user.")
+    print("Microphone denied: the agent won't hear the user.")
 ```
 
 ## Next steps

@@ -7,10 +7,10 @@ Make the agent speak arbitrary text mid-conversation. Overrides whatever the age
 
 ## When to use
 
-- **Human handoff** — a live agent takes over and needs to say a specific thing
-- **System notifications** — announce something the LLM shouldn't have to reason about ("Your call is being transferred…")
-- **Custom greetings** — inject a personalized greeting the LLM might otherwise phrase awkwardly
-- **Scripted flows** — force the agent to say a specific line at a specific point in a structured workflow
+- **Human handoff**: a live agent takes over and needs to say a specific thing
+- **System notifications**: announce something the LLM shouldn't have to reason about ("Your call is being transferred…")
+- **Custom greetings**: inject a personalized greeting the LLM might otherwise phrase awkwardly
+- **Scripted flows**: force the agent to say a specific line at a specific point in a structured workflow
 
 ## What it does
 
@@ -62,7 +62,7 @@ await fetch(
     method: "PUT",
     headers: { "x-api-key": KEY, "Content-Type": "application/json" },
     body: JSON.stringify({
-      text: `Hi ${userName}, good to see you back. Last time you were asking about ${lastTopic} — where do you want to pick up?`,
+      text: `Hi ${userName}, good to see you back. Last time you were asking about ${lastTopic}: where do you want to pick up?`,
       interrupt: true,
     }),
   }

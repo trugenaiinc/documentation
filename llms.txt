@@ -1,6 +1,6 @@
 # TruGen AI
 
-> TruGen AI is a platform for building and deploying real-time conversational video agents. Agents are powered by a family of proprietary foundation models — Huma-1 and Huma-2 (expressive avatar rendering, with Huma-2 delivering sub-500ms end-to-end latency) and Hawkeye-1 (vision-based action recognition) — and deliver end-to-end responses in under one second. The platform exposes a REST API for programmatic agent management and supports iframe/SDK embedding for frontend integration.
+> TruGen AI is a platform for building and deploying real-time conversational video agents. Agents are powered by a family of proprietary foundation models: Huma-1 and Huma-2 (expressive avatar rendering, with Huma-2 delivering sub-500ms end-to-end latency) and Hawkeye-1 (vision-based action recognition), and deliver end-to-end responses in under one second. The platform exposes a REST API for programmatic agent management and supports iframe/SDK embedding for frontend integration.
 
 ## Getting Started
 
@@ -9,10 +9,11 @@
 
 ## Managed Agents
 
-- [Conversational Video Agents](https://docs.trugen.ai/docs/agents/conversational-video-agents): Architecture and features of real-time video agents — speech recognition, vision perception, tool calling, persona templates, and iframe integration.
+- [Conversational Video Agents](https://docs.trugen.ai/docs/agents/conversational-video-agents): Architecture and features of real-time video agents: speech recognition, vision perception, tool calling, persona templates, and iframe integration.
 - [Realtime Pipeline](https://docs.trugen.ai/docs/agents/pipeline): End-to-end pipeline walkthrough: WebRTC → STT → Turn Detection → LLM → Knowledge Base → TTS → Huma-2 avatar rendering.
 - [Persona Templates](https://docs.trugen.ai/docs/agents/templates): Reusable blueprints defining system prompt, entry/exit messages, knowledge bindings, idle timeout, and behavior rules.
 - [Knowledge Base](https://docs.trugen.ai/docs/agents/knowledge/overview): Attach documents, URLs, or text to ground agent responses. Supports both Agentic RAG and Traditional RAG modes.
+- [Guardrails](https://docs.trugen.ai/docs/agents/guardrails/overview): Safety-check rules an agent's LLM can call mid-conversation, with a canned response, a moderation check, and an optional trigger webhook.
 - [Memory](https://docs.trugen.ai/docs/agents/memory): Configure per-session or persistent memory for agents.
 - [Event Callbacks (Webhooks)](https://docs.trugen.ai/docs/agents/callback): Receive real-time HTTP POST events for speech, lifecycle, and action triggers from active conversations.
 - [Prompting Strategies](https://docs.trugen.ai/docs/agents/prompting-strategies): Guidance on writing effective system prompts for video agents.
@@ -25,7 +26,7 @@
 
 ## Integrations
 
-- [n8n](https://docs.trugen.ai/docs/integrations/n8n): No-code workflow automation — create agents, capture leads, and sync data across 1000+ apps.
+- [n8n](https://docs.trugen.ai/docs/integrations/n8n): No-code workflow automation: create agents, capture leads, and sync data across 1000+ apps.
 - [Make (Integromat)](https://docs.trugen.ai/docs/integrations/make): Low-code automation scenarios with TruGen agents.
 - [iFrame Embedding](https://docs.trugen.ai/docs/integrations/embed-via-iFrame): Embed a live agent in any web page with a single iframe tag.
 - [Widget Integration](https://docs.trugen.ai/docs/integrations/widget-integration): Drop-in chat/video widget for websites.
@@ -55,4 +56,5 @@
 - [Providers](https://docs.trugen.ai/api-reference/endpoint/providerget): Query available AI providers and models.
 - [MCPs](https://docs.trugen.ai/api-reference/endpoint/mcpcreate): Manage Model Context Protocol server configurations.
 - [Tools](https://docs.trugen.ai/api-reference/endpoint/toolcreate): Register and manage callable tools for agent function calling.
+- [Guardrails](https://docs.trugen.ai/api-reference/endpoint/guardrailcreate): Create, list, update, and delete safety-check rules agents can call during conversations.
 - [Text to Video](https://docs.trugen.ai/api-reference/endpoint/texttovideo): Submit video generation jobs and poll status.

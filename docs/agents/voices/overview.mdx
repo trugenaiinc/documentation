@@ -1,16 +1,16 @@
 ---
 title: "Voices"
 sidebarTitle: "Overview"
-description: "Choose the voice your agent speaks with — from stock voices, cloned voices, or a fully custom provider setup."
+description: "Choose the voice your agent speaks with: from stock voices, cloned voices, or a fully custom provider setup."
 ---
 
-Every agent speaks through a **Text-to-Speech (TTS)** engine that converts the LLM's text response into audio in real time. TruGen ships with **ElevenLabs** and **Cartesia** as the default providers — both deliver sub-150 ms first-audio latency across dozens of languages and voice styles.
+Every agent speaks through a **Text-to-Speech (TTS)** engine that converts the LLM's text response into audio in real time. TruGen ships with **ElevenLabs** and **Cartesia** as the default providers: both deliver sub-150 ms first-audio latency across dozens of languages and voice styles.
 
 The voice is configured per agent via `voice_id`. Copy an ID from the [Voice Library](/docs/agents/voices/library) and drop it into your agent config.
 
 ## Setting a voice
 
-Set `voice_id` when you create or update an agent. Everything else — provider, model, sample rate, encoding — falls back to platform defaults if omitted.
+Set `voice_id` when you create or update an agent. Everything else (provider, model, sample rate, encoding) falls back to platform defaults if omitted.
 
 ```json
 {
@@ -26,11 +26,11 @@ Set `voice_id` when you create or update an agent. Everything else — provider,
 }
 ```
 
-<Note>You can also change the voice directly from the **Create New Agent** form in the [Developer Portal](https://app.trugen.ai) — no code required.</Note>
+<Note>You can also change the voice directly from the **Create New Agent** form in the [Developer Portal](https://app.trugen.ai): no code required.</Note>
 
 ## Full TTS configuration
 
-For advanced use — custom pronunciations, sample rate, pitch, speaking rate, stability — pass a full `tts` object:
+For advanced use (custom pronunciations, sample rate, pitch, speaking rate, stability), pass a full `tts` object:
 
 ```json
 "tts": {
@@ -59,7 +59,7 @@ See the [full agent configuration reference](/api-reference/endpoint/agentcreate
 | --- | --- |
 | Professional, corporate tone | Chris, Will, Evan |
 | Warm, conversational tone | Rachel, Laura, Hope |
-| Broad multilingual coverage | Any voice with `language: "multi"` — providers auto-adapt |
+| Broad multilingual coverage | Any voice with `language: "multi"`: providers auto-adapt |
 | Regional accent | Yatin (South Asian), Omar (Middle Eastern) |
 | Fastest first-audio latency | Cartesia Sonic voices |
 
@@ -103,7 +103,7 @@ If the primary TTS provider fails or is rate-limited, TruGen falls back to a sec
 
 ## Voice cloning
 
-For a fully custom voice — a spokesperson, a specific character, or your CEO — TruGen supports voice cloning through ElevenLabs Professional Voice Cloning. Contact [sales@trugen.ai](mailto:sales@trugen.ai) or provide an existing PVC voice ID directly as `voice_id`.
+For a fully custom voice (a spokesperson, a specific character, or your CEO), TruGen supports voice cloning through ElevenLabs Professional Voice Cloning. Contact [sales@trugen.ai](mailto:sales@trugen.ai) or provide an existing PVC voice ID directly as `voice_id`.
 
 ## What's next
 

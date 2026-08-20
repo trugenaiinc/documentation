@@ -18,7 +18,7 @@ Content-Type: application/json
 
 ## Request
 
-For each module, you only pick the **classes** you care about. Everything else — evaluation frequency, thresholds — is set to sensible defaults server-side.
+For each module, you only pick the **classes** you care about. Everything else (evaluation frequency, thresholds) is set to sensible defaults server-side.
 
 ```json
 {
@@ -43,7 +43,7 @@ For each module, you only pick the **classes** you care about. Everything else �
 | --------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `livekit_url`   | ✅       | `wss://` URL of the LiveKit room Hawkeye should join.                                                                                                             |
 | `access_token`  | ✅       | LiveKit access token with `roomJoin: true` for that room. Hawkeye connects with this identity.                                                                     |
-| `participant`   | ➖       | Identity of the participant to analyse. Defaults to `"auto"` — Hawkeye picks the first non-agent participant in the room. Pass a specific LiveKit identity to lock analysis onto that participant instead. |
+| `participant`   | ➖       | Identity of the participant to analyse. Defaults to `"auto"`: Hawkeye picks the first non-agent participant in the room. Pass a specific LiveKit identity to lock analysis onto that participant instead. |
 | `callback_url`  | ➖       | WebSocket URL to receive real-time alerts. Omit if you only intend to poll the [Get Session Status](/docs/agents/vision/session-status) endpoint.                  |
 | `max_duration`  | ✅       | Hard cap in **minutes**. Hawkeye disconnects when reached.                                                                                                          |
 | `modules`       | ➖       | Modules to enable, keyed by module name. Each value is a list of class names to alert on. Omit `modules` entirely for all modules with all default classes.        |
@@ -55,38 +55,38 @@ For each module, you only pick the **classes** you care about. Everything else �
 - **Include a module with specific classes** → only those classes emit alerts. Any unknown class name is rejected with `400`.
 
 <Note>
-When you set `participant` to a specific identity, it must match the LiveKit **identity** the participant joined with (not their display name). If that participant hasn't joined yet, Hawkeye waits — if they never appear, the session idles until `max_duration` fires.
+When you set `participant` to a specific identity, it must match the LiveKit **identity** the participant joined with (not their display name). If that participant hasn't joined yet, Hawkeye waits: if they never appear, the session idles until `max_duration` fires.
 </Note>
 
 ## Modules & Classes
 
 <AccordionGroup>
 
-<Accordion title="face_pose_detection — head orientation">
+<Accordion title="face_pose_detection: head orientation">
 Detects head turns away from centre.
 
 **Classes:** `Looking Left`, `Looking Right`
 </Accordion>
 
-<Accordion title="emotion_recognition — expression classification">
+<Accordion title="emotion_recognition: expression classification">
 Classifies the participant's facial expression each second.
 
 **Classes:** `angry`, `sad`, `disgust`, `fear`, `happy`, `surprise`, `neutral`
 </Accordion>
 
-<Accordion title="eyegaze_tracking — pupil direction">
-Independent of head pose — catches subtle off-screen glances.
+<Accordion title="eyegaze_tracking: pupil direction">
+Independent of head pose: catches subtle off-screen glances.
 
 **Classes:** `Looking left`, `Looking right`
 </Accordion>
 
-<Accordion title="face_count — number of visible faces">
+<Accordion title="face_count: number of visible faces">
 Counts distinct faces in the frame. The class name is the exact face count you want to alert on.
 
 **Classes:** any numeric string, e.g. `"2"`, `"3"`, `"4"`
 </Accordion>
 
-<Accordion title="face_out_of_focus — participant left the frame">
+<Accordion title="face_out_of_focus: participant left the frame">
 Fires when the target participant's face moves out of the camera view.
 
 **Classes:** `out_of_frame`
@@ -96,7 +96,7 @@ Fires when the target participant's face moves out of the camera view.
 
 ## Minimum viable payload
 
-Everything defaulted — all modules, all classes:
+Everything defaulted: all modules, all classes:
 
 ```json
 {
@@ -143,7 +143,7 @@ Just watch emotions and face count:
 
 | Field         | Description                                                                                     |
 | ------------- | ----------------------------------------------------------------------------------------------- |
-| `session_id`  | TruGen session identifier — use this to poll [Get Session Status](/docs/agents/vision/session-status). |
+| `session_id`  | TruGen session identifier: use this to poll [Get Session Status](/docs/agents/vision/session-status). |
 | `status`      | Initial lifecycle state, usually `IN_QUEUE`. Transitions to `IN_PROGRESS` when the worker joins. |
 | `max_duration`| Echoed back in minutes.                                                                          |
 | `modules`     | Sorted list of module names that were resolved for this session.                                 |
@@ -161,7 +161,7 @@ When a class is detected, Hawkeye pushes a JSON message to your `callback_url`:
 }
 ```
 
-Use this to drive dashboards, escalate to a moderator, or feed downstream analytics — Hawkeye handles the vision, you handle the reaction.
+Use this to drive dashboards, escalate to a moderator, or feed downstream analytics. Hawkeye handles the vision, you handle the reaction.
 
 ## What's Next?
 

@@ -3,14 +3,14 @@ title: "Event Callbacks"
 description: "Receive real-time webhook events from active conversations to drive your UI, analytics, and business logic."
 ---
 
-TruGen sends an HTTP `POST` request to your configured `callback_url` whenever something important happens in a conversation — a user starts speaking, the agent is interrupted, a call ends, and more.
+TruGen sends an HTTP `POST` request to your configured `callback_url` whenever something important happens in a conversation: a user starts speaking, the agent is interrupted, a call ends, and more.
 
 ## Enabling Webhooks
 
 Webhooks are configured at the agent level using two fields:
 
-- `callback_url` — your publicly reachable HTTPS endpoint
-- `callback_events` — the list of event names you want to receive
+- `callback_url`: your publicly reachable HTTPS endpoint
+- `callback_events`: the list of event names you want to receive
 
 ```bash
 curl --request POST \
@@ -59,7 +59,7 @@ Every webhook uses the same base structure:
 | ----------------- | ------------------------------------------------------------ |
 | `timestamp`       | Unix timestamp (float) when the event was generated          |
 | `conversation_id` | Unique identifier for the conversation session               |
-| `type`            | Event source category — always `"pipeline"` for these events |
+| `type`            | Event source category: always `"pipeline"` for these events |
 | `event.name`      | The specific event type                                      |
 | `event.payload`   | Event-specific data                                          |
 
@@ -201,7 +201,7 @@ Triggered when the agent starts speaking (TTS + avatar rendering begins).
 }
 ```
 
-- `payload.text` — the text the agent is about to speak.
+- `payload.text`: the text the agent is about to speak.
 
 ---
 
@@ -223,7 +223,7 @@ Triggered when the agent finishes its current utterance.
 }
 ```
 
-- `payload.text` — the text that was just spoken.
+- `payload.text`: the text that was just spoken.
 
 ---
 
@@ -265,14 +265,14 @@ Triggered when a conversation reaches its configured maximum duration.
 }
 ```
 
-- `payload.call_duration` — actual call duration in seconds.
-- `payload.max_call_duration` — configured maximum duration in seconds.
+- `payload.call_duration`: actual call duration in seconds.
+- `payload.max_call_duration`: configured maximum duration in seconds.
 
 ---
 
 ### `max_call_duration_warning`
 
-Triggered shortly before a conversation reaches its configured maximum duration — a heads-up before the session is cut off.
+Triggered shortly before a conversation reaches its configured maximum duration: a heads-up before the session is cut off.
 
 **Use cases:** show a "session ending soon" warning in your UI, prompt the user to wrap up.
 
@@ -291,8 +291,8 @@ Triggered shortly before a conversation reaches its configured maximum duration 
 }
 ```
 
-- `payload.call_duration` — current call duration in seconds.
-- `payload.max_call_duration` — configured maximum duration in seconds.
+- `payload.call_duration`: current call duration in seconds.
+- `payload.max_call_duration`: configured maximum duration in seconds.
 
 ---
 
@@ -314,7 +314,7 @@ Triggered when a participant disconnects from the conversation.
 }
 ```
 
-- `payload.id` — identifier of the participant who left.
+- `payload.id`: identifier of the participant who left.
 
 ---
 
@@ -340,9 +340,9 @@ Triggered when the agent invokes a tool during a conversation.
 }
 ```
 
-- `payload.tool_name` — the name of the tool that was called.
-- `payload.parameters` — the inputs passed to the tool by the agent.
-- `payload.result` — the response returned by the tool.
+- `payload.tool_name`: the name of the tool that was called.
+- `payload.parameters`: the inputs passed to the tool by the agent.
+- `payload.result`: the response returned by the tool.
 
 ---
 
@@ -364,7 +364,7 @@ Triggered when the user's utterance has been fully captured and finalised by spe
 }
 ```
 
-- `payload.text` — the final committed text of the utterance.
+- `payload.text`: the final committed text of the utterance.
 
 ---
 

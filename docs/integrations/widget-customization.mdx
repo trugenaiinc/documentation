@@ -1,6 +1,6 @@
 ---
 title: "Widget Customization"
-description: "Theme, position, and configure the TruGen embed widget — colors, buttons, layout, and domain restrictions."
+description: "Theme, position, and configure the TruGen embed widget: colors, buttons, layout, and domain restrictions."
 ---
 
 The widget config controls how the TruGen embed looks and behaves on your site. Every option below is set on the agent's `widget` object in the agent config, and can be edited in the Studio or via the API.
@@ -163,7 +163,7 @@ Show a short list of starter prompts under the widget's welcome UI to nudge user
 
 ## Allowed origins
 
-Control which domains are allowed to embed this agent's widget. **Only requests from the origins you list can load the widget and start a conversation with the agent** — every other domain is refused with `403 origin_not_allowed`.
+Control which domains are allowed to embed this agent's widget. **Only requests from the origins you list can load the widget and start a conversation with the agent**: every other domain is refused with `403 origin_not_allowed`.
 
 ```json
 "widget": {
@@ -182,8 +182,8 @@ Control which domains are allowed to embed this agent's widget. **Only requests 
 
 **Best practices**
 
-- Turn `allowed_domains_enabled: true` on for any production agent — otherwise anyone can embed your agent on their own site and consume your usage.
-- Include every origin the same agent will be used from — your marketing site, app, staging environment, etc.
+- Turn `allowed_domains_enabled: true` on for any production agent: otherwise anyone can embed your agent on their own site and consume your usage.
+- Include every origin the same agent will be used from: your marketing site, app, staging environment, etc.
 - Include the exact scheme (`https://` vs `http://`) and subdomain (`www.` matters).
 - After enabling, verify the widget still loads on every intended origin.
 

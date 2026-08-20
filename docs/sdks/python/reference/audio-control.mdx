@@ -59,10 +59,10 @@ if runner.mic_muted:
 
 ## Audio Injection
 
-You can stream custom audio into the room — a pre-recorded WAV file or raw 16-bit PCM bytes. Useful for scripted playback, voice cloning demos, or piping in audio from another source.
+You can stream custom audio into the room: a pre-recorded WAV file or raw 16-bit PCM bytes. Useful for scripted playback, voice cloning demos, or piping in audio from another source.
 
 <Warning>
-  Auto-mute the microphone before injecting audio, then unmute after it completes. Without muting, the agent's response to your injected audio loops back through the mic and floods the STT pipeline — see the WAV-injection helper in [`examples/advanced_session_ui.py`](/docs/sdks/python/examples/advanced-python) for the recommended pattern.
+  Auto-mute the microphone before injecting audio, then unmute after it completes. Without muting, the agent's response to your injected audio loops back through the mic and floods the STT pipeline: see the WAV-injection helper in [`examples/advanced_session_ui.py`](/docs/sdks/python/examples/advanced-python) for the recommended pattern.
 </Warning>
 
 ### Upload a WAV file
@@ -87,7 +87,7 @@ await session.send_audio(
 )
 ```
 
-Use `send_audio()` when your source is already decoded — TTS output from another provider, live audio from a different track, or synthetic audio you're generating on the fly.
+Use `send_audio()` when your source is already decoded: TTS output from another provider, live audio from a different track, or synthetic audio you're generating on the fly.
 
 ### Safe injection pattern
 

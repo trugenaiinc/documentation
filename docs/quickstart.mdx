@@ -3,12 +3,12 @@ title: "Quickstart"
 description: "Create your first TruGen agent via API and embed it in under five minutes."
 ---
 
-Create a conversational video agent with the REST API, then drop it into any web page. This uses platform defaults for every advanced setting — you'll tune those later.
+Create a conversational video agent with the REST API, then drop it into any web page. This uses platform defaults for every advanced setting: you'll tune those later.
 
 ## Prerequisites
 
 - A TruGen API key from the [Developer Portal](https://app.trugen.ai)
-- An avatar ID — the [Avatar Gallery](/docs/avatars/gallery) has stock avatars you can use right away
+- An avatar ID: the [Avatar Gallery](/docs/avatars/gallery) has stock avatars you can use right away
 
 ## 1. Create an agent
 
@@ -30,7 +30,7 @@ curl --request POST \
 ```
 </CodeGroup>
 
-The response returns an `id` — save it for step 2.
+The response returns an `id`: save it for step 2.
 
 ```json Response
 {
@@ -122,9 +122,9 @@ Open the page in a browser and grant camera + mic permissions. Your agent joins 
 
 ## What just happened
 
-**Step 1 — Agent created.** Behind that single API call, TruGen provisioned a persistent agent with your prompt and avatar, wired up the default pipeline (Groq LLM, ElevenLabs STT + TTS, English, turn detection on), and returned an ID. That ID is your handle to the agent everywhere — widget, iframe, SDK, external meetings, and API. Change the agent's behavior anytime with `PATCH /v1/ext/agent/{id}` and the next session picks it up. No redeploy of your app required.
+**Step 1: Agent created.** Behind that single API call, TruGen provisioned a persistent agent with your prompt and avatar, wired up the default pipeline (Groq LLM, ElevenLabs STT + TTS, English, turn detection on), and returned an ID. That ID is your handle to the agent everywhere: widget, iframe, SDK, external meetings, and API. Change the agent's behavior anytime with `PATCH /v1/ext/agent/{id}` and the next session picks it up. No redeploy of your app required.
 
-**Step 2 — Live conversation.** The widget or iframe traded your API key for a short-lived session token, opened a WebRTC connection to TruGen's edge, streamed the user's microphone in, and streamed the rendered avatar video back. Every turn ran through the full pipeline — capture → STT → Hawkeye vision → LLM → TTS → Huma render — server-side in under a second. You wrote zero WebRTC code, managed zero media state, and never exposed your API key to the browser.
+**Step 2: Live conversation.** The widget or iframe traded your API key for a short-lived session token, opened a WebRTC connection to TruGen's edge, streamed the user's microphone in, and streamed the rendered avatar video back. Every turn ran through the full pipeline (capture → STT → Hawkeye vision → LLM → TTS → Huma render) server-side in under a second. You wrote zero WebRTC code, managed zero media state, and never exposed your API key to the browser.
 
 ## Next steps
 

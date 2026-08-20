@@ -24,7 +24,7 @@ POST https://api.trugen.ai/v1/ext/externalmeeting
 | `agent_id` | string | Yes | ID of the agent to send into the meeting |
 | `meeting_url` | string | Yes | Full URL of the Google Meet, Zoom, or Teams meeting the agent should join |
 | `user_name` | string | Yes | Display name the agent uses in the meeting |
-| `user_id` | string | Yes | Identifier for this session — used in analytics and callbacks |
+| `user_id` | string | Yes | Identifier for this session: used in analytics and callbacks |
 | `context` | string | No | Free-form conversational context passed to the agent's system prompt |
 | `wake_phrase` | string | No | Optional phrase the agent listens for before speaking (useful in silent-observer mode) |
 | `mode` | string | No | Session mode |
@@ -39,7 +39,7 @@ curl --request POST \
   --data '{
     "agent_id": "agt_12345",
     "meeting_url": "https://meet.google.com/abc-defg-hij",
-    "user_name": "Alex — AI Assistant",
+    "user_name": "Alex: AI Assistant",
     "user_id": "meeting-2026-07-30-abc",
     "context": "This is a hiring interview. The candidate is Priya Sharma for the Senior Engineer role."
   }'
@@ -61,16 +61,16 @@ Unable to create agent request.
 
 ## Behavior
 
-The agent joins the meeting at the URL you provide, using the display name from `user_name`. It participates in real time — hearing, transcribing, reasoning, and speaking through its configured pipeline (STT / LLM / TTS / avatar).
+The agent joins the meeting at the URL you provide, using the display name from `user_name`. It participates in real time: hearing, transcribing, reasoning, and speaking through its configured pipeline (STT / LLM / TTS / avatar).
 
-When the meeting ends, the associated conversation record persists — retrieve it with [`GET /v1/ext/conversation/{id}`](/api-reference/endpoint/conversationgetbyid) for the transcript, tool calls, and any structured output.
+When the meeting ends, the associated conversation record persists: retrieve it with [`GET /v1/ext/conversation/{id}`](/api-reference/endpoint/conversationgetbyid) for the transcript, tool calls, and any structured output.
 
 ## Common uses
 
-- **AI interviewer** — automatically join scheduled interviews and run structured question sets
-- **Sales attendee** — join discovery calls to answer live product questions
-- **Meeting note-taker** — silently transcribe and summarize customer calls
-- **Compliance witness** — attend regulated calls and flag policy issues in real time
+- **AI interviewer**: automatically join scheduled interviews and run structured question sets
+- **Sales attendee**: join discovery calls to answer live product questions
+- **Meeting note-taker**: silently transcribe and summarize customer calls
+- **Compliance witness**: attend regulated calls and flag policy issues in real time
 
 ## Supported meeting platforms
 

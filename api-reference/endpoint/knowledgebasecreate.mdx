@@ -3,7 +3,7 @@ title: 'Create Knowledge Base'
 openapi: 'POST /ext/kb'
 ---
 
-Create a new [knowledge base](/docs/agents/knowledge/overview) — a collection of documents your agents search when they need to ground an answer in your data.
+Create a new [knowledge base](/docs/agents/knowledge/overview): a collection of documents your agents search when they need to ground an answer in your data.
 
 ## When to create a new knowledge base
 
@@ -11,13 +11,13 @@ Create separate knowledge bases per **domain**, not per document. Small, well-sc
 
 **Good scoping:**
 
-- `Product-Docs` — product features, setup, integrations
-- `Pricing-and-Plans` — pricing, plan differences, discounts
-- `Support-FAQs` — common troubleshooting
+- `Product-Docs`: product features, setup, integrations
+- `Pricing-and-Plans`: pricing, plan differences, discounts
+- `Support-FAQs`: common troubleshooting
 
 **Bad scoping:**
 
-- `All-Company-Docs` — the LLM can't tell what's in it, so retrieval quality drops
+- `All-Company-Docs`: the LLM can't tell what's in it, so retrieval quality drops
 
 ## Name and description matter
 
@@ -30,7 +30,7 @@ The `name` and `description` are how the agent decides whether to search this kn
 }
 ```
 
-The description especially — the LLM reads it verbatim when deciding routing.
+The description especially: the LLM reads it verbatim when deciding routing.
 
 ## Example
 

@@ -1,7 +1,7 @@
 ---
 title: "Attach to Agents"
 sidebarTitle: "Attach to Agents"
-description: "Wire your Knowledge Base to one or many agents — via the Studio, via the agent API, or through a template."
+description: "Wire your Knowledge Base to one or many agents: via the Studio, via the agent API, or through a template."
 ---
 
 A Knowledge Base sits idle until it's attached to an agent. Attach it in the Studio when creating or editing an agent, or via the API by including the KB's ID in the agent's `knowledge_base` array.
@@ -16,7 +16,7 @@ A Knowledge Base sits idle until it's attached to an agent. Attach it in the Stu
     In the agent's configuration tabs, open **Knowledge Base**.
   </Step>
   <Step title="Select one or more Knowledge Bases">
-    Pick from your list of KBs. You can attach multiple — the agent decides which one to search for each user question.
+    Pick from your list of KBs. You can attach multiple: the agent decides which one to search for each user question.
   </Step>
   <Step title="Save">
     Save the agent. The next session picks up the new KB configuration automatically.
@@ -38,7 +38,7 @@ Include one or more KB references in the agent's `knowledge_base` array when cre
 }
 ```
 
-You can attach as many KBs as needed. Each KB's Name and Description tell the agent when to search that specific one — see [Naming and describing well](/docs/agents/knowledge/creating#naming-and-describing-well).
+You can attach as many KBs as needed. Each KB's Name and Description tell the agent when to search that specific one: see [Naming and describing well](/docs/agents/knowledge/creating#naming-and-describing-well).
 
 Full endpoint reference: [Create Agent](/api-reference/endpoint/agentcreate) and [Update Agent](/api-reference/endpoint/agentupdate).
 
@@ -61,7 +61,7 @@ Any agent later created from this template automatically has both KBs attached.
 
 ## Multi-KB strategy
 
-Attaching multiple focused Knowledge Bases to one agent almost always beats attaching a single mixed one. The LLM uses each KB's Name and Description to pick the right one — well-scoped KBs give it a strong signal.
+Attaching multiple focused Knowledge Bases to one agent almost always beats attaching a single mixed one. The LLM uses each KB's Name and Description to pick the right one: well-scoped KBs give it a strong signal.
 
 **Recommended:**
 
@@ -86,7 +86,7 @@ Retrieval quality drops sharply as unrelated content piles up. The LLM has no me
 
 ## When updates take effect
 
-Adding or removing a Knowledge Base on an agent takes effect on the **next session** — active conversations keep the previous configuration until they end. If you need to force the change on running sessions, end them explicitly with [`DELETE /v1/conversation/{conversationId}`](/api-reference/endpoint/conversationdelete) after saving the agent update.
+Adding or removing a Knowledge Base on an agent takes effect on the **next session**: active conversations keep the previous configuration until they end. If you need to force the change on running sessions, end them explicitly with [`DELETE /v1/conversation/{conversationId}`](/api-reference/endpoint/conversationdelete) after saving the agent update.
 
 ## Verifying retrieval
 

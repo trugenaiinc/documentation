@@ -4,7 +4,7 @@ sidebarTitle: "Usage in Production"
 description: "Securely deploy TruGen AI in production Python environments."
 ---
 
-For any Python application shipped to end users — desktop binaries, packaged distributions, or apps you don't fully control — do not embed your API key. Follow the two-step pattern below:
+For any Python application shipped to end users (desktop binaries, packaged distributions, or apps you don't fully control), do not embed your API key. Follow the two-step pattern below:
 
 1. Exchange your API key for a short-lived session token **on the server side**.
 2. Return the token to the client and use it in place of the API key.
@@ -19,7 +19,7 @@ Session tokens are valid for 5 minutes by default. Request a new token per user 
 
 ### Fetching a Session Token on Your Server
 
-From your server (Python, Node, Go — anything), call TruGen's `/v1/auth/conversation` endpoint with your API key and the target agent ID.
+From your server (Python, Node, Go: anything), call TruGen's `/v1/auth/conversation` endpoint with your API key and the target agent ID.
 
 <CodeGroup>
 ```python server.py (FastAPI)
@@ -86,8 +86,8 @@ Once your app receives the token from your backend, use it in place of a `create
 
 When generating a session token, you can optionally supply details about the user connecting:
 
-- **`userName`** — Display name (defaults to `"JS SDK"` if omitted; safe to override).
-- **`userId`** — Unique user identifier. If omitted, TruGen auto-generates a timestamp-based ID.
+- **`userName`**: Display name (defaults to `"JS SDK"` if omitted; safe to override).
+- **`userId`**: Unique user identifier. If omitted, TruGen auto-generates a timestamp-based ID.
 
 These are included in the JSON body sent to `https://api.trugen.ai/v1/auth/conversation`.
 

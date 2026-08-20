@@ -1,7 +1,7 @@
 ---
 title: "Upload Content"
 sidebarTitle: "Upload Content"
-description: "Upload PDFs and DOCX files, paste plain text, or point at URLs — TruGen extracts, chunks, and indexes everything automatically."
+description: "Upload PDFs and DOCX files, paste plain text, or point at URLs: TruGen extracts, chunks, and indexes everything automatically."
 ---
 
 Once a Knowledge Base exists, you fill it with content. TruGen accepts three kinds of source material and handles all the extraction, cleaning, chunking, and indexing under the hood.
@@ -21,7 +21,7 @@ Once a Knowledge Base exists, you fill it with content. TruGen accepts three kin
 | Single document upload (`POST /v1/ext/kb/{kbId}/doc`) | **10 MB** per file |
 | Bulk KB creation with attached files (`POST /v1/ext/kb`) | **100 MB** total request size |
 
-Files above these limits are rejected with a 400 error. For larger source material, split into smaller documents before uploading — smaller focused docs also retrieve better than one big file.
+Files above these limits are rejected with a 400 error. For larger source material, split into smaller documents before uploading: smaller focused docs also retrieve better than one big file.
 
 ## Uploading a file via API
 
@@ -47,7 +47,7 @@ Full endpoint reference: [Add Documents to Knowledge Base](/api-reference/endpoi
 
 ## Adding plain text
 
-Plain text lives inline in the KB — no file is created. Best for FAQs, scripted responses, or short reference content you want to control word-for-word. Add plain text in the Studio's Knowledge Base editor.
+Plain text lives inline in the KB: no file is created. Best for FAQs, scripted responses, or short reference content you want to control word-for-word. Add plain text in the Studio's Knowledge Base editor.
 
 <Note>
   Prefer plain text when the content is short and you want precise wording. Prefer file uploads when the content is long, already lives in a document, or needs to survive versioning outside TruGen.
@@ -57,8 +57,8 @@ Plain text lives inline in the KB — no file is created. Best for FAQs, scripte
 
 Point the Studio's URL input at a webpage and TruGen fetches, cleans, and indexes it. You can either:
 
-- **Add a single URL** — fetches and indexes just that page
-- **Crawl a root URL** — walks the site and indexes every reachable page under that root
+- **Add a single URL**: fetches and indexes just that page
+- **Crawl a root URL**: walks the site and indexes every reachable page under that root
 
 Best for public documentation, help centres, changelogs, and product pages.
 
@@ -85,7 +85,7 @@ Every piece of content passes through the same pipeline:
   </Step>
 </Steps>
 
-Processing is asynchronous. For large PDFs or full-site crawls, indexing may take a minute or two. During that window, the document exists in the KB but isn't yet retrievable — attached agents keep answering from the rest of the KB's indexed content.
+Processing is asynchronous. For large PDFs or full-site crawls, indexing may take a minute or two. During that window, the document exists in the KB but isn't yet retrievable: attached agents keep answering from the rest of the KB's indexed content.
 
 ## Removing a document
 

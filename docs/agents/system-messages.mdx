@@ -3,7 +3,7 @@ title: "System Messages"
 description: "Configure the greeting, exit, idle, and heads-up messages your agent uses to open, close, and hold a conversation."
 ---
 
-Every conversation with an agent has recurring moments the LLM doesn't need to reason about — the greeting when a user first joins, the wrap-up before a call ends, the polite check-in when things go quiet. **System messages** let you script these moments explicitly so the agent handles them consistently.
+Every conversation with an agent has recurring moments the LLM doesn't need to reason about: the greeting when a user first joins, the wrap-up before a call ends, the polite check-in when things go quiet. **System messages** let you script these moments explicitly so the agent handles them consistently.
 
 Each system message is a short list of lines. If more than one is provided, the agent picks one at session time so repeat visitors don't hear the same phrase every call.
 
@@ -36,7 +36,7 @@ Fires as soon as the agent joins the session and the user's media is ready. This
 
 **Best practices**
 
-- Keep it short — one sentence at most. It's the first impression.
+- Keep it short: one sentence at most. It's the first impression.
 - Match the agent's persona from the system prompt. A support agent's greeting should sound different from a coach's.
 - Provide 2–4 variants so the greeting doesn't feel canned to returning users.
 
@@ -60,7 +60,7 @@ Fires when the user has been silent for `timeout` seconds. Useful to check wheth
 
 **Best practices**
 
-- Don't set the timeout too low — 20–30 s is natural. Lower feels twitchy.
+- Don't set the timeout too low: 20–30 s is natural. Lower feels twitchy.
 - Provide friendly, warm phrases. This moment often feels awkward if scripted robotically.
 - Have 3–5 variants so a user idling twice in one call doesn't hear the same line.
 
@@ -84,7 +84,7 @@ Fires a configurable number of seconds before the session hits `max_call_duratio
 
 ## Exit message
 
-Fires when the session ends — either the user leaves or `max_call_duration` is hit.
+Fires when the session ends: either the user leaves or `max_call_duration` is hit.
 
 ```json
 "exit_message": {
@@ -100,7 +100,7 @@ Fires when the session ends — either the user leaves or `max_call_duration` is
 | `messages` | string[] | One or more closing lines. |
 | `max_call_duration` | number | Seconds the session can run before this message fires and the call ends. Default `300`. |
 
-<Note>The equivalent field `warning_exit_message` also exists in the API for backward compatibility — use `exit_heads_up_message` for new agents.</Note>
+<Note>The equivalent field `warning_exit_message` also exists in the API for backward compatibility: use `exit_heads_up_message` for new agents.</Note>
 
 ## Toggling messages on and off
 
@@ -130,7 +130,7 @@ Configuring all four messages in a single `avatars[]` block:
     "welcome_message": {
       "messages": [
         "Hi, I'm Priya. What brought you here today?",
-        "Hey there — good to see you. What can I help with?"
+        "Hey there, good to see you. What can I help with?"
       ],
       "wait_time": 1
     },
@@ -138,19 +138,19 @@ Configuring all four messages in a single `avatars[]` block:
       "timeout": 30,
       "filler_phrases": [
         "Still with me?",
-        "Take your time — I'm here whenever you're ready."
+        "Take your time, I'm here whenever you're ready."
       ]
     },
     "exit_heads_up_message": {
       "callout_before": 15,
       "messages": [
-        "Heads up — we've got about fifteen seconds left before this call wraps."
+        "Heads up, we've got about fifteen seconds left before this call wraps."
       ]
     },
     "exit_message": {
       "messages": [
         "Thanks for chatting today. Take care!",
-        "That's our time — great talking with you. Bye for now."
+        "That's our time, great talking with you. Bye for now."
       ],
       "max_call_duration": 300
     }

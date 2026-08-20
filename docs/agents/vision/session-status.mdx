@@ -4,7 +4,7 @@ sidebarTitle: "Session Status"
 description: "Check the state of a running Hawkeye session or read the final billing duration after it ends."
 ---
 
-`GET /v2/vision/{session_id}` returns the current state of a Hawkeye vision session — queued, running, or ended — along with the modules that are active and how long the session has been alive.
+`GET /v2/vision/{session_id}` returns the current state of a Hawkeye vision session (queued, running, or ended) along with the modules that are active and how long the session has been alive.
 
 ## Endpoint
 
@@ -66,12 +66,12 @@ curl --request GET \
 | `IN_QUEUE`     | Session accepted, worker not yet started.                                                     |
 | `IN_PROGRESS`  | Hawkeye is in the room and analysing video.                                                   |
 | `COMPLETED`    | Session ended cleanly (either `max_duration` hit or the room closed).                         |
-| `FAILED`       | Worker errored — check logs / retry with a fresh access token if it looks like an auth issue. |
+| `FAILED`       | Worker errored: check logs / retry with a fresh access token if it looks like an auth issue. |
 | `CANCELLED`    | Explicitly cancelled.                                                                         |
 
 ## Polling Guidance
 
-The status endpoint refreshes from Hawkeye on every call, so you never need to poll more often than roughly once every few seconds. Once a session reaches a terminal state (`COMPLETED`, `FAILED`, `CANCELLED`), further calls just replay the final response — no extra work is done backend-side.
+The status endpoint refreshes from Hawkeye on every call, so you never need to poll more often than roughly once every few seconds. Once a session reaches a terminal state (`COMPLETED`, `FAILED`, `CANCELLED`), further calls just replay the final response: no extra work is done backend-side.
 
 ## What's Next?
 

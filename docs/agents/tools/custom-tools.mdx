@@ -3,7 +3,7 @@ title: "Custom Tools"
 description: "Build API, MCP, and client-side tools to extend your agent with custom actions and integrations."
 ---
 
-Custom tools let you connect your agent to any system not covered by a pre-built integration. TruGen supports three types of custom tools — choose based on where the action happens and how your system communicates.
+Custom tools let you connect your agent to any system not covered by a pre-built integration. TruGen supports three types of custom tools: choose based on where the action happens and how your system communicates.
 
 ---
 
@@ -20,7 +20,7 @@ Call any external HTTP endpoint during a conversation. The agent uses function c
 | **Request URL** | Yes | The full endpoint URL the request will be sent to (e.g., `https://api.example.com/users`). |
 | **HTTP Method** | Yes | `GET`, `POST`, `PUT`, `PATCH`, or `DELETE`. |
 | **Request Headers** | No | Custom headers such as `Authorization`, `Content-Type`, or any other headers your endpoint requires. |
-| **Parameters** | No | The inputs the tool accepts. Define each as a named property with a type and description — the agent uses these to populate the request. |
+| **Parameters** | No | The inputs the tool accepts. Define each as a named property with a type and description: the agent uses these to populate the request. |
 | **Messages** | No | Status messages shown at different stages of tool execution (e.g., a message while the request is in flight, or on success/failure). |
 
 ### Example
@@ -75,7 +75,7 @@ curl --location 'https://api.trugen.ai/v1/ext/tool' \
 ```
 </CodeGroup>
 
-<Tip>Write your **Description** as if you're telling a smart colleague exactly when to pick up this tool. Specificity matters — vague descriptions lead to missed or incorrect invocations.</Tip>
+<Tip>Write your **Description** as if you're telling a smart colleague exactly when to pick up this tool. Specificity matters: vague descriptions lead to missed or incorrect invocations.</Tip>
 
 ---
 
@@ -88,16 +88,16 @@ Connect your own **Model Context Protocol** server to give the agent access to t
 | Field | Required | Description |
 | --- | --- | --- |
 | **Tool Name** | Yes | Name used to identify this MCP connection internally. |
-| **Description** | Yes | What this MCP server provides — used to help the agent understand when to call it. |
+| **Description** | Yes | What this MCP server provides: used to help the agent understand when to call it. |
 | **Server URL** | Yes | The base URL of your MCP server (e.g., `https://mcp.yourcompany.com`). |
-| **Transport Type** | Yes | How the client communicates with the server — see below. |
+| **Transport Type** | Yes | How the client communicates with the server: see below. |
 | **Request Headers** | No | Auth headers or any custom headers your MCP server requires. |
 
 ### Transport Types
 
 | Type | When to Use |
 | --- | --- |
-| **Streamable HTTP (SHTTP)** | Standard HTTP-based streaming. Best for most deployments — simpler infrastructure with support for streamed responses. |
+| **Streamable HTTP (SHTTP)** | Standard HTTP-based streaming. Best for most deployments: simpler infrastructure with support for streamed responses. |
 | **Server-Sent Events (SSE)** | Event-driven, long-lived connection. Best when your server pushes updates to the client in real time. |
 
 <Note>Your MCP server must be publicly reachable from TruGen's infrastructure. If it's behind a private network, expose it via a secure tunnel or deploy it to a public endpoint first.</Note>
@@ -106,7 +106,7 @@ Connect your own **Model Context Protocol** server to give the agent access to t
 
 ## Client Tools
 
-Client tools execute inside your **frontend application** at runtime — not on a server. Use them to trigger UI actions during a conversation, such as opening a modal, navigating to a page, or updating an on-screen element.
+Client tools execute inside your **frontend application** at runtime: not on a server. Use them to trigger UI actions during a conversation, such as opening a modal, navigating to a page, or updating an on-screen element.
 
 Client tools are defined in the Developer Studio and implemented as matching handlers in your npm package integration.
 
@@ -115,9 +115,9 @@ Client tools are defined in the Developer Studio and implemented as matching han
 | Field | Required | Description |
 | --- | --- | --- |
 | **Tool Name** | Yes | Must match the handler name in your npm package (e.g., `openHelpPanel`, `navigateToCheckout`). |
-| **Description** | Yes | Describes what the client action does — the agent uses this to decide when to trigger it. |
+| **Description** | Yes | Describes what the client action does: the agent uses this to decide when to trigger it. |
 | **Parameters** | No | Inputs the tool passes to your client handler (e.g., `{ "panelId": "billing" }`). |
-| **Messages** | No | Messages for different lifecycle stages of the tool — invocation, completion, or error. |
+| **Messages** | No | Messages for different lifecycle stages of the tool: invocation, completion, or error. |
 
 ### Implementing the Handler
 
@@ -146,7 +146,7 @@ client.on('tool:openHelpPanel', (params: { panelId: string }) => {
 ```
 </CodeGroup>
 
-<Note>The tool name defined in the studio must exactly match the event name used in your handler — including casing.</Note>
+<Note>The tool name defined in the studio must exactly match the event name used in your handler: including casing.</Note>
 
 ### Testing a Client Tool
 
