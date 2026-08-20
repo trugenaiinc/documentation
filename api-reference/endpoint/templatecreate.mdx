@@ -9,6 +9,7 @@ Create a reusable [template](/docs/agents/templates): the shared configuration t
 
 - The shared system prompt
 - Attached knowledge bases
+- Attached guardrails
 - LLM, STT, TTS configuration
 - Default avatar (individual agents can override)
 - Callback configuration
@@ -35,6 +36,9 @@ curl --request POST \
     "knowledge_base": [
       { "id": "kb_prod_docs", "name": "Product Docs" },
       { "id": "kb_faqs",      "name": "FAQs" }
+    ],
+    "guardrail": [
+      { "id": "grd_hate_speech", "name": "Hate Speech Filter" }
     ],
     "is_active": true,
     "record": true

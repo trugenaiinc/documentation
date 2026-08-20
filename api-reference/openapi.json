@@ -1612,11 +1612,6 @@
                     "format": "uri",
                     "description": "Where a `guardrail_triggered` event is POSTed when this guardrail fires. Must be a well-formed http(s):// URL if present. Delivery is fire-and-forget - no retries.",
                     "example": "https://yourapp.com/webhooks/guardrail"
-                  },
-                  "is_active": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Set to false to exclude this guardrail from live conversations without deleting it."
                   }
                 },
                 "required": [
@@ -1629,8 +1624,7 @@
                 "category": "Content Safety",
                 "prompt": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group.",
                 "response_message": "I'm sorry, but I can't help with that. Let's keep things respectful.",
-                "callback_url": "https://yourapp.com/webhooks/guardrail",
-                "is_active": true
+                "callback_url": "https://yourapp.com/webhooks/guardrail"
               }
             }
           }
@@ -1750,10 +1744,6 @@
                         "type": "string",
                         "example": "https://yourapp.com/webhooks/guardrail"
                       },
-                      "is_active": {
-                        "type": "boolean",
-                        "example": true
-                      },
                       "created_at": {
                         "type": "string",
                         "format": "date-time",
@@ -1773,7 +1763,6 @@
                       "prompt",
                       "response_message",
                       "callback_url",
-                      "is_active",
                       "created_at",
                       "updated_at"
                     ]
@@ -1846,11 +1835,6 @@
                     "format": "uri",
                     "description": "Where a `guardrail_triggered` event is POSTed when this guardrail fires. Must be a well-formed http(s):// URL if present. Delivery is fire-and-forget - no retries.",
                     "example": "https://yourapp.com/webhooks/guardrail"
-                  },
-                  "is_active": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Set to false to exclude this guardrail from live conversations without deleting it."
                   }
                 },
                 "required": [
@@ -1863,8 +1847,7 @@
                 "category": "Content Safety",
                 "prompt": "Updated prompt text.",
                 "response_message": "Let's keep things respectful.",
-                "callback_url": "",
-                "is_active": false
+                "callback_url": ""
               }
             }
           }
@@ -2063,6 +2046,25 @@
                       }
                     }
                   },
+                  "guardrail": {
+                    "type": "array",
+                    "description": "List of guardrails attached to this template.",
+                    "nullable": true,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Guardrail identifier."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the guardrail."
+                        }
+                      }
+                    }
+                  },
                   "record": {
                     "type": "boolean",
                     "description": "Whether the call should be recorded",
@@ -2236,6 +2238,52 @@
                           }
                         }
                       },
+                      "guardrail": {
+                        "type": "array",
+                        "description": "Guardrails attached to this template, returned in full (not by ID only).",
+                        "nullable": true,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid",
+                              "description": "Guardrail identifier.",
+                              "example": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+                            },
+                            "key": {
+                              "type": "string",
+                              "description": "Permanent slug derived from name at creation time. Used as the tool identifier at runtime.",
+                              "example": "hate_speech_filter"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Name of the guardrail.",
+                              "example": "Hate Speech Filter"
+                            },
+                            "category": {
+                              "type": "string",
+                              "description": "Free-text category tag.",
+                              "example": "Content Safety"
+                            },
+                            "prompt": {
+                              "type": "string",
+                              "description": "The rule text the agent's LLM evaluates against.",
+                              "example": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group."
+                            },
+                            "response_message": {
+                              "type": "string",
+                              "description": "Canned response spoken when this guardrail fires. Empty string if unset.",
+                              "example": "I'm sorry, but I can't help with that. Let's keep things respectful."
+                            },
+                            "callback_url": {
+                              "type": "string",
+                              "description": "Webhook URL notified when this guardrail fires. Empty string if unset.",
+                              "example": "https://yourapp.com/webhooks/guardrail"
+                            }
+                          }
+                        }
+                      },
                       "record": {
                         "type": "boolean",
                         "description": "Whether the call should be recorded",
@@ -2270,6 +2318,7 @@
                     "created_at": "2025-10-16T15:09:53.876051Z",
                     "id": "d22e4b02-3a47-46f2-b0cd-5420f277eaf9",
                     "knowledge_base": null,
+                    "guardrail": null,
                     "record": true,
                     "template_name": "HR Assistant",
                     "template_system_prompt": "You are a helpful AI assistant.",
@@ -2410,6 +2459,52 @@
                         }
                       }
                     },
+                    "guardrail": {
+                      "type": "array",
+                      "description": "Guardrails attached to this template, returned in full (not by ID only).",
+                      "nullable": true,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Guardrail identifier.",
+                            "example": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "Permanent slug derived from name at creation time. Used as the tool identifier at runtime.",
+                            "example": "hate_speech_filter"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the guardrail.",
+                            "example": "Hate Speech Filter"
+                          },
+                          "category": {
+                            "type": "string",
+                            "description": "Free-text category tag.",
+                            "example": "Content Safety"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "description": "The rule text the agent's LLM evaluates against.",
+                            "example": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group."
+                          },
+                          "response_message": {
+                            "type": "string",
+                            "description": "Canned response spoken when this guardrail fires. Empty string if unset.",
+                            "example": "I'm sorry, but I can't help with that. Let's keep things respectful."
+                          },
+                          "callback_url": {
+                            "type": "string",
+                            "description": "Webhook URL notified when this guardrail fires. Empty string if unset.",
+                            "example": "https://yourapp.com/webhooks/guardrail"
+                          }
+                        }
+                      }
+                    },
                     "created_at": {
                       "type": "string",
                       "format": "date-time",
@@ -2510,6 +2605,25 @@
                       }
                     }
                   },
+                  "guardrail": {
+                    "type": "array",
+                    "description": "List of guardrails attached to this template.",
+                    "nullable": true,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Guardrail identifier."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the guardrail."
+                        }
+                      }
+                    }
+                  },
                   "record": {
                     "type": "boolean",
                     "description": "Whether the call should be recorded",
@@ -2530,6 +2644,7 @@
                   "maxCallDuration": 2
                 },
                 "knowledge_base": null,
+                "guardrail": null,
                 "record": true,
                 "is_active": true
               }
@@ -3373,6 +3488,52 @@
                           }
                         }
                       },
+                      "guardrail": {
+                        "type": "array",
+                        "description": "Guardrails attached to this agent, returned in full (not by ID only).",
+                        "nullable": true,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid",
+                              "description": "Guardrail identifier.",
+                              "example": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+                            },
+                            "key": {
+                              "type": "string",
+                              "description": "Permanent slug derived from name at creation time. Used as the tool identifier at runtime.",
+                              "example": "hate_speech_filter"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Name of the guardrail.",
+                              "example": "Hate Speech Filter"
+                            },
+                            "category": {
+                              "type": "string",
+                              "description": "Free-text category tag.",
+                              "example": "Content Safety"
+                            },
+                            "prompt": {
+                              "type": "string",
+                              "description": "The rule text the agent's LLM evaluates against.",
+                              "example": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group."
+                            },
+                            "response_message": {
+                              "type": "string",
+                              "description": "Canned response spoken when this guardrail fires. Empty string if unset.",
+                              "example": "I'm sorry, but I can't help with that. Let's keep things respectful."
+                            },
+                            "callback_url": {
+                              "type": "string",
+                              "description": "Webhook URL notified when this guardrail fires. Empty string if unset.",
+                              "example": "https://yourapp.com/webhooks/guardrail"
+                            }
+                          }
+                        }
+                      },
                       "mcp": {
                         "type": "array",
                         "description": "List of MCP attached to this agent.",
@@ -3454,8 +3615,9 @@
                       "conversationalContext": "You are going to speak with employees from our Machine Learning Team."
                     },
                     "knowledge_base": null,
-                    "mcp": null,
                     "tool": null,
+                    "guardrail": null,
+                    "mcp": null,
                     "record": true,
                     "created_at": "2025-10-17T19:05:25.557061Z",
                     "updated_at": "2025-10-17T19:05:25.557061Z"
@@ -3642,6 +3804,25 @@
                         "name": {
                           "type": "string",
                           "description": "Name of the tool."
+                        }
+                      }
+                    }
+                  },
+                  "guardrail": {
+                    "type": "array",
+                    "description": "List of guardrails attached to this agent.",
+                    "nullable": true,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Guardrail identifier."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the guardrail."
                         }
                       }
                     }
@@ -4554,6 +4735,52 @@
                         }
                       }
                     },
+                    "guardrail": {
+                      "type": "array",
+                      "description": "Guardrails attached to this agent, returned in full (not by ID only).",
+                      "nullable": true,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Guardrail identifier.",
+                            "example": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "Permanent slug derived from name at creation time. Used as the tool identifier at runtime.",
+                            "example": "hate_speech_filter"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the guardrail.",
+                            "example": "Hate Speech Filter"
+                          },
+                          "category": {
+                            "type": "string",
+                            "description": "Free-text category tag.",
+                            "example": "Content Safety"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "description": "The rule text the agent's LLM evaluates against.",
+                            "example": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group."
+                          },
+                          "response_message": {
+                            "type": "string",
+                            "description": "Canned response spoken when this guardrail fires. Empty string if unset.",
+                            "example": "I'm sorry, but I can't help with that. Let's keep things respectful."
+                          },
+                          "callback_url": {
+                            "type": "string",
+                            "description": "Webhook URL notified when this guardrail fires. Empty string if unset.",
+                            "example": "https://yourapp.com/webhooks/guardrail"
+                          }
+                        }
+                      }
+                    },
                     "mcp": {
                       "type": "array",
                       "description": "List of MCP attached to this agent.",
@@ -4901,6 +5128,27 @@
                       }
                     }
                   },
+                  "guardrail": {
+                    "type": "array",
+                    "description": "List of guardrails attached to this agent.",
+                    "nullable": true,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Guardrail identifier.",
+                          "default": "dfbaa3c6-1e90-43df-869a-b023896a198c"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the guardrail.",
+                          "default": "Hate Speech Filter"
+                        }
+                      }
+                    }
+                  },
                   "mcp": {
                     "type": "array",
                     "description": "List of MCPs attached to this agent.",
@@ -5000,6 +5248,12 @@
                     "id": "ac79226e-73e1-41fe-8cde-469ae4e244fa",
                     "name": "Product Support Articles",
                     "description": "Contains FAQs and troubleshooting guides for product lines."
+                  }
+                ],
+                "guardrail": [
+                  {
+                    "id": "dfbaa3c6-1e90-43df-869a-b023896a198c",
+                    "name": "Hate Speech Filter"
                   }
                 ],
                 "record": true,
