@@ -3,7 +3,7 @@ title: "Multilingual Support"
 description: "Configure speech-to-text and text-to-speech across 60+ languages, with automatic language detection and dialect support."
 ---
 
-TruGen supports conversations in 60+ languages. The speech pipeline uses **ElevenLabs** and **Deepgram** for transcription (STT) and **ElevenLabs** and **Cartesia** for voice synthesis (TTS) — all of which auto-adapt when you use `multi` mode.
+TruGen supports conversations in 60+ languages. The speech pipeline uses **ElevenLabs** and **Deepgram** for transcription (STT) and **ElevenLabs** and **Cartesia** for voice synthesis (TTS): all of which auto-adapt when you use `multi` mode.
 
 ## Quick start
 
@@ -27,31 +27,31 @@ For a specific language, use its code (see tables below):
 
 | Language | Code | Dialect variants |
 | --- | --- | --- |
-| **Bulgarian** | `bg` | — |
-| **Catalan** | `ca` | — |
-| **Czech** | `cs` | — |
+| **Bulgarian** | `bg` |: |
+| **Catalan** | `ca` |: |
+| **Czech** | `cs` |: |
 | **Danish** | `da` | `da-DK` |
 | **Dutch** | `nl` | `nl-BE` (Flemish) |
 | **English** | `en` | `en-US`, `en-GB`, `en-AU`, `en-NZ`, `en-IN` |
-| **Estonian** | `et` | — |
-| **Finnish** | `fi` | — |
+| **Estonian** | `et` |: |
+| **Finnish** | `fi` |: |
 | **French** | `fr` | `fr-CA` (Canada) |
 | **German** | `de` | `de-CH` (Switzerland) |
-| **Greek** | `el` | — |
-| **Hungarian** | `hu` | — |
-| **Italian** | `it` | — |
-| **Latvian** | `lv` | — |
-| **Lithuanian** | `lt` | — |
-| **Norwegian** | `no` | — |
-| **Polish** | `pl` | — |
+| **Greek** | `el` |: |
+| **Hungarian** | `hu` |: |
+| **Italian** | `it` |: |
+| **Latvian** | `lv` |: |
+| **Lithuanian** | `lt` |: |
+| **Norwegian** | `no` |: |
+| **Polish** | `pl` |: |
 | **Portuguese** | `pt` | `pt-BR`, `pt-PT` |
-| **Romanian** | `ro` | — |
-| **Russian** | `ru` | — |
-| **Slovak** | `sk` | — |
+| **Romanian** | `ro` |: |
+| **Russian** | `ru` |: |
+| **Slovak** | `sk` |: |
 | **Spanish** | `es` | `es-419` (Latin America) |
 | **Swedish** | `sv` | `sv-SE` |
-| **Turkish** | `tr` | — |
-| **Ukrainian** | `uk` | — |
+| **Turkish** | `tr` |: |
+| **Ukrainian** | `uk` |: |
 
 ### Asian & Pacific
 
@@ -59,36 +59,36 @@ For a specific language, use its code (see tables below):
 | --- | --- | --- |
 | **Chinese (Mandarin, Simplified)** | `zh` | `zh-CN`, `zh-Hans` |
 | **Chinese (Mandarin, Traditional)** | `zh-TW` | `zh-Hant` |
-| **Chinese (Cantonese)** | `zh-HK` | — |
-| **Hindi** | `hi` | — |
-| **Indonesian** | `id` | — |
-| **Japanese** | `ja` | — |
+| **Chinese (Cantonese)** | `zh-HK` |: |
+| **Hindi** | `hi` |: |
+| **Indonesian** | `id` |: |
+| **Japanese** | `ja` |: |
 | **Korean** | `ko` | `ko-KR` |
-| **Malay** | `ms` | — |
+| **Malay** | `ms` |: |
 | **Thai** | `th` | `th-TH` |
-| **Vietnamese** | `vi` | — |
+| **Vietnamese** | `vi` |: |
 
 ### Arabic
 
 | Language | Code | Variant |
 | --- | --- | --- |
-| **Arabic (Generic)** | `ar` | — |
-| **Gulf — UAE** | `ar-AE` | Emirati |
-| **Gulf — Saudi Arabia** | `ar-SA` | Saudi |
-| **Gulf — Qatar** | `ar-QA` | Qatari |
-| **Gulf — Kuwait** | `ar-KW` | Kuwaiti |
-| **Levantine — Syria** | `ar-SY` | Syrian |
-| **Levantine — Lebanon** | `ar-LB` | Lebanese |
-| **Levantine — Palestine** | `ar-PS` | Palestinian |
-| **Levantine — Jordan** | `ar-JO` | Jordanian |
-| **Nile — Egypt** | `ar-EG` | Egyptian |
-| **Nile — Sudan** | `ar-SD` | Sudanese |
-| **Maghrebi — Morocco** | `ar-MA` | Moroccan |
-| **Maghrebi — Algeria** | `ar-DZ` | Algerian |
-| **Maghrebi — Tunisia** | `ar-TN` | Tunisian |
-| **Mesopotamian — Iraq** | `ar-IQ` | Iraqi |
-| **Peripheral — Chad** | `ar-TD` | — |
-| **Peripheral — Iran** | `ar-IR` | — |
+| **Arabic (Generic)** | `ar` | N/A |
+| **Gulf: UAE** | `ar-AE` | Emirati |
+| **Gulf: Saudi Arabia** | `ar-SA` | Saudi |
+| **Gulf: Qatar** | `ar-QA` | Qatari |
+| **Gulf: Kuwait** | `ar-KW` | Kuwaiti |
+| **Levantine: Syria** | `ar-SY` | Syrian |
+| **Levantine: Lebanon** | `ar-LB` | Lebanese |
+| **Levantine: Palestine** | `ar-PS` | Palestinian |
+| **Levantine: Jordan** | `ar-JO` | Jordanian |
+| **Nile: Egypt** | `ar-EG` | Egyptian |
+| **Nile: Sudan** | `ar-SD` | Sudanese |
+| **Maghrebi: Morocco** | `ar-MA` | Moroccan |
+| **Maghrebi: Algeria** | `ar-DZ` | Algerian |
+| **Maghrebi: Tunisia** | `ar-TN` | Tunisian |
+| **Mesopotamian: Iraq** | `ar-IQ` | Iraqi |
+| **Peripheral: Chad** | `ar-TD` | N/A |
+| **Peripheral: Iran** | `ar-IR` | N/A |
 
 <Note>For code-switching or unknown language input, use `language: "multi"`. The STT engine auto-detects on each utterance, and TTS renders accordingly.</Note>
 
@@ -121,7 +121,7 @@ For a specific language, use its code (see tables below):
 ```
 </CodeGroup>
 
-Full agent creation with a multilingual configuration — see the [Create Agent reference](/api-reference/endpoint/agentcreate) for every field.
+Full agent creation with a multilingual configuration: see the [Create Agent reference](/api-reference/endpoint/agentcreate) for every field.
 
 ## Provider language coverage
 
@@ -133,7 +133,7 @@ Provider language coverage evolves. Always check the source docs for the very la
   icon="microphone-lines"
   href="https://elevenlabs.io/docs/overview/capabilities/text-to-speech#supported-languages"
 >
-Multilingual STT model — full language and voice list.
+Multilingual STT model: full language and voice list.
 </Card>
 <Card
   title="Deepgram Nova-3"
@@ -153,7 +153,7 @@ Low-latency multilingual TTS.
 
 ## Prompt considerations for multilingual agents
 
-- **Respond in the same language as the user.** Add this instruction explicitly — LLMs sometimes default to English.
+- **Respond in the same language as the user.** Add this instruction explicitly: LLMs sometimes default to English.
 - **Watch for code-switching.** Users often mix languages ("Book me a table para dos"). Multi mode handles input; instruct the LLM to match the dominant language in output.
 - **Test dialect variants.** A single `es` model may transcribe `es-MX` fine but stumble on `es-AR`. If accuracy matters, pick the dialect explicitly.
 

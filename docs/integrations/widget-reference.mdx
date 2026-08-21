@@ -4,7 +4,7 @@ sidebarTitle: "Widget Reference"
 description: "Every prop the @aiteammate/agent-widget React component accepts."
 ---
 
-The `@aiteammate/agent-widget` package exposes a single React component, `TrugenAgentWidget`. Its full appearance and behavior are configured server-side via the agent's [widget config](/docs/integrations/widget-customization) — the props below are what you pass at render time from your app.
+The `@aiteammate/agent-widget` package exposes a single React component, `TrugenAgentWidget`. Its full appearance and behavior are configured server-side via the agent's [widget config](/docs/integrations/widget-customization): the props below are what you pass at render time from your app.
 
 ## Install
 
@@ -46,19 +46,19 @@ export default function AgentPage() {
 
 ## Requirements
 
-- **React 19+** — the widget declares React 19 as a peer dependency
-- **Modern browser** — Chrome 90+, Edge 90+, Firefox 88+, Safari 14+
-- **HTTPS** — camera and microphone access is only granted on HTTPS origins (or `localhost` in development)
+- **React 19+**: the widget declares React 19 as a peer dependency
+- **Modern browser**: Chrome 90+, Edge 90+, Firefox 88+, Safari 14+
+- **HTTPS**: camera and microphone access is only granted on HTTPS origins (or `localhost` in development)
 
 ## What's configured server-side
 
-Everything about how the widget looks — colors, position, buttons, branding, allowed domains — lives on the agent's `widget` config. Change it in the Studio or via the API and every embed of the widget picks up the change on the next session.
+Everything about how the widget looks (colors, position, buttons, branding, allowed domains) lives on the agent's `widget` config. Change it in the Studio or via the API and every embed of the widget picks up the change on the next session.
 
 Server-side settings covered on separate pages:
 
-- [Widget Customization](/docs/integrations/widget-customization) — colors, position, buttons, branding
-- [Allowed origins](/docs/integrations/widget-customization#allowed-origins) — only listed domains can embed the widget and hold a conversation
-- [System messages](/docs/agents/system-messages) — welcome, idle, exit messages
+- [Widget Customization](/docs/integrations/widget-customization): colors, position, buttons, branding
+- [Allowed origins](/docs/integrations/widget-customization#allowed-origins): only listed domains can embed the widget and hold a conversation
+- [System messages](/docs/agents/system-messages): welcome, idle, exit messages
 
 ## Next steps
 

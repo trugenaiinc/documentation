@@ -43,8 +43,8 @@ TruGen Interactive Avatar Viewer
 Connects to a TruGen AI session and displays the live video avatar in a GUI window.
 
 Controls:
-  M / m   — Toggle mic mute/unmute
-  Q / Esc — Close window and quit
+  M / m: Toggle mic mute/unmute
+  Q / Esc: Close window and quit
 """
 
 import os
@@ -60,7 +60,7 @@ load_dotenv()
 
 # ── Display settings ───────────────────────────────────────────────────────────
 
-WINDOW_TITLE      = "TruGen AI — Live Avatar"
+WINDOW_TITLE      = "TruGen AI: Live Avatar"
 FRAME_W, FRAME_H  = 1280, 720
 CAPTION_MAX_CHARS = 80
 CAPTION_HOLD_SECS = 5.0
@@ -99,7 +99,7 @@ def _placeholder() -> np.ndarray:
     return frame
 
 
-# ── Session factory — user owns TruGenClient and session creation ──────────────
+# ── Session factory: user owns TruGenClient and session creation ──────────────
 
 async def create_session():
     """Creates, connects, and returns a TruGenSession."""
@@ -146,7 +146,7 @@ def on_frame(frame: np.ndarray | None) -> None:
     mic_text  = "🔇 MIC MUTED  [M to unmute]" if runner.mic_muted else "🎤 MIC ON     [M to mute]"
     mic_color = C_RED if runner.mic_muted else C_GREEN
     _put_text(display, mic_text, w - 280, 22, color=mic_color, scale=0.55)
-    _put_text(display, "Q / Esc — quit", w // 2 - 55, 22, color=C_GRAY, scale=0.50)
+    _put_text(display, "Q / Esc: quit", w // 2 - 55, 22, color=C_GRAY, scale=0.50)
 
     # Captions
     caption, caption_ts = runner.get_caption()
@@ -180,11 +180,11 @@ if __name__ == "__main__":
 
 ## What to notice
 
-- **`create_session()`** owns the connection — this pattern keeps your credentials, agent selection, and setup calls in one place.
+- **`create_session()`** owns the connection: this pattern keeps your credentials, agent selection, and setup calls in one place.
 - **`enable_audio_output()`** activates the speaker with Acoustic Echo Cancellation. Without it, the agent hears its own voice through the mic and gets caught in a feedback loop.
 - **`@runner.on_frame`** runs on the main thread, so `cv2.imshow`, `cv2.waitKey`, and window management are all safe from here.
-- **`runner.get_caption()`** returns `(text, timestamp)` so you can time-box overlays — the `CAPTION_HOLD_SECS` check fades captions after 5 seconds.
-- **`runner.stop()`** is thread-safe and idempotent — call it from any thread, any time.
+- **`runner.get_caption()`** returns `(text, timestamp)` so you can time-box overlays: the `CAPTION_HOLD_SECS` check fades captions after 5 seconds.
+- **`runner.stop()`** is thread-safe and idempotent: call it from any thread, any time.
 
 ## Next steps
 

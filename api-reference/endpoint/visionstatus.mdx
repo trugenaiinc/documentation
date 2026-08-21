@@ -1,6 +1,6 @@
 ---
 title: 'Get Vision Session'
-description: 'Fetch the current state of a Hawkeye vision session — queued, running, or ended.'
+description: 'Fetch the current state of a Hawkeye vision session: queued, running, or ended.'
 ---
 
 Get the state of a vision session created via [Start Vision Session](/api-reference/endpoint/visionstart). Each call refreshes from Hawkeye, so you always get the latest status.
@@ -51,7 +51,7 @@ curl --request GET \
 | `IN_QUEUE`     | Session accepted, worker not yet started.                            |
 | `IN_PROGRESS`  | Hawkeye is in the room and analysing video.                          |
 | `COMPLETED`    | Session ended cleanly.                                               |
-| `FAILED`       | Worker errored — check callback logs.                                |
+| `FAILED`       | Worker errored: check callback logs.                                |
 | `CANCELLED`    | Explicitly cancelled.                                                |
 
 ## Errors

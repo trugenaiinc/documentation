@@ -1,10 +1,10 @@
 ---
 title: "Bring Your Own LLM"
 sidebarTitle: "Custom LLM"
-description: "Connect any OpenAI-compatible LLM — self-hosted, fine-tuned, or third-party — while keeping the rest of the TruGen pipeline intact."
+description: "Connect any OpenAI-compatible LLM (self-hosted, fine-tuned, or third-party) while keeping the rest of the TruGen pipeline intact."
 ---
 
-TruGen lets you replace the default LLM with any **OpenAI-compatible** endpoint. Everything else — STT, TTS, avatar rendering, tools, knowledge base — keeps working. Use this for compliance, fine-tuned models, or your own inference infrastructure.
+TruGen lets you replace the default LLM with any **OpenAI-compatible** endpoint. Everything else (STT, TTS, avatar rendering, tools, knowledge base) keeps working. Use this for compliance, fine-tuned models, or your own inference infrastructure.
 
 ## Why bring your own LLM
 
@@ -23,10 +23,10 @@ Your endpoint must implement the **OpenAI Chat Completions** specification:
 - **Payload:** accepts a `messages: []` array
 - **Streaming:** Server-Sent Events (SSE) with `data:` framing
 
-**Optional — required only for specific features:**
+**Optional: required only for specific features:**
 
-- **Function calling** — needed if the agent uses tools
-- **Vision** — needed for multimodal inputs
+- **Function calling**: needed if the agent uses tools
+- **Vision**: needed for multimodal inputs
 
 ## Configure via the Developer Portal
 
@@ -45,7 +45,7 @@ Your endpoint must implement the **OpenAI Chat Completions** specification:
   </Step>
 </Steps>
 
-<Frame caption="Developer Portal — Custom LLM configuration">
+<Frame caption="Developer Portal: Custom LLM configuration">
   <img
     src="/images/byo-llm.png"
     alt="Bring Your Own LLM configuration in Developer Studio"
@@ -171,7 +171,7 @@ If your custom endpoint errors or times out, TruGen can fall back to a hosted mo
 }
 ```
 
-Strongly recommended for production — a single infrastructure hiccup on your side shouldn't kill live sessions.
+Strongly recommended for production: a single infrastructure hiccup on your side shouldn't kill live sessions.
 
 ## Latency expectations
 

@@ -1,23 +1,23 @@
 ---
 title: "Tools"
 sidebarTitle: "Overview"
-description: "Extend your AI Teammate with actions — call APIs, connect integrations, trigger UI events, and more."
+description: "Extend your AI Teammate with actions: call APIs, connect integrations, trigger UI events, and more."
 ---
 
-Tools give your AI Teammate the ability to take action during a conversation — not just respond. Instead of stopping at an answer, your agent can call an API, look up live data, trigger something in your app, or connect to any of thousands of third-party services.
+Tools give your AI Teammate the ability to take action during a conversation: not just respond. Instead of stopping at an answer, your agent can call an API, look up live data, trigger something in your app, or connect to any of thousands of third-party services.
 
-Tools are powered by **LLM function calling** — the agent decides when a tool is relevant based on the user's request and your description of what the tool does.
+Tools are powered by **LLM function calling**: the agent decides when a tool is relevant based on the user's request and your description of what the tool does.
 
 ## Tool Types
 
 <CardGroup cols={2}>
 
 <Card title="Integrations" icon="plug" href="/docs/agents/tools/integrations">
-  Connect 1,000+ apps via Composio — Slack, Google Calendar, Salesforce, HubSpot, and more. Authorize with native OAuth or API key.
+  Connect 1,000+ apps via Composio: Slack, Google Calendar, Salesforce, HubSpot, and more. Authorize with native OAuth or API key.
 </Card>
 
 <Card title="API & Webhook" icon="webhook" href="/docs/agents/tools/custom-tools#api--webhook">
-  Call any external HTTP endpoint during a conversation. Define the URL, method, headers, and parameters — the agent handles the rest.
+  Call any external HTTP endpoint during a conversation. Define the URL, method, headers, and parameters: the agent handles the rest.
 </Card>
 
 <Card title="MCP" icon="network-wired" href="/docs/agents/tools/custom-tools#mcp">
@@ -25,7 +25,7 @@ Tools are powered by **LLM function calling** — the agent decides when a tool 
 </Card>
 
 <Card title="Client Tools" icon="browser" href="/docs/agents/tools/custom-tools#client-tools">
-  Trigger actions inside your frontend — open a modal, navigate to a page, update the UI — handled by your npm package at runtime.
+  Trigger actions inside your frontend (open a modal, navigate to a page, update the UI) handled by your npm package at runtime.
 </Card>
 
 </CardGroup>
@@ -41,14 +41,14 @@ Tools are powered by **LLM function calling** — the agent decides when a tool 
 
 ## Testing a Tool
 
-Every tool has a **Test** button in the Studio. Once you configure a tool, you can run it in a live sandbox directly from the Tools tab — provide the inputs the tool expects, fire the request, and see the exact response before saving to your agent.
+Every tool has a **Test** button in the Studio. Once you configure a tool, you can run it in a live sandbox directly from the Tools tab: provide the inputs the tool expects, fire the request, and see the exact response before saving to your agent.
 
 The test flow supports all four tool types:
 
-- **API / Webhook** — sends a real HTTP request to your endpoint and shows the status code + response body
-- **MCP** — lists the tools exposed by your MCP server and lets you invoke any of them with test parameters
-- **Client tools** — validates the schema and simulates the handler
-- **Integrations** — lets you fire a real Composio action with test inputs against your connected account
+- **API / Webhook**: sends a real HTTP request to your endpoint and shows the status code + response body
+- **MCP**: lists the tools exposed by your MCP server and lets you invoke any of them with test parameters
+- **Client tools**: validates the schema and simulates the handler
+- **Integrations**: lets you fire a real Composio action with test inputs against your connected account
 
 The response is displayed with the HTTP status colored green (2xx), amber (3xx), or red (4xx/5xx) so you can catch misconfigured auth, wrong URLs, or bad payload shapes without ever starting a conversation.
 

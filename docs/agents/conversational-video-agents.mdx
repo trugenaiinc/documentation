@@ -4,7 +4,7 @@ sidebarTitle: "Understanding Teammates"
 description: "Real-time conversational video agents that see, hear, and respond with human-like presence."
 ---
 
-AI Teammates are TruGen's real-time conversational agents — face-to-face, voice-driven, and vision-aware. Unlike a chatbot or voice assistant, an AI Teammate holds a live video conversation, reads the room, and responds the way a person would.
+AI Teammates are TruGen's real-time conversational agents: face-to-face, voice-driven, and vision-aware. Unlike a chatbot or voice assistant, an AI Teammate holds a live video conversation, reads the room, and responds the way a person would.
 
 This page explains how conversation works under the hood, what you can configure, and how to embed one into your product.
 
@@ -14,12 +14,12 @@ This page explains how conversation works under the hood, what you can configure
 
 ## Conversation Mechanics
 
-AI Teammates don't just wait for a user to finish speaking — they actively manage the natural rhythm of conversation.
+AI Teammates don't just wait for a user to finish speaking: they actively manage the natural rhythm of conversation.
 
 | Mechanic | How It Works |
 | --- | --- |
 | **Speech Recognition** | Runs continuously and incrementally, capturing partial utterances so the agent can begin reasoning before the user finishes speaking |
-| **Turn Detection** | Detects natural pauses, interruptions, and handovers — the agent knows when to listen, when to speak, and when to yield. Tunable per agent via `turn_handling` (`proactive` / `balanced` / `deliberate`) |
+| **Turn Detection** | Detects natural pauses, interruptions, and handovers: the agent knows when to listen, when to speak, and when to yield. Tunable per agent via `turn_handling` (`proactive` / `balanced` / `deliberate`) |
 | **Backchanneling** | Issues short acknowledgement cues ("mm-hmm", nodding) to signal active listening during user speech |
 | **Interruption Handling** | Gracefully stops mid-response when the user interjects, rather than talking over them. Sensitivity is tunable via `interruptability` (`low` / `medium` / `high`) |
 | **Silence Detection** | Monitors for user inactivity and responds with a configurable idle message or ends the session |
@@ -29,7 +29,7 @@ AI Teammates don't just wait for a user to finish speaking — they actively man
 
 ## What You Can Configure
 
-Each AI Teammate can be fully configured from scratch, or built from a **Template** — a reusable blueprint you can share across multiple agents to keep behaviour consistent. Either way, you control:
+Each AI Teammate can be fully configured from scratch, or built from a **Template**: a reusable blueprint you can share across multiple agents to keep behaviour consistent. Either way, you control:
 
 <CardGroup cols={2}>
 
@@ -69,14 +69,14 @@ Each AI Teammate can be fully configured from scratch, or built from a **Templat
 | **Response Latency** | ≤ 1 second end-to-end |
 | **Vision** | Gesture, gaze, and body language via Hawkeye-1 |
 | **Avatar Rendering** | Expressive lip-sync, micro-expressions, and emotional nuance via Huma-2 |
-| **Languages** | Multilingual — see [supported languages](/docs/agents/multilingual-support) |
+| **Languages** | Multilingual: see [supported languages](/docs/agents/multilingual-support) |
 | **Session Recording** | Optional, configurable per agent |
 | **Concurrent Sessions** | Unlimited |
 | **Uptime** | > 99.9% |
 
 ## Quick Integration
 
-The fastest way to deploy an AI Teammate is a single iframe — no SDK, no WebRTC setup, no media pipeline configuration. For React and Next.js apps, use the React widget instead.
+The fastest way to deploy an AI Teammate is a single iframe: no SDK, no WebRTC setup, no media pipeline configuration. For React and Next.js apps, use the React widget instead.
 
 <Tabs>
   <Tab title="React">
@@ -108,7 +108,7 @@ The fastest way to deploy an AI Teammate is a single iframe — no SDK, no WebRT
   </Tab>
 
   <Tab title="iFrame">
-    Drop the iframe into any frontend — Vue, Angular, Svelte, or plain HTML — and your agent is live instantly.
+    Drop the iframe into any frontend (Vue, Angular, Svelte, or plain HTML) and your agent is live instantly.
 
     ```html
     <iframe

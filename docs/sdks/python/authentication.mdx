@@ -12,10 +12,10 @@ Your API key authenticates server-side requests to the TruGen AI API. API keys c
 
 ### Creating an API Key
 
-From the [API Keys page](https://app.trugen.ai/api-keys), click **Create API Key**, give it a name, and click **Create**. Copy and store it securely — you will not be able to view it again.
+From the [API Keys page](https://app.trugen.ai/api-keys), click **Create API Key**, give it a name, and click **Create**. Copy and store it securely: you will not be able to view it again.
 
 <Warning>
-  Never expose your API key in a client bundle, script shipped to end users, or public repository. Store it only in server-side environment variables or a secrets manager. If you lose your API key, you will need to create a new one — they cannot be recovered.
+  Never expose your API key in a client bundle, script shipped to end users, or public repository. Store it only in server-side environment variables or a secrets manager. If you lose your API key, you will need to create a new one: they cannot be recovered.
 </Warning>
 
 ## Tier 2: Session Tokens
@@ -64,7 +64,7 @@ If you're shipping a Python desktop application to end users (Windows/Mac/Linux 
 
 1. Run a small server-side endpoint that holds the API key.
 2. Have your desktop app request a short-lived session token from your server.
-3. Use the token to authenticate — see [Usage in Production](/docs/sdks/python/production) for the full pattern.
+3. Use the token to authenticate: see [Usage in Production](/docs/sdks/python/production) for the full pattern.
 
 ## Environment configuration
 

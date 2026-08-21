@@ -1,9 +1,9 @@
 ---
 title: "Widget"
-description: "Every TruGen agent ships with a drop-in widget — the React component or iframe that renders your agent inside any web app."
+description: "Every TruGen agent ships with a drop-in widget: the React component or iframe that renders your agent inside any web app."
 ---
 
-Every agent you create in TruGen comes with a **widget** — a React component (also available as an iframe) that renders the agent inside your web app. The widget picks up its appearance, position, buttons, branding, and domain restrictions directly from the agent's `widget` configuration on the agent itself.
+Every agent you create in TruGen comes with a **widget**: a React component (also available as an iframe) that renders the agent inside your web app. The widget picks up its appearance, position, buttons, branding, and domain restrictions directly from the agent's `widget` configuration on the agent itself.
 
 That means: change the widget in the Studio or via the API, and every embed of the widget everywhere picks up the change on the next session. Your app doesn't redeploy.
 
@@ -11,13 +11,13 @@ That means: change the widget in the Studio or via the API, and every embed of t
 
 When you create or edit an agent in the [Studio](https://app.trugen.ai), the **Widget** section lets you configure:
 
-- **Position** — `left`, `right`, `center`, `center-mini`, or `full`
-- **Widget type** — dual (Talk + Chat), Talk-only, or Chat-only
-- **Colors** — solid or gradient, plus theme (dark/light)
-- **Branding** — company logo, company name, agent display name
-- **Buttons** — custom text for Start Chat, Talk, and Chat
-- **Suggested topics** — starter prompts to nudge users toward useful conversations
-- **Allowed domains** — restrict which origins can embed the agent
+- **Position**: `left`, `right`, `center`, `center-mini`, or `full`
+- **Widget type**: dual (Talk + Chat), Talk-only, or Chat-only
+- **Colors**: solid or gradient, plus theme (dark/light)
+- **Branding**: company logo, company name, agent display name
+- **Buttons**: custom text for Start Chat, Talk, and Chat
+- **Suggested topics**: starter prompts to nudge users toward useful conversations
+- **Allowed domains**: restrict which origins can embed the agent
 
 These settings live on the agent's `widget` object. See the [Widget Customization](/docs/integrations/widget-customization) reference for every field and how it renders.
 
@@ -38,7 +38,7 @@ Pick the embed path that matches your stack:
     icon="code"
     href="/docs/integrations/embed-via-iFrame"
   >
-    Drop the iframe into any HTML page — no npm install.
+    Drop the iframe into any HTML page: no npm install.
   </Card>
 </CardGroup>
 
@@ -53,10 +53,10 @@ Both paths render the same underlying widget with the same agent config. The dif
 | **Setup** | `npm install`, render component | Paste one HTML tag |
 | **Styling** | Renders in a Shadow DOM (isolated) | Rendered inside an iframe |
 | **Framework fit** | React / Next.js apps | Any framework, plain HTML |
-| **Bundle size cost** | Small — widget is code-split | Zero |
+| **Bundle size cost** | Small: widget is code-split | Zero |
 | **Custom UI hooks** | Widget props for user context | URL params for user context |
 
-The React widget is slightly more powerful — you can pass `userName`, `userId`, and `context` as typed props. The iframe accepts the same via query params.
+The React widget is slightly more powerful: you can pass `userName`, `userId`, and `context` as typed props. The iframe accepts the same via query params.
 
 ## Next steps
 
@@ -66,7 +66,7 @@ The React widget is slightly more powerful — you can pass `userName`, `userId`
     icon="palette"
     href="/docs/integrations/widget-customization"
   >
-    Every widget config field — position, colors, buttons, branding, domain restrictions.
+    Every widget config field: position, colors, buttons, branding, domain restrictions.
   </Card>
   <Card
     title="Widget SDK Reference"

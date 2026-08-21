@@ -6,7 +6,7 @@ description: "Give your agent a deck. When the user asks a relevant question, th
 
 **Visual Presentations** turn your agent into a presenter. Upload a PDF or PowerPoint deck to your library, attach the presentation to an agent, and when a user asks a question that matches the content, the agent shows the relevant slide while it speaks its answer.
 
-This turns typical "explain how X works" answers into an actual walkthrough — the agent shows the pricing slide when asked about pricing, the architecture diagram when asked how the system works, and so on.
+This turns typical "explain how X works" answers into an actual walkthrough: the agent shows the pricing slide when asked about pricing, the architecture diagram when asked how the system works, and so on.
 
 ## Supported media
 
@@ -15,7 +15,7 @@ This turns typical "explain how X works" answers into an actual walkthrough — 
 | **PDF** | `.pdf` | 100 MB | Upload a file or provide a public URL. Each page becomes a slide. |
 | **PowerPoint** | `.ppt`, `.pptx` | 100 MB | Upload a file or provide a public URL. Each slide is indexed. |
 
-Each slide is indexed after upload — the agent uses semantic search to find the right slide based on the user's question, similar to how [Knowledge Base](/docs/agents/knowledge/overview) retrieval works.
+Each slide is indexed after upload: the agent uses semantic search to find the right slide based on the user's question, similar to how [Knowledge Base](/docs/agents/knowledge/overview) retrieval works.
 
 ## Creating a presentation
 
@@ -27,7 +27,7 @@ Each slide is indexed after upload — the agent uses semantic search to find th
     Pick a media kind (PDF or PowerPoint), upload the file, and give the presentation a name and optional tags.
   </Step>
   <Step title="Wait for processing">
-    Uploads process asynchronously — PDFs are page-split and PowerPoints are slide-indexed. Status moves through `pending` → `processing` → `completed`.
+    Uploads process asynchronously: PDFs are page-split and PowerPoints are slide-indexed. Status moves through `pending` → `processing` → `completed`.
   </Step>
   <Step title="Attach to the agent">
     Once processing is complete, select the presentation in the tab and save the agent. It's now available for the agent to use in every session.
@@ -40,8 +40,8 @@ During a live session:
 
 1. The user asks a question.
 2. Before answering, the agent semantically searches the attached presentations for the most relevant slide.
-3. If a strong match is found, the agent both **speaks the answer** and **presents the slide** — the widget shows the slide alongside the avatar.
-4. If no strong match is found, the agent falls back to answering from its system prompt and knowledge base as normal — no presentation is shown.
+3. If a strong match is found, the agent both **speaks the answer** and **presents the slide**: the widget shows the slide alongside the avatar.
+4. If no strong match is found, the agent falls back to answering from its system prompt and knowledge base as normal: no presentation is shown.
 
 The agent decides when to present. You don't have to script it.
 
@@ -64,9 +64,9 @@ and close the presentation. Do not make assumptions.
 
 You can customize this per presentation from the upload modal. Common reasons to change it:
 
-- **Loosen groundedness** — allow the agent to elaborate beyond what's on the slide
-- **Change presentation style** — force the agent to summarize rather than quote
-- **Adjust fallback behavior** — change what the agent says when no slide matches
+- **Loosen groundedness**: allow the agent to elaborate beyond what's on the slide
+- **Change presentation style**: force the agent to summarize rather than quote
+- **Adjust fallback behavior**: change what the agent says when no slide matches
 
 The `{query}` and `{results}` placeholders are filled in at runtime.
 
@@ -103,7 +103,7 @@ Both are retrieval-based, but they serve different purposes.
 | FAQs, policies, product docs | Pitch decks, tutorials, product screenshots |
 | Long-form written content | Slide-per-idea material designed to be presented |
 
-You can — and often should — use both on the same agent.
+You can (and often should) use both on the same agent.
 
 ## Next steps
 

@@ -1,19 +1,19 @@
 ---
 title: "Voice-Only Mode"
-description: "Run an agent without rendering a face — a customizable audio visualizer replaces the avatar for voice-first experiences."
+description: "Run an agent without rendering a face: a customizable audio visualizer replaces the avatar for voice-first experiences."
 ---
 
-Not every agent needs a face. **Voice-Only Mode** turns off the Huma avatar renderer and replaces it with a lightweight audio visualizer — a decorative animation that pulses with the agent's speech. Use it for voice-first products, low-bandwidth environments, or when your brand is stronger than any face you could render.
+Not every agent needs a face. **Voice-Only Mode** turns off the Huma avatar renderer and replaces it with a lightweight audio visualizer: a decorative animation that pulses with the agent's speech. Use it for voice-first products, low-bandwidth environments, or when your brand is stronger than any face you could render.
 
 ## When to use it
 
-- **Voice-first products** — IVR replacements, phone-like conversations, screen-off use
-- **Low-bandwidth or metered networks** — the visualizer streams a tiny fraction of what avatar video does
-- **Brand-forward experiences** — center your logo and color instead of a stock face
-- **Mobile-web** — great for interactions where a full avatar would dominate a small screen
-- **Latency-sensitive edge cases** — skipping avatar render removes ~50–100 ms from the pipeline
+- **Voice-first products**: IVR replacements, phone-like conversations, screen-off use
+- **Low-bandwidth or metered networks**: the visualizer streams a tiny fraction of what avatar video does
+- **Brand-forward experiences**: center your logo and color instead of a stock face
+- **Mobile-web**: great for interactions where a full avatar would dominate a small screen
+- **Latency-sensitive edge cases**: skipping avatar render removes ~50–100 ms from the pipeline
 
-Voice-only mode uses the same STT / LLM / TTS pipeline as a video agent — only the render layer changes.
+Voice-only mode uses the same STT / LLM / TTS pipeline as a video agent: only the render layer changes.
 
 ## Audio visualizer variants
 
@@ -47,19 +47,19 @@ All customization happens in the Studio's Avatar tab when Voice-Only Mode is tog
 
 In the Studio, open the **Avatar** tab and toggle **Voice-only mode** on. Pick a visualizer variant, set the accent color, and optionally add a company logo.
 
-Voice-only is stored on the agent's avatar config — everywhere the agent is embedded (widget, iframe, LiveKit plugin) picks up the setting on the next session.
+Voice-only is stored on the agent's avatar config: everywhere the agent is embedded (widget, iframe, LiveKit plugin) picks up the setting on the next session.
 
 ## Widget SDK support
 
 The `@aiteammate/agent-widget` React component also accepts an internal `audioAvatarVariant` prop for one-off overrides at render time. It accepts the same six values (`"aura" | "bar" | "grid" | "radial" | "wave" | "earth"`).
 
-For most cases, configure voice-only on the agent itself so every embed matches — don't override it per widget instance unless you have a specific reason to.
+For most cases, configure voice-only on the agent itself so every embed matches: don't override it per widget instance unless you have a specific reason to.
 
 ## Best practices
 
 - **Match visualizer to your brand.** `aura` reads soft and premium; `bar` reads technical and precise; `earth` reads exploratory. Test a few.
-- **Pick a bold accent color.** The visualizer is the entire UI while the agent speaks — a washed-out color feels flat.
-- **Add your logo.** In voice-only mode there's no face to anchor the eye — the logo becomes the identity of the experience.
+- **Pick a bold accent color.** The visualizer is the entire UI while the agent speaks: a washed-out color feels flat.
+- **Add your logo.** In voice-only mode there's no face to anchor the eye: the logo becomes the identity of the experience.
 - **Test on mobile.** Voice-only shines on small screens. Verify your color and logo work at phone size.
 
 ## Next steps

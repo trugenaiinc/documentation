@@ -7,9 +7,9 @@ Create a new conversational video agent. Returns the agent's ID, which you'll us
 
 ## When to use
 
-- **First-time setup** — creating your first agent (or your first agent for a new use case)
-- **Programmatic rollouts** — creating many agents in bulk from your own workflows
-- **Testing** — spinning up experimental agents alongside your production ones
+- **First-time setup**: creating your first agent (or your first agent for a new use case)
+- **Programmatic rollouts**: creating many agents in bulk from your own workflows
+- **Testing**: spinning up experimental agents alongside your production ones
 
 If you're creating many similar agents, define a [template](/docs/agents/templates) once and use [Create Agent by Template](/api-reference/endpoint/agentcreatebytemplate) instead.
 
@@ -17,9 +17,9 @@ If you're creating many similar agents, define a [template](/docs/agents/templat
 
 At minimum you must send:
 
-- `agent_name` — used for display and identification
-- `agent_system_prompt` — how the agent should behave (see [Prompting Strategies](/docs/agents/prompting-strategies))
-- `avatars[0].avatar_key_id` — the visual identity (from the [Avatar Gallery](/docs/avatars/gallery) or a custom avatar)
+- `agent_name`: used for display and identification
+- `agent_system_prompt`: how the agent should behave (see [Prompting Strategies](/docs/agents/prompting-strategies))
+- `avatars[0].avatar_key_id`: the visual identity (from the [Avatar Gallery](/docs/avatars/gallery) or a custom avatar)
 
 Everything else falls back to platform defaults:
 
@@ -66,4 +66,5 @@ Response:
 - [Embed the agent with the widget](/docs/integrations/widget-integration)
 - [Add a knowledge base](/docs/agents/knowledge/overview)
 - [Register tools](/docs/agents/tools/overview)
+- [Add guardrails](/docs/agents/guardrails/overview)
 - [Configure webhooks](/docs/agents/callback)

@@ -3,12 +3,13 @@ title: 'Create Persona Template'
 openapi: 'POST /ext/template'
 ---
 
-Create a reusable [template](/docs/agents/templates) — the shared configuration that many agents can derive from. Use templates to enforce consistent behavior across a fleet of agents.
+Create a reusable [template](/docs/agents/templates): the shared configuration that many agents can derive from. Use templates to enforce consistent behavior across a fleet of agents.
 
 ## What belongs in a template
 
 - The shared system prompt
 - Attached knowledge bases
+- Attached guardrails
 - LLM, STT, TTS configuration
 - Default avatar (individual agents can override)
 - Callback configuration
@@ -35,6 +36,9 @@ curl --request POST \
     "knowledge_base": [
       { "id": "kb_prod_docs", "name": "Product Docs" },
       { "id": "kb_faqs",      "name": "FAQs" }
+    ],
+    "guardrail": [
+      { "id": "grd_hate_speech", "name": "Hate Speech Filter" }
     ],
     "is_active": true,
     "record": true

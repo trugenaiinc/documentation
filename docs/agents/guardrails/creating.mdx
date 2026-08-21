@@ -23,7 +23,6 @@ Content-Type: application/json
 | `prompt` | string | Yes | The rule text: describes what user behavior should trigger this guardrail. This is what the LLM evaluates the conversation against. `400` if missing or empty. |
 | `response_message` | string | No | Spoken to the user verbatim when the guardrail fires. If empty, the guardrail falls back to a moderation-endpoint check instead. See [Runtime Behavior](/docs/agents/guardrails/runtime-behavior). |
 | `callback_url` | string (URL) | No | Where a `guardrail_triggered` event is POSTed when this guardrail fires. Must be a well-formed `http(s)://` URL if present (`400` if malformed). Omit it and nothing is ever posted for this guardrail. |
-| `is_active` | boolean | No, default `true` | Set to `false` to exclude the guardrail from live conversations without deleting it. Applies instantly, workspace-wide, to every agent it's attached to. |
 
 There are no length limits on `name`, `category`, `prompt`, or `response_message`; all stored as unbounded text.
 
@@ -38,8 +37,7 @@ curl -X POST https://api.trugen.ai/v1/ext/guardrail \
     "category": "Content Safety",
     "prompt": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group.",
     "response_message": "I'\''m sorry, but I can'\''t help with that. Let'\''s keep things respectful.",
-    "callback_url": "https://yourapp.com/webhooks/guardrail",
-    "is_active": true
+    "callback_url": "https://yourapp.com/webhooks/guardrail"
   }'
 ```
 
@@ -81,7 +79,6 @@ Response (`200 OK`), a plain array (not wrapped in a `data` key), scoped to your
     "prompt": "Trigger when the user uses hateful, discriminatory, or abusive language toward a person or group.",
     "response_message": "I'm sorry, but I can't help with that. Let's keep things respectful.",
     "callback_url": "https://yourapp.com/webhooks/guardrail",
-    "is_active": true,
     "created_at": "2026-08-14T11:38:46.479224Z",
     "updated_at": "2026-08-14T11:38:46.479224Z"
   }
@@ -103,8 +100,7 @@ curl -X PUT https://api.trugen.ai/v1/ext/guardrail/dfbaa3c6-1e90-43df-869a-b0238
     "category": "Content Safety",
     "prompt": "Updated prompt text.",
     "response_message": "Let'\''s keep things respectful.",
-    "callback_url": "",
-    "is_active": false
+    "callback_url": ""
   }'
 ```
 

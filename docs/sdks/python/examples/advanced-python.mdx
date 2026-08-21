@@ -1,7 +1,7 @@
 ---
 title: "Advanced GUI Example"
 sidebarTitle: "Advanced GUI"
-description: "Full-feature TruGen SDK demo — captions, speaking states, connection quality, mic permissions, reconnect handling, and WAV audio injection."
+description: "Full-feature TruGen SDK demo: captions, speaking states, connection quality, mic permissions, reconnect handling, and WAV audio injection."
 ---
 
 Every SDK feature in one runnable example. Adapted verbatim from `examples/advanced_session_ui.py` in the [official Python SDK repository](https://github.com/trugenai/python-sdk).
@@ -59,7 +59,7 @@ uv run --extra display python examples/advanced_session_ui.py --wav /path/to/aud
 
 ```python
 """
-TruGen Advanced Avatar Viewer — Full SDK Features
+TruGen Advanced Avatar Viewer: Full SDK Features
 ==================================================
 Demonstrates every available TruGen SDK feature in one example.
 """
@@ -82,7 +82,7 @@ load_dotenv()
 _wav_idx = sys.argv.index("--wav") + 1 if "--wav" in sys.argv else None
 WAV_FILE = sys.argv[_wav_idx] if _wav_idx and _wav_idx < len(sys.argv) else None
 
-WINDOW_TITLE      = "TruGen AI — Full SDK Demo"
+WINDOW_TITLE      = "TruGen AI: Full SDK Demo"
 FRAME_W, FRAME_H  = 1280, 720
 CAPTION_MAX_CHARS = 80
 CAPTION_HOLD_SECS = 5.0
@@ -99,12 +99,12 @@ C_GRAY    = (180, 180, 180)
 C_BLUE    = (220, 130, 60)
 C_OVERLAY = (20,  20,  20)
 
-# ── Runtime state (main-thread only — no lock needed) ─────────────────────────
+# ── Runtime state (main-thread only: no lock needed) ─────────────────────────
 
 agent_speaking  = False
 user_speaking   = False
 audio_injecting = False
-conn_quality    = "—"
+conn_quality    = ": "
 
 
 # ── GUI helpers ───────────────────────────────────────────────────────────────
@@ -164,7 +164,7 @@ def on_caption(text: str) -> None:
     _caption_buffer = text   # drives the GUI caption overlay
 
 
-# Terminal transcript logs — final, complete utterances only
+# Terminal transcript logs: final, complete utterances only
 @runner.on_event("user.transcription_received")
 def on_user_transcript(text: str) -> None:
     print(f"[User]  {text}")
@@ -253,7 +253,7 @@ def inject_wav() -> None:
     global audio_injecting
 
     if not WAV_FILE:
-        print("[Audio]      ⚠️  No WAV file — pass --wav /path/to/file.wav")
+        print("[Audio]      ⚠️  No WAV file: pass --wav /path/to/file.wav")
         return
     if not os.path.isfile(WAV_FILE):
         print(f"[Audio]      ❌ File not found: {WAV_FILE}")
@@ -328,7 +328,7 @@ def on_frame(frame: np.ndarray | None) -> None:
             tw = cv2.getTextSize(line, FONT, FONT_SCALE, FONT_THICK)[0][0]
             _put_text(display, line, (w - tw) // 2, y0 + 20 + i * line_h)
 
-    # Key hint bar at bottom — reminds user to focus the window
+    # Key hint bar at bottom: reminds user to focus the window
     hint = "Click this window first, then:  M=mute   A=inject WAV   Q=quit"
     _put_text(display, hint, 10, h - 10, color=C_GRAY, scale=0.40)
 
@@ -357,9 +357,9 @@ if __name__ == "__main__":
 
 ## Notable patterns to steal
 
-- **`inject_wav()`** schedules audio injection safely using `asyncio.run_coroutine_threadsafe` — the correct way to bridge from your main GUI thread into the SDK's async loop.
-- **Mic muting during injection** — this is critical for AEC. Without it, the agent responds to its own injected audio via the mic, spiraling into feedback.
-- **`connection.quality_changed`** gives you a live signal from LiveKit about the participant's connection quality — display it as a small badge for user awareness.
+- **`inject_wav()`** schedules audio injection safely using `asyncio.run_coroutine_threadsafe`: the correct way to bridge from your main GUI thread into the SDK's async loop.
+- **Mic muting during injection**: this is critical for AEC. Without it, the agent responds to its own injected audio via the mic, spiraling into feedback.
+- **`connection.quality_changed`** gives you a live signal from LiveKit about the participant's connection quality: display it as a small badge for user awareness.
 - **`_caption_buffer`** on `TEXT_CHUNK_RECEIVED` is cleared when the agent stops speaking, so stale captions don't linger.
 
 ## Next steps

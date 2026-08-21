@@ -3,21 +3,23 @@ title: 'Create Agent By Template'
 openapi: 'POST /ext/agentbytemplate'
 ---
 
-Create a new agent from a saved [template](/docs/agents/templates). The template supplies the shared configuration (prompt, knowledge, LLM, TTS); you pass in the per-agent overrides (avatar, email, per-user context).
+Create a new agent from a saved [template](/docs/agents/templates). The template supplies the shared configuration (prompt, knowledge, guardrails, LLM, TTS); you pass in the per-agent overrides (avatar, email, per-user context).
 
 ## Why templates
 
 Templates keep configuration consistent across many agents. If you run 50 agents that share the same behavior but differ in avatar and per-user context, define the behavior once as a template and spawn agents from it.
 
+The new agent inherits everything attached to the template, including its knowledge bases, tools, MCPs, and guardrails. You don't need to pass any of that again in this request.
+
 ## Required fields
 
-- `template_id` — the template to instantiate from
-- `avatar_key_id` — the visual identity for this specific agent
+- `template_id`: the template to instantiate from
+- `avatar_key_id`: the visual identity for this specific agent
 
 ## Optional fields
 
-- `email` — used for [external meetings](/docs/agents/meetings/overview) as the meeting invite identity
-- `context_override` — inject per-agent context that will be appended to the shared system prompt
+- `email`: used for [external meetings](/docs/agents/meetings/overview) as the meeting invite identity
+- `context_override`: inject per-agent context that will be appended to the shared system prompt
 
 ## Example
 

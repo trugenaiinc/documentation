@@ -3,18 +3,18 @@ title: 'Update Agent'
 openapi: 'PUT /ext/agent/{id}'
 ---
 
-Replace an agent's configuration. `PUT` is a full-replace — send the complete configuration, not a partial. For partial updates, use `PATCH /ext/agent/{id}`.
+Replace an agent's configuration. `PUT` is a full-replace: send the complete configuration, not a partial. For partial updates, use `PATCH /ext/agent/{id}`.
 
 ## When to use PUT vs PATCH
 
 | Endpoint | Behavior | Use when |
 | --- | --- | --- |
-| `PUT /ext/agent/{id}` | Full replace — omitted fields reset to defaults | You want to re-declare the full agent state |
-| `PATCH /ext/agent/{id}` | Partial merge — only send changed fields | You want to update one field without touching others |
+| `PUT /ext/agent/{id}` | Full replace: omitted fields reset to defaults | You want to re-declare the full agent state |
+| `PATCH /ext/agent/{id}` | Partial merge: only send changed fields | You want to update one field without touching others |
 
 ## Effect on live sessions
 
-Updates take effect on the **next session** — existing active sessions keep the previous configuration until they end. If you need to force a config change immediately, end active sessions with [`DELETE /v1/conversation/{conversationId}`](/api-reference/endpoint/conversationdelete) after the update lands.
+Updates take effect on the **next session**: existing active sessions keep the previous configuration until they end. If you need to force a config change immediately, end active sessions with [`DELETE /v1/conversation/{conversationId}`](/api-reference/endpoint/conversationdelete) after the update lands.
 
 ## Common patterns
 

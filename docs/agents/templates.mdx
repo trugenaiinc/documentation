@@ -4,7 +4,7 @@ sidebarTitle: "Agent Templates"
 description: "Reusable persona blueprints that let you roll out many agents with consistent prompt, knowledge, and behavior."
 ---
 
-Templates define the **persona, behaviour, and conversational structure** of your AI Teammates. Rather than configuring every setting manually for each agent, templates give you a reusable blueprint — shareable across multiple agents, enabling fast iteration, consistent brand voice, and governance at scale.
+Templates define the **persona, behaviour, and conversational structure** of your AI Teammates. Rather than configuring every setting manually for each agent, templates give you a reusable blueprint: shareable across multiple agents, enabling fast iteration, consistent brand voice, and governance at scale.
 
 ---
 
@@ -15,6 +15,7 @@ A template consists of the following configurable components, and more:
 - **Avatar for Teammate** - Choose the visual identity your agent presents during live video conversations.
 - **System Prompt** - Defines the agent's role, tone, and knowledge scope. This is the core directive that shapes reasoning and personality.
 - **Knowledge Base Attachments** - Bind knowledge sources such as documents, products, FAQs, or APIs.
+- **Guardrail Attachments** - Bind safety checks such as hate speech, PII, or misinformation detection that run during the conversation.
 - **Agent Config** - Fine-tune model behaviour, session limits, recording preferences, and other agent-level settings.
 - **Entry, Exit & Idle Timeout Messages** - Set custom greetings, farewells, and responses to user inactivity.
 - **Behaviour & Safety Settings** - Control boundaries, compliance rules, escalation, and conversation guardrails.
@@ -22,8 +23,7 @@ A template consists of the following configurable components, and more:
 
 <Note>
   Templates ensure that every agent deployed by your organisation shares
-  consistent brand voice, intelligence grounding, and conversation workflow —
-  whether you have 1 agent or thousands.
+  consistent brand voice, intelligence grounding, and conversation workflow: whether you have 1 agent or thousands.
 </Note>
 
 ---
@@ -59,6 +59,12 @@ curl --request POST \
     {
       "id": "15b12908-309f-4e0f-bcb0-a4e23d45169a",
       "name": "Product Catalog"
+    }
+  ],
+  "guardrail": [
+    {
+      "id": "dfbaa3c6-1e90-43df-869a-b023896a198c",
+      "name": "Hate Speech Filter"
     }
   ],
   "is_active": true,
@@ -122,7 +128,7 @@ curl --request POST \
 <CardGroup cols={2}>
 
 <Card title="Faster Deployment" icon="rocket">
-  Clone-ready configurations let you launch new agents in seconds — no manual
+  Clone-ready configurations let you launch new agents in seconds: no manual
   setup from scratch.
 </Card>
 
@@ -132,12 +138,12 @@ curl --request POST \
 </Card>
 
 <Card title="Scales to Any Size" icon="chart-line">
-  Ideal for enterprise teams and multi-location rollouts — one template,
+  Ideal for enterprise teams and multi-location rollouts: one template,
   thousands of agents.
 </Card>
 
 <Card title="Easy Experimentation" icon="flask">
-  Modify a template and all agents built from it update instantly — no
+  Modify a template and all agents built from it update instantly: no
   rebuilding required.
 </Card>
 

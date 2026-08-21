@@ -17,14 +17,14 @@ This guide is a six-section framework that handles all three. Copy the templates
 
 ## The six sections
 
-Structure every prompt in this order — the LLM reads top-to-bottom, and earlier instructions carry more weight.
+Structure every prompt in this order: the LLM reads top-to-bottom, and earlier instructions carry more weight.
 
-1. **Identity** — who the agent is
-2. **Style** — how it talks
-3. **Behaviors** — how it handles the conversation
-4. **Response rules** — how to format spoken output
-5. **Guardrails** — what it must never do
-6. **Flow** *(optional)* — a specific step-by-step for structured conversations
+1. **Identity**: who the agent is
+2. **Style**: how it talks
+3. **Behaviors**: how it handles the conversation
+4. **Response rules**: how to format spoken output
+5. **Guardrails**: what it must never do
+6. **Flow** *(optional)*: a specific step-by-step for structured conversations
 
 ## 1. Identity
 
@@ -34,24 +34,24 @@ Start with a clear, one-paragraph identity: name, role, expertise, and purpose. 
 # Identity
 
 You are Alex, TruGen's AI teammate for developer support. You help engineers
-integrate the platform — quickstarts, SDKs, API details, and debugging.
+integrate the platform: quickstarts, SDKs, API details, and debugging.
 You are patient, precise, and quick to point people to the right doc.
 ```
 
 Bad identities:
-- *"You are a helpful assistant."* — no persona, no scope
-- *"You are an AI that can help with anything."* — impossible to be good at anything
-- *"You are Steve Jobs."* — never impersonate a real person
+- *"You are a helpful assistant."*: no persona, no scope
+- *"You are an AI that can help with anything."*: impossible to be good at anything
+- *"You are Steve Jobs."*: never impersonate a real person
 
 ## 2. Style
 
-Describe communication style with **behavioral anchors** — not adjectives. "Warm" is vague; "opens with a first-name greeting and asks how you're doing" is behavior.
+Describe communication style with **behavioral anchors**: not adjectives. "Warm" is vague; "opens with a first-name greeting and asks how you're doing" is behavior.
 
 ```markdown
 # Style
 
 - Warm but efficient. Get to the answer fast, but never sound curt.
-- Match the user's energy — if they're excited, be excited; if they're
+- Match the user's energy: if they're excited, be excited; if they're
   frustrated, acknowledge it first before diagnosing.
 - Use everyday language. Avoid jargon unless the user uses it first.
 - Occasional light humor is okay when the moment calls for it. Never sarcasm.
@@ -62,7 +62,7 @@ Describe communication style with **behavioral anchors** — not adjectives. "Wa
 
 ## 3. Behaviors
 
-Describe how the agent runs a conversation — opening, active listening, redirects, closing.
+Describe how the agent runs a conversation: opening, active listening, redirects, closing.
 
 ```markdown
 # Behaviors
@@ -71,9 +71,9 @@ Describe how the agent runs a conversation — opening, active listening, redire
 - Listen for the actual problem before proposing a solution. If the user is
   vague, ask exactly one clarifying question.
 - If the user goes off-topic (weather, politics, unrelated jokes), acknowledge
-  briefly, then steer back with "…anyway, back to what you're building —"
+  briefly, then steer back with "…anyway, back to what you're building: "
 - If a question is beyond your scope, hand off explicitly:
-  "This is beyond what I can help with directly — try support@trugen.ai."
+  "This is beyond what I can help with directly: try support@trugen.ai."
 - End the call gracefully. Confirm the user got what they needed before
   saying goodbye.
 ```
@@ -95,10 +95,10 @@ aloud by a text-to-speech engine. Apply these rules on every turn:
 - Ask one question at a time. Never chain multiple questions in one turn.
 - Spell numbers, phone numbers, and email addresses as words. Say "at" for
   "@" and "dot" for ".".
-- Omit URL prefixes ("h-t-t-p-s") when reading URLs — say the domain only.
-- Never say "As an AI…" or "As a language model…" — it breaks immersion.
+- Omit URL prefixes ("h-t-t-p-s") when reading URLs: say the domain only.
+- Never say "As an AI…" or "As a language model…": it breaks immersion.
 - If you use an acronym the user probably doesn't know, spell it out on
-  first mention: "the API — that's application programming interface."
+  first mention: "the API: that's application programming interface."
 ```
 
 This section alone accounts for most of the difference between a prompt that works and one that doesn't.
@@ -126,22 +126,22 @@ Hard rules the agent must never break. Enforce them in the prompt itself and by 
 
 ## 6. Flow *(optional)*
 
-For structured conversations — interviews, intake, onboarding — describe the phases and how the agent moves between them. For open-ended agents, skip this section entirely.
+For structured conversations (interviews, intake, onboarding), describe the phases and how the agent moves between them. For open-ended agents, skip this section entirely.
 
 ```markdown
 # Flow
 
-## Phase 1 — Discovery (3–5 turns)
+## Phase 1: Discovery (3–5 turns)
 - Confirm the user's role and team size
 - Understand their current stack
 - Identify the primary pain they're solving
 
-## Phase 2 — Solution match (3–5 turns)
+## Phase 2: Solution match (3–5 turns)
 - Recommend the TruGen features that best fit
 - Point to specific docs
 - Ask what's still unclear
 
-## Phase 3 — Next step (1–2 turns)
+## Phase 3: Next step (1–2 turns)
 - If highly qualified, offer to schedule a call
 - Otherwise, share resources and invite them to Discord
 ```
@@ -162,17 +162,17 @@ specific diet.
 # Style
 
 - Warm, curious, non-judgmental
-- Match the user's energy — high-energy back, calm back
+- Match the user's energy: high-energy back, calm back
 - Never lecture; always offer, then let the user decide
 - Occasional emoji-free light humor when it fits
 
 # Behaviors
 
 - Open with a warm hello and ask what brought them here today
-- Listen fully before suggesting anything — ask one clarifying question if
+- Listen fully before suggesting anything: ask one clarifying question if
   needed
 - If they ask for a specific meal plan, redirect: "I'll share ideas, but the
-  plan is yours to build — a registered dietitian can build a specific one
+  plan is yours to build: a registered dietitian can build a specific one
   for you if you'd like a referral."
 - End with a small, specific, doable suggestion for the next 24 hours
 
@@ -183,7 +183,7 @@ You are speaking via voice. Apply these on every turn:
 - Plain text only, 1–2 short sentences by default
 - Ask one question at a time
 - Spell numbers and email addresses as words
-- Never mention "AI" or "language model" — you're Priya
+- Never mention "AI" or "language model": you're Priya
 
 # Guardrails
 

@@ -12,10 +12,10 @@ Your API key is used to authenticate server-side requests to the TruGen AI API. 
 
 ### Creating an API Key
 
-From the [API Keys page](https://app.trugen.ai/api-keys), click **Create API Key**, give it a name, and click **Create**. Copy and store it securely — you will not be able to view it again.
+From the [API Keys page](https://app.trugen.ai/api-keys), click **Create API Key**, give it a name, and click **Create**. Copy and store it securely: you will not be able to view it again.
 
 <Warning>
-  Never expose your API key on the client side. Store and use it only on your server. If you lose your API key, you will need to create a new one — they cannot be recovered.
+  Never expose your API key on the client side. Store and use it only on your server. If you lose your API key, you will need to create a new one: they cannot be recovered.
 </Warning>
 
 ## Tier 2: Session Tokens
@@ -160,7 +160,7 @@ app.post("/api/session-token", async (req: Request, res: Response) => {
 });
 ```
 
-#### Client-side — passing agentId dynamically
+#### Client-side: passing agentId dynamically
 
 ```typescript
 const response = await fetch("/api/session-token", {

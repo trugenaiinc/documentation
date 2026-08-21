@@ -58,6 +58,22 @@ curl -X PATCH https://api.trugen.ai/v1/ext/agent/AGENT_ID \
 
 Attached guardrails then appear under the `"guardrail"` key in `GET /v1/ext/agent/{id}`, alongside `tool`, `mcp`, and `knowledge_base`.
 
+## Via a template
+
+Attach guardrails to a [template](/docs/agents/templates) instead of individual agents when you want every agent built from that template to inherit the same safety checks:
+
+```json
+{
+  "template_name": "Support Template",
+  "template_system_prompt": "You are a friendly support agent.",
+  "guardrail": [
+    { "id": "dfbaa3c6-1e90-43df-869a-b023896a198c", "name": "Hate Speech Filter" }
+  ]
+}
+```
+
+Any agent later created from this template automatically has the guardrail attached.
+
 ## Detaching a guardrail
 
 <Warning>
@@ -66,20 +82,9 @@ Attached guardrails then appear under the `"guardrail"` key in `GET /v1/ext/agen
 
 If you only have the guardrail's `id` you want to remove, fetch the agent first (`GET /v1/ext/agent/{id}`), drop that entry from the returned `guardrail` array, then `PUT` the rest back.
 
-## Deactivating vs. detaching
-
-These are two different levers, and they don't require each other:
-
-| Action | Scope | Effect |
-| --- | --- | --- |
-| Set the guardrail's `is_active: false` ([via update](/docs/agents/guardrails/creating#updating-a-guardrail)) | Every agent it's attached to, workspace-wide | Instantly excluded from dispatch on every attached agent's next session. The attachment rows themselves are untouched. |
-| Detach it from one agent (`PUT` without that entry) | That one agent only | Removed from that agent's `guardrail` array. Other agents it's attached to are unaffected. |
-
-Because deactivating doesn't touch the attachment rows, flipping `is_active` back to `true` later brings the guardrail back on every agent it was already attached to. No re-attaching required.
-
 ## When updates take effect
 
-Guardrails are fetched and embedded into an agent's dispatch config **exactly once**, at the moment a new conversation is created. They're never re-fetched mid-call. Any attach, detach, edit, or deactivation you make after a call has already started has **zero effect on that running call**. It only applies to the next session.
+Guardrails are fetched and embedded into an agent's dispatch config **exactly once**, at the moment a new conversation is created. They're never re-fetched mid-call. Any attach, detach, or edit you make after a call has already started has **zero effect on that running call**. It only applies to the next session.
 
 If you need a change to apply immediately, end the active session explicitly with [`DELETE /v1/conversation/{conversationId}`](/api-reference/endpoint/conversationdelete) after your update lands.
 

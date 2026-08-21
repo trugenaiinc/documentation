@@ -41,23 +41,23 @@ The API is organized around a small set of resources:
 
 | Resource | Purpose |
 | --- | --- |
-| **Agents** | The primary object — a configured conversational video agent with a prompt, avatar, voice, LLM, and tools |
-| **Templates** | Reusable blueprints — share prompt, knowledge, and behavior across many agents |
+| **Agents** | The primary object: a configured conversational video agent with a prompt, avatar, voice, LLM, and tools |
+| **Templates** | Reusable blueprints: share prompt, knowledge, and behavior across many agents |
 | **Knowledge Bases** | Document collections your agents ground answers in via RAG |
 | **Tools** | Callable actions your agents invoke during conversations (webhooks, MCP, integrations, client actions) |
 | **Guardrails** | Safety-check rules your agents can call as a tool: canned responses, moderation checks, and trigger webhooks |
 | **MCPs** | Model Context Protocol server configurations |
 | **Providers** | The set of LLM, STT, and TTS providers available in your environment |
-| **Avatars** | Visual identities — stock or custom |
-| **Conversations** | Session records — including full chat history, feedback, and usage |
+| **Avatars** | Visual identities: stock or custom |
+| **Conversations** | Session records: including full chat history, feedback, and usage |
 
 ## Common patterns
 
 ### Create an agent → embed it
 
-1. `POST /v1/ext/agent` — create the agent, get an `agent_id`
+1. `POST /v1/ext/agent`: create the agent, get an `agent_id`
 2. Drop the [widget](/docs/integrations/widget-integration) or [iframe](/docs/integrations/embed-via-iFrame) with that ID
-3. Users interact — sessions are automatically tracked
+3. Users interact: sessions are automatically tracked
 
 ### Personalize per user
 
@@ -67,13 +67,13 @@ The API is organized around a small set of resources:
 
 ### Use a template across many agents
 
-1. `POST /v1/ext/template` — create the template with the shared config
-2. `POST /v1/ext/agentbytemplate` — spin up a new agent from the template
+1. `POST /v1/ext/template`: create the template with the shared config
+2. `POST /v1/ext/agentbytemplate`: spin up a new agent from the template
 
 ### Access session results
 
-1. Handle the `call_ended` webhook — see [Event Callbacks](/docs/agents/callback)
-2. Fetch the conversation record with [`GET /v1/ext/conversation/{id}`](/api-reference/endpoint/conversationgetbyid) — includes `chat_history`, `snippets`, `feedback`, `usage_json`
+1. Handle the `call_ended` webhook: see [Event Callbacks](/docs/agents/callback)
+2. Fetch the conversation record with [`GET /v1/ext/conversation/{id}`](/api-reference/endpoint/conversationgetbyid): includes `chat_history`, `snippets`, `feedback`, `usage_json`
 
 ## Errors
 
@@ -95,7 +95,7 @@ GET /v1/ext/conversation?offset=0&perpage=20
 
 The response includes an `X-Total-Count` header with the total match count for the query.
 
-Additional filters vary per endpoint — check the individual endpoint page.
+Additional filters vary per endpoint: check the individual endpoint page.
 
 ## Versioning
 
@@ -137,5 +137,5 @@ Each endpoint page includes the full request/response schema, an example, and cr
 
 ## Quick links
 
-- **[JS SDK Authentication](/docs/sdks/javascript/authentication)** — client-safe token exchange
-- **[Callbacks](/docs/agents/callback)** — real-time event webhooks
+- **[JS SDK Authentication](/docs/sdks/javascript/authentication)**: client-safe token exchange
+- **[Callbacks](/docs/agents/callback)**: real-time event webhooks

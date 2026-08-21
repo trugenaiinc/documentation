@@ -1,7 +1,7 @@
 ---
 title: "Setup"
 sidebarTitle: "Setup"
-description: "Create a Knowledge Base in the Studio or via the API — and name it so the agent can find it."
+description: "Create a Knowledge Base in the Studio or via the API: and name it so the agent can find it."
 ---
 
 Every Knowledge Base starts with a **name** and a **description**. Both fields matter more than most people expect: the agent reads them to decide *whether* to search this KB for a given user question. A vague name or an empty description means the LLM never picks the KB, no matter how good the content is.
@@ -35,7 +35,7 @@ curl --location 'https://api.trugen.ai/v1/ext/kb' \
   --form 'is_active="true"'
 ```
 
-The response returns a Knowledge Base `id` — save it. You'll use it to add documents and attach the KB to agents.
+The response returns a Knowledge Base `id`: save it. You'll use it to add documents and attach the KB to agents.
 
 ```json
 {
@@ -89,7 +89,7 @@ You'll almost always get better results with **multiple focused Knowledge Bases*
 
 | Approach | When it works | When it doesn't |
 | --- | --- | --- |
-| **One KB per domain** (recommended) | Users ask questions clearly rooted in one topic. Each KB has ~5–50 focused documents. | — |
+| **One KB per domain** (recommended) | Users ask questions clearly rooted in one topic. Each KB has ~5–50 focused documents. |: |
 | **One giant KB with all content** | You have very little content and it's all closely related. | Retrieval quality drops sharply once mixed content exceeds ~50 documents. |
 
 Practical splits that work well:

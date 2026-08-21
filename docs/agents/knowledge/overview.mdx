@@ -1,10 +1,10 @@
 ---
 title: "Knowledge Base"
 sidebarTitle: "Overview"
-description: "Give your agents access to your documents, FAQs, and web content — grounded answers via Retrieval-Augmented Generation."
+description: "Give your agents access to your documents, FAQs, and web content: grounded answers via Retrieval-Augmented Generation."
 ---
 
-A **Knowledge Base** is a collection of your content — documents, plain text, and websites — that your agents search when answering questions. Instead of relying on generic LLM knowledge, agents retrieve from your Knowledge Base and answer with information that's accurate, brand-aligned, and up to date.
+A **Knowledge Base** is a collection of your content (documents, plain text, and websites) that your agents search when answering questions. Instead of relying on generic LLM knowledge, agents retrieve from your Knowledge Base and answer with information that's accurate, brand-aligned, and up to date.
 
 Knowledge Bases are **reusable**. Multiple agents and templates can attach to the same one, so you keep information consistent across all your agents from one place.
 
@@ -14,11 +14,11 @@ TruGen supports two retrieval modes that control **when** and **how** the agent 
 
 | Mode | How it works |
 | --- | --- |
-| **Agentic RAG** | The LLM decides when and which Knowledge Base to search based on the user's query and conversation context. More precise — only retrieves when relevant. |
+| **Agentic RAG** | The LLM decides when and which Knowledge Base to search based on the user's query and conversation context. More precise: only retrieves when relevant. |
 | **Traditional RAG** | Every user query is searched against all configured Knowledge Bases, and the retrieved context is always passed to the LLM. Simpler and more predictable. |
 
 <Tip>
-  For most use cases, **Agentic RAG** produces better results — the agent retrieves only when it's genuinely needed, which reduces noise and improves response quality.
+  For most use cases, **Agentic RAG** produces better results: the agent retrieves only when it's genuinely needed, which reduces noise and improves response quality.
 </Tip>
 
 ## Supported content types
