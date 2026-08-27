@@ -66,7 +66,7 @@
 
 - [n8n](https://docs.trugen.ai/docs/integrations/n8n): No-code workflow automation: create agents, capture leads, and sync data across 1000+ apps.
 - [Make (Integromat)](https://docs.trugen.ai/docs/integrations/make): Low-code automation scenarios with TruGen agents.
-- [LiveKit](https://docs.trugen.ai/docs/voice-to-video/livekit): Give a face to your LiveKit agents with TruGen Avatars, using the official LiveKit Agents plugin.
+- [LiveKit](https://docs.trugen.ai/docs/voice-to-video/livekit): Make any existing LiveKit voice agent avatar-ready by installing the official TruGen LiveKit Agents plugin (Python or JS/TS) and starting an `AvatarSession` against your current agent session and room — no change to your existing LLM/STT/TTS setup.
 - [MCP Server](https://docs.trugen.ai/docs/ai-tools/mcp): Use TruGen's documentation MCP server to query docs directly from your AI coding assistant.
 
 ## Avatars & Providers
