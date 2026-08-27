@@ -2,10 +2,19 @@
 
 > TruGen AI is a platform for building and deploying real-time conversational video agents. Agents are powered by a family of proprietary foundation models: Huma-1 and Huma-2 (expressive avatar rendering, with Huma-2 delivering sub-500ms end-to-end latency) and Hawkeye-1 (vision-based action recognition), and deliver end-to-end responses in under one second. The platform exposes a REST API for programmatic agent management and supports iframe/SDK embedding for frontend integration.
 
+> Agent capability summary (what you can build and how): https://docs.trugen.ai/skill.md
+
 ## Getting Started
 
 - [Platform Overview](https://docs.trugen.ai/docs/overview): Introduction to TruGen, core capabilities, performance benchmarks, and foundation models.
 - [Quickstart](https://docs.trugen.ai/docs/quickstart): Create your first conversational video agent via API and embed it with an iframe in minutes.
+
+## Models
+
+- [Models Overview](https://docs.trugen.ai/docs/models/overview): The Huma family of proprietary avatar-rendering models that power TruGen's real-time video agents.
+- [Huma-2](https://docs.trugen.ai/docs/models/huma-2): How TruGen built a real-time avatar with sub-500ms latency: a full speech-to-animation pipeline built on Gaussian Splatting.
+- [Huma-1](https://docs.trugen.ai/docs/models/huma-1): TruGen's first avatar model to combine full-face rendering with real-time emotional control, powered by Gaussian Avatars.
+- [Hawkeye-1](https://docs.trugen.ai/docs/models/hawkeye-1): TruGen's Vision Action Recognition Model: the perception layer that gives agents the ability to see, hear, and understand humans in context.
 
 ## Managed Agents
 
@@ -14,7 +23,13 @@
 - [Persona Templates](https://docs.trugen.ai/docs/agents/templates): Reusable blueprints defining system prompt, entry/exit messages, knowledge bindings, idle timeout, and behavior rules.
 - [Knowledge Base](https://docs.trugen.ai/docs/agents/knowledge/overview): Attach documents, URLs, or text to ground agent responses. Supports both Agentic RAG and Traditional RAG modes.
 - [Guardrails](https://docs.trugen.ai/docs/agents/guardrails/overview): Safety-check rules an agent's LLM can call mid-conversation, with a canned response, a moderation check, and an optional trigger webhook.
+- [Vision Understanding](https://docs.trugen.ai/docs/agents/vision/overview): Real-time video analysis for monitoring, proctoring, and engagement tracking, powered by Hawkeye-1.
+- [Agent Widget](https://docs.trugen.ai/docs/agents/widget): The React component or iframe that renders your agent inside any web app.
+- [Voices](https://docs.trugen.ai/docs/agents/voices/overview): Choose the voice your agent speaks with: stock voices, cloned voices, or a fully custom provider setup.
+- [Available LLMs](https://docs.trugen.ai/docs/agents/available-llms): All large language models available on TruGen, organized by provider.
 - [Memory](https://docs.trugen.ai/docs/agents/memory): Configure per-session or persistent memory for agents.
+- [System Messages](https://docs.trugen.ai/docs/agents/system-messages): Configure the greeting, exit, idle, and heads-up messages your agent uses to open, close, and hold a conversation.
+- [External Meetings](https://docs.trugen.ai/docs/agents/meetings/overview): Give your AI Teammate its own meeting email and invite it into any live video call, just like a person.
 - [Event Callbacks (Webhooks)](https://docs.trugen.ai/docs/agents/callback): Receive real-time HTTP POST events for speech, lifecycle, and action triggers from active conversations.
 - [Prompting Strategies](https://docs.trugen.ai/docs/agents/prompting-strategies): Guidance on writing effective system prompts for video agents.
 - [Multilingual Support](https://docs.trugen.ai/docs/agents/multilingual-support): Configure agents to operate in multiple languages.
@@ -24,17 +39,43 @@
 
 - [Text to Video](https://docs.trugen.ai/docs/agents/text_to_video): Generate avatar video clips from a script and poll for render status.
 
+## Visual Presentations
+
+- [Presentations Overview](https://docs.trugen.ai/docs/presentations/overview): Give your agent a deck. When the user asks a relevant question, the agent presents the right slide alongside its spoken answer.
+
+## SDKs
+
+- [JavaScript SDK](https://docs.trugen.ai/docs/sdks/javascript/overview): Build web applications with TruGen AI avatars using the JavaScript SDK.
+- [JavaScript SDK Authentication](https://docs.trugen.ai/docs/sdks/javascript/authentication): Secure your API keys and manage session tokens.
+- [Python SDK](https://docs.trugen.ai/docs/sdks/python/overview): Official Python SDK for TruGen AI: real-time avatar streaming for desktop, GUI, and backend applications.
+- [Python SDK Authentication](https://docs.trugen.ai/docs/sdks/python/authentication): Secure your API keys and manage session tokens.
+
+## Embed
+
+- [iFrame Embedding](https://docs.trugen.ai/docs/integrations/embed-via-iFrame): Embed a live agent in any web page with a single iframe tag.
+- [Widget Integration](https://docs.trugen.ai/docs/integrations/widget-integration): Drop-in chat/video widget for websites.
+- [Widget Customization](https://docs.trugen.ai/docs/integrations/widget-customization): Theme, position, and configure the TruGen embed widget: colors, buttons, layout, and domain restrictions.
+- [Widget SDK Reference](https://docs.trugen.ai/docs/integrations/widget-reference): Every prop the `@aiteammate/agent-widget` React component accepts.
+- [Framer](https://docs.trugen.ai/docs/deploy/platforms/framer): Embed a TruGen agent in a Framer site with a code component or embed block.
+- [Shopify](https://docs.trugen.ai/docs/deploy/platforms/shopify): Add a TruGen agent to a Shopify storefront using a Custom Liquid section or theme edit.
+- [WordPress](https://docs.trugen.ai/docs/deploy/platforms/wordpress): Embed a TruGen agent in a WordPress site with a block, shortcode, or theme edit.
+- [Wix](https://docs.trugen.ai/docs/deploy/platforms/wix): Embed a TruGen agent on a Wix site using the HTML iframe element.
+- [Squarespace](https://docs.trugen.ai/docs/deploy/platforms/squarespace): Add a TruGen agent to a Squarespace site with a Code Block or Code Injection.
+
 ## Integrations
 
 - [n8n](https://docs.trugen.ai/docs/integrations/n8n): No-code workflow automation: create agents, capture leads, and sync data across 1000+ apps.
 - [Make (Integromat)](https://docs.trugen.ai/docs/integrations/make): Low-code automation scenarios with TruGen agents.
-- [iFrame Embedding](https://docs.trugen.ai/docs/integrations/embed-via-iFrame): Embed a live agent in any web page with a single iframe tag.
-- [Widget Integration](https://docs.trugen.ai/docs/integrations/widget-integration): Drop-in chat/video widget for websites.
+- [LiveKit](https://docs.trugen.ai/docs/voice-to-video/livekit): Make any existing LiveKit voice agent avatar-ready by installing the official TruGen LiveKit Agents plugin (Python or JS/TS) and starting an `AvatarSession` against your current agent session and room — no change to your existing LLM/STT/TTS setup.
+- [MCP Server](https://docs.trugen.ai/docs/ai-tools/mcp): Use TruGen's documentation MCP server to query docs directly from your AI coding assistant.
 
 ## Avatars & Providers
 
-- [Avatars Overview](https://docs.trugen.ai/docs/avatars/overview): Browse available avatar configurations for visual agent rendering.
-- [Providers Overview](https://docs.trugen.ai/docs/providers/overview): Inspect available LLM, TTS, and STT providers in your TruGen environment.
+- [Avatar Gallery](https://docs.trugen.ai/docs/avatars/gallery): Browse TruGen's stock avatars and copy the avatar ID for use in your agent configuration.
+- [Voice-Only Mode](https://docs.trugen.ai/docs/avatars/voice-only): Run an agent without rendering a face: a customizable audio visualizer replaces the avatar for voice-first experiences.
+- [Custom Avatars](https://docs.trugen.ai/docs/avatars/custom): Create your own TruGen avatar from a single source photo or a live camera capture. Requires the Huma-3 model; not available on Huma-1 or Huma-2 agents.
+- [Source Image Best Practices](https://docs.trugen.ai/docs/avatars/best-practices): Technical specifications and photography guidelines for creating high-quality custom avatars.
+- [Providers Overview](https://docs.trugen.ai/docs/providers/overview): Inspect available LLM, STT, and TTS providers and models, and use `GET /v1/providers` plus `PATCH /ext/agent/{id}` to switch an agent's provider for any of the three.
 
 ## Example Use Cases
 
@@ -53,8 +94,15 @@
 - [Knowledge Base](https://docs.trugen.ai/api-reference/endpoint/knowledgebasecreate): Create knowledge bases, add/remove documents, and attach them to agents.
 - [Conversations](https://docs.trugen.ai/api-reference/endpoint/conversationgetbyid): Retrieve conversation history and trigger speech events.
 - [Avatars](https://docs.trugen.ai/api-reference/endpoint/avatarget): List available avatar configurations.
-- [Providers](https://docs.trugen.ai/api-reference/endpoint/providerget): Query available AI providers and models.
+- [Vision](https://docs.trugen.ai/api-reference/endpoint/visionstart): Start and poll real-time vision analysis sessions.
+- [External Meetings](https://docs.trugen.ai/api-reference/endpoint/externalmeeting): Invite a TruGen agent into an external live video call.
+- [Providers](https://docs.trugen.ai/api-reference/endpoint/providerget): Query available LLM, STT, and TTS providers and models to configure or switch on an agent.
+- [Update Agent](https://docs.trugen.ai/api-reference/endpoint/agentupdate): Full-replace (`PUT`) or partial-update (`PATCH`) an agent's config, including swapping its LLM, STT, or TTS provider.
 - [MCPs](https://docs.trugen.ai/api-reference/endpoint/mcpcreate): Manage Model Context Protocol server configurations.
 - [Tools](https://docs.trugen.ai/api-reference/endpoint/toolcreate): Register and manage callable tools for agent function calling.
 - [Guardrails](https://docs.trugen.ai/api-reference/endpoint/guardrailcreate): Create, list, update, and delete safety-check rules agents can call during conversations.
 - [Text to Video](https://docs.trugen.ai/api-reference/endpoint/texttovideo): Submit video generation jobs and poll status.
+
+## Changelog
+
+- [Changelog](https://docs.trugen.ai/docs/changelog): Product updates and announcements.

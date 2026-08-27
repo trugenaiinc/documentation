@@ -9,12 +9,12 @@ Give a face to your LiveKit agents with TruGen Avatars, using our official LiveK
   <Tab title="Python">
     <Steps>
       <Step title="Install the plugin">
-        Install the TruGen plugin from the LiveKit registry:
+        Install the latest version of the TruGen plugin from the LiveKit registry:
         ```bash
-        uv add "livekit-agents[trugen]~=1.3" # When using UV
+        uv add "livekit-agents[trugen]" # When using UV
         ```
         ```bash
-        pip install "livekit-agents[trugen]~=1.3" # When using PIP
+        pip install -U "livekit-agents[trugen]" # When using PIP
         ```
       </Step>
       <Step title="Generate an API key">
@@ -67,11 +67,12 @@ Give a face to your LiveKit agents with TruGen Avatars, using our official LiveK
   <Tab title="JavaScript">
     <Steps>
       <Step title="Install the plugin">
+        Install the latest version of the TruGen plugin:
         ```bash npm
-        npm install @livekit/agents-plugin-trugen
+        npm install @livekit/agents-plugin-trugen@latest
         ```
         ```bash pnpm
-        pnpm add @livekit/agents-plugin-trugen
+        pnpm add @livekit/agents-plugin-trugen@latest
         ```
       </Step>
       <Step title="Set up environment variables">
