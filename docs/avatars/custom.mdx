@@ -7,27 +7,19 @@ Custom avatars let you build agents with your own face, a customer's face, a spo
 
 <Note>Custom avatars require the **Huma-3** model and are not available on Huma-1 or Huma-2 agents.</Note>
 
-<Note>This is in private preview and will be released soon.</Note>
-
-<Note>Detailed step-by-step instructions and the API for creating custom avatars are coming soon. In the meantime, follow the guidance below to prepare a great source image.</Note>
-
-## Create a Custom Avatar
-
-<Steps>
-  <Step title="Prepare a source image">
-    Choose or capture a well-lit, front-facing photo that follows our [source image best practices](/docs/avatars/best-practices).
-  </Step>
-  <Step title="Upload to the Developer Platform">
-    Go to [app.trugen.ai](https://app.trugen.ai), open the **Avatars** section, and click **Create Avatar**.
-  </Step>
-  <Step title="Preview and save">
-    Preview the generated avatar in a live conversation. If you're happy, save it: you'll receive a new avatar ID you can use in any agent.
-  </Step>
-</Steps>
+<Note>Custom avatars are currently in **Beta**.</Note>
 
 ## Create via API
 
 You can also create a custom avatar programmatically by sending a `POST` request to the `/v2/custom-avatar` endpoint with the avatar details and a base64-encoded source image.
+
+### Request body
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `avatar_name` | string | yes | A human-readable name for your custom avatar. |
+| `gender` | string | yes | Must be `"male"` or `"female"`. |
+| `input_image` | string | yes | Source photo as a base64 data URI. Max ~12 MB base64 (~9 MB binary). |
 
 <CodeGroup>
 
@@ -37,11 +29,9 @@ myHeaders.append("x-api-key", "YOUR_API_KEY");
 myHeaders.append("Content-Type", "application/json");
 
 const raw = JSON.stringify({
-  "avatar_id": "20072601",
   "avatar_name": "my_avatar",
   "gender": "male",
-  "input_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
-  "is_private": true
+  "input_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD..."
 });
 
 const requestOptions = {
@@ -64,11 +54,9 @@ import json
 url = "https://api.trugen.ai/v2/custom-avatar"
 
 payload = json.dumps({
-  "avatar_id": "20072601",
   "avatar_name": "my_avatar",
   "gender": "male",
-  "input_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
-  "is_private": True
+  "input_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD..."
 })
 headers = {
   'x-api-key': 'YOUR_API_KEY',
@@ -82,6 +70,24 @@ print(response.text)
 
 </CodeGroup>
 
+### Response
+
+The API returns immediately with an initial job status while the avatar is generated in the background. Poll `GET /v2/custom-avatar/{id}` to watch progress until `status` becomes `COMPLETED`.
+
+```json
+{
+  "id": "3b6f4c8a-...-...",
+  "job_id": "sync-abcd-...",
+  "avatar_key_id": "a1b2c3d4e5",
+  "avatar_id": "a1b2c3d4e5",
+  "avatar_name": "my_avatar",
+  "gender": "male",
+  "category": "trugen",
+  "status": "QUEUED",
+  "is_private": true
+}
+```
+
 ## When to use a Custom Avatar
 
 - **Personal brand agents**: use your own face for a coach, tutor, or spokesperson agent.
@@ -91,13 +97,13 @@ print(response.text)
 
 ## Using Your Custom Avatar
 
-Once created, your custom avatar receives an `avatar_id`. Use it exactly like a stock avatar in the `avatar_ids` array when creating an agent:
+Once the job reaches `COMPLETED`, pass the `avatar_key_id` from the create response into the `avatars[0].avatar_key_id` field when creating an agent — the same shape used for stock avatars:
 
 ```json
 {
-  "avatar_ids": ["your_custom_avatar_id"],
-  "name": "My Custom Agent",
-  "system_prompt": "..."
+  "agent_name": "My Custom Agent",
+  "agent_system_prompt": "...",
+  "avatars": [{ "avatar_key_id": "YOUR_AVATAR_KEY_ID" }]
 }
 ```
 
