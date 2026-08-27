@@ -318,7 +318,12 @@
           {
             "group": "Avatars",
             "icon": "user",
-            "pages": ["api-reference/endpoint/avatarget"]
+            "pages": [
+              "api-reference/endpoint/avatarget",
+              "api-reference/endpoint/customavatarcreate",
+              "api-reference/endpoint/customavatargetbyid",
+              "api-reference/endpoint/customavatardelete"
+            ]
           },
           {
             "group": "Vision",

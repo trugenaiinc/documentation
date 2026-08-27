@@ -5804,6 +5804,453 @@
         }
       }
     },
+    "/v2/custom-avatar": {
+      "post": {
+        "summary": "Create Custom Avatar",
+        "description": "Submits a custom avatar generation job from a base64-encoded source image. Requires `x-api-key` authentication.",
+        "operationId": "createCustomAvatar",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["avatar_name", "gender", "input_image"],
+                "properties": {
+                  "avatar_name": {
+                    "type": "string",
+                    "description": "Human-readable name for your custom avatar.",
+                    "example": "my_avatar"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": ["male", "female"],
+                    "example": "male"
+                  },
+                  "input_image": {
+                    "type": "string",
+                    "description": "Source photo as a base64 data URI. Max ~12 MB base64 (~9 MB binary).",
+                    "example": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD..."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Custom avatar job accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "3b6f4c8a-1234-5678-9abc-def012345678"
+                    },
+                    "job_id": {
+                      "type": "string",
+                      "example": "sync-abcd-1234"
+                    },
+                    "avatar_key_id": {
+                      "type": "string",
+                      "example": "a1b2c3d4e5"
+                    },
+                    "avatar_id": {
+                      "type": "string",
+                      "example": "a1b2c3d4e5"
+                    },
+                    "avatar_name": {
+                      "type": "string",
+                      "example": "my_avatar"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "male"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "trugen"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "QUEUED"
+                    },
+                    "is_private": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or image failed the content-policy check",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Image does not meet avatar creation guidelines",
+                  "reason": "Image appears to depict a public figure"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v2/custom-avatar/{id}": {
+      "get": {
+        "summary": "Get Custom Avatar",
+        "description": "Fetch a single custom avatar by its internal `id`. Use this to poll a job's `status` until it becomes `COMPLETED`. Requires `x-api-key` authentication.",
+        "operationId": "getCustomAvatar",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Internal UUID of the custom avatar (returned from the create call as `id`).",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "3b6f4c8a-1234-5678-9abc-def012345678"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Custom avatar row",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "job_id": {
+                      "type": "string"
+                    },
+                    "avatar_key_id": {
+                      "type": "string"
+                    },
+                    "avatar_id": {
+                      "type": "string"
+                    },
+                    "avatar_name": {
+                      "type": "string"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "COMPLETED"
+                    },
+                    "is_private": {
+                      "type": "boolean"
+                    },
+                    "output": {
+                      "type": "object"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Custom avatar not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Custom Avatar",
+        "description": "Deletes a custom avatar owned by the caller. Requires `x-api-key` authentication.",
+        "operationId": "deleteCustomAvatar",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Internal UUID of the custom avatar to delete.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "3b6f4c8a-1234-5678-9abc-def012345678"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Custom avatar deleted"
+          },
+          "404": {
+            "description": "Custom avatar not found"
+          }
+        }
+      }
+    },
+    "/v2/vision": {
+      "post": {
+        "summary": "Start Vision Session",
+        "description": "Attach Hawkeye-1 to a LiveKit room and begin real-time video analysis. Hawkeye joins as a subscriber, analyses the target participant's video, and streams alerts to your callback URL whenever a chosen class is detected. Billed at 1¢/minute. Requires `x-api-key` authentication.",
+        "operationId": "startVisionSession",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["livekit_url", "access_token", "max_duration"],
+                "properties": {
+                  "livekit_url": {
+                    "type": "string",
+                    "description": "`wss://` URL of the LiveKit room Hawkeye should join.",
+                    "example": "wss://your-livekit-domain.livekit.cloud"
+                  },
+                  "access_token": {
+                    "type": "string",
+                    "description": "LiveKit access token with `roomJoin: true` for that room.",
+                    "example": "eyJhbGciOi..."
+                  },
+                  "participant": {
+                    "type": "string",
+                    "description": "Participant identity to analyse. Defaults to `\"auto\"` (first non-agent participant).",
+                    "example": "auto"
+                  },
+                  "callback_url": {
+                    "type": "string",
+                    "description": "WebSocket URL to receive real-time class-detection alerts.",
+                    "example": "wss://your-callback-endpoint.example.com/vision"
+                  },
+                  "max_duration": {
+                    "type": "integer",
+                    "description": "Session cap in minutes. Hawkeye disconnects when reached.",
+                    "example": 10
+                  },
+                  "modules": {
+                    "type": "object",
+                    "description": "Modules to enable. Each key is a module name; each value is the list of classes to alert on. Pass an empty array to enable a module with all its default classes. Omit `modules` entirely for all defaults.",
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "example": {
+                      "face_pose_detection": ["Looking Left", "Looking Right"],
+                      "emotion_recognition": ["angry", "sad", "happy"],
+                      "eyegaze_tracking": ["Looking left", "Looking right"],
+                      "face_count": ["2"],
+                      "face_out_of_focus": ["out_of_frame"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vision session accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session_id": { "type": "string", "format": "uuid", "example": "8f2a1e5b-4c9d-4a3f-9c11-2c07be7d1c22" },
+                    "status": { "type": "string", "example": "IN_QUEUE" },
+                    "max_duration": { "type": "integer", "example": 10 },
+                    "modules": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["emotion_recognition", "eyegaze_tracking", "face_count", "face_out_of_focus", "face_pose_detection"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Missing / invalid field (e.g. `livekit_url`, `access_token`, unknown module or class name)." },
+          "401": { "description": "Missing or invalid `x-api-key`." },
+          "502": { "description": "Hawkeye backend rejected the request. Retry with fresh LiveKit credentials." }
+        }
+      }
+    },
+    "/v2/vision/{session_id}": {
+      "get": {
+        "summary": "Get Vision Session",
+        "description": "Fetch the current state of a Hawkeye vision session: queued, running, or ended. Each call refreshes from Hawkeye, so you always get the latest status. Requires `x-api-key` authentication.",
+        "operationId": "getVisionSession",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the vision session returned from `POST /v2/vision`.",
+            "schema": { "type": "string", "format": "uuid" },
+            "example": "8f2a1e5b-4c9d-4a3f-9c11-2c07be7d1c22"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vision session state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session_id": { "type": "string", "format": "uuid" },
+                    "status": { "type": "string", "enum": ["IN_QUEUE", "IN_PROGRESS", "COMPLETED", "FAILED", "CANCELLED"], "example": "IN_PROGRESS" },
+                    "livekit_url": { "type": "string" },
+                    "participant": { "type": "string" },
+                    "max_duration": { "type": "integer" },
+                    "elapsed_duration_seconds": { "type": "integer", "example": 148 },
+                    "modules": { "type": "array", "items": { "type": "string" } },
+                    "started_at": { "type": "string", "format": "date-time" },
+                    "ended_at": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Missing or invalid `x-api-key`." },
+          "404": { "description": "No session with that id exists for the API key you sent." }
+        }
+      }
+    },
+    "/ext/externalmeeting": {
+      "post": {
+        "summary": "Join External Meeting",
+        "description": "Send a TruGen agent into a live external meeting (Google Meet, Zoom, Microsoft Teams). The agent joins as a participant, listens, speaks, and captures a full transcript. Requires `x-api-key` authentication.",
+        "operationId": "joinExternalMeeting",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["agent_id", "meeting_url", "user_name", "user_id"],
+                "properties": {
+                  "agent_id": {
+                    "type": "string",
+                    "description": "ID of the agent to send into the meeting.",
+                    "example": "agt_12345"
+                  },
+                  "meeting_url": {
+                    "type": "string",
+                    "description": "Full URL of the Google Meet, Zoom, or Teams meeting the agent should join.",
+                    "example": "https://meet.google.com/abc-defg-hij"
+                  },
+                  "user_name": {
+                    "type": "string",
+                    "description": "Display name the agent uses in the meeting.",
+                    "example": "Alex: AI Assistant"
+                  },
+                  "user_id": {
+                    "type": "string",
+                    "description": "Identifier for this session — used in analytics and callbacks.",
+                    "example": "meeting-2026-07-30-abc"
+                  },
+                  "context": {
+                    "type": "string",
+                    "description": "Free-form conversational context passed to the agent's system prompt.",
+                    "example": "This is a hiring interview. The candidate is Priya Sharma for the Senior Engineer role."
+                  },
+                  "wake_phrase": {
+                    "type": "string",
+                    "description": "Optional phrase the agent listens for before speaking (useful in silent-observer mode)."
+                  },
+                  "mode": {
+                    "type": "string",
+                    "description": "Session mode."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Agent request accepted",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string" },
+                "example": "Agent request successfully created."
+              }
+            }
+          },
+          "502": {
+            "description": "Underlying meeting-bot service could not accept the request",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string" },
+                "example": "Unable to create agent request."
+              }
+            }
+          }
+        }
+      }
+    },
     "/ext/kb": {
       "post": {
         "summary": "Create Knowledge Base",

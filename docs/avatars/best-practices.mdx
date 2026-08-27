@@ -10,8 +10,8 @@ The quality of a custom avatar depends almost entirely on the source image. Foll
 
 | Requirement | Recommended |
 | --- | --- |
-| **Resolution** | 1024 × 1024 or higher |
-| **Format** | JPG, PNG, WebP |
+| **Resolution** | 1152 × 1152 or higher |
+| **Format** | JPG, PNG |
 | **File size** | ≤ 10 MB |
 | **Aspect ratio** | Square (1:1) or portrait (3:4, 4:5) |
 | **Color space** | sRGB |
@@ -46,7 +46,11 @@ The quality of a custom avatar depends almost entirely on the source image. Foll
 - **Standard glasses are okay** but reflective glare on the lenses can cause artifacts.
 - **Hair should not cover the eyes or eyebrows.**
 - **Facial hair is fine**: beards, mustaches, stubble all render well.
+
+  <Note>Dense or unusually styled facial hair sometimes doesn't reproduce perfectly — expect minor variation around beard edges and mustache detail.</Note>
+
 - **Makeup is fine**: extreme theatrical makeup may reduce realism.
+- **No facial tattoos**: tattoos on the face don't render reliably and can distort the generated likeness.
 
 ## Camera and Quality
 
@@ -62,6 +66,7 @@ The quality of a custom avatar depends almost entirely on the source image. Foll
 - Cartoon avatars, AI-generated portraits, or heavily stylized illustrations (unless that's the intent)
 - Old low-resolution photos scaled up
 - Images with watermarks or logos over the face
+- Objects obstructing the face or upper body — laptops, cameras, microphones, phones, or hands held up in front of the subject
 </Warning>
 
 ## Consent and Rights
@@ -73,6 +78,8 @@ Only upload photos you have the legal right to use.
 - Do not create avatars of public figures, celebrities, or minors without proper authorization.
 
 <Note>Uploading a photo of another person without their consent may violate privacy laws in your jurisdiction and is against TruGen's terms of service.</Note>
+
+<Warning>An internal guardrail screens every upload before generation. Images of public figures, celebrities, or content that appears to be copyrighted (recognizable movie/TV/game characters, licensed artwork, etc.) will be rejected and the avatar generation request will fail.</Warning>
 
 ## What's Next?
 
