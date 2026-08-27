@@ -8,37 +8,42 @@ TruGen integrates with industry-leading AI providers to power each stage of the 
 
 ## Speech-to-Text (STT)
 
-| Provider        | Model              | Best For                                                                                             |
-| --------------- | ------------------ | ---------------------------------------------------------------------------------------------------- |
-| **ElevenLabs**  | Scribe V2 Realtime | Ultra-low latency real-time transcription across many languages for live conversational applications |
-| **Deepgram**    | Nova-3             | Real-time, multilingual, or complex audio scenarios requiring maximum accuracy and customisation     |
-| **Deepgram**    | Nova-2             | High-volume, English-focused transcription where speed and low cost are the top priorities           |
-| **Deepgram V2** | Flux General       | Real-time voice agents needing accurate transcription with intelligent turn detection                |
+| Provider | Provider Key | Model | Model ID | Description |
+| --- | --- | --- | --- | --- |
+| **Deepgram** | `lk-inference` | Flux General | `deepgram/flux-general-en` | Real-time English voice agent transcription |
+| **Deepgram** | `lk-inference` | Flux General Multilingual | `deepgram/flux-general-multi` | Real-time multilingual voice agent transcription |
+| **Deepgram** | `lk-inference` | Nova-3 | `deepgram/nova-3` | High-accuracy multilingual speech-to-text |
+| **AssemblyAI** | `lk-inference` | Universal-Streaming | `assemblyai/universal-streaming` | Real-time streaming transcription |
+| **AssemblyAI** | `lk-inference` | Universal-3.5 Pro | `assemblyai/universal-3-5-pro` | Real-time STT with conversation context |
+| **AssemblyAI** | `lk-inference` | Universal-Streaming Multilingual | `assemblyai/universal-streaming-multilingual` | Real-time multilingual code-switching STT |
+| **Speechmatics** | `lk-inference` | Speechmatics Enhanced | `speechmatics/enhanced` | High-accuracy global speech-to-text |
+| **Speechmatics** | `lk-inference` | Speechmatics Standard | `speechmatics/standard` | High-accuracy global speech-to-text |
 
 ## Large Language Models (LLM)
 
-| Provider              | Model                         | Best For                                                                   |
-| --------------------- | ----------------------------- | -------------------------------------------------------------------------- |
-| **Groq**              | GPT OSS 20b                   | Low-latency conversational AI and agents where fast responses are critical |
-| **Groq**              | GPT OSS 120b                  | Higher-quality reasoning with low latency for more complex tasks           |
-| **Groq**              | Llama-4 Scout                 | Multi-document analysis, codebase reasoning, and personalised tasks        |
-| **Azure OpenAI**      | GPT-5.4-Mini                  | Fast, cost-efficient general-purpose language generation                   |
-| **Azure OpenAI**      | GPT-5.4-Mini Medium Reasoning | Balanced reasoning for structured and multi-step tasks                     |
-| **Azure OpenAI**      | GPT-5.4-Mini Low Reasoning    | Ultra-fast responses for simple conversational tasks                       |
-| **Google**            | Gemini 3.1 Pro Preview        | Advanced reasoning and high-quality generation for complex tasks           |
-| **Google**            | Gemini 3.1 Flash Lite         | Fast, lightweight responses for cost-sensitive deployments                 |
-| **Open Router**       | Llama 4 Scout                 | Open-source model access via a unified routing layer                       |
-| **Open Router**       | GPT OSS 120B                  | Large open-source model via routing layer                                  |
-| **Livekit Inference** | Gemma 4 31b                   | Edge-optimised inference for low-latency deployments                       |
+| Provider | Provider Key | Model | Model ID | Description |
+| --- | --- | --- | --- | --- |
+| **Groq** | `groq` | GPT OSS 20b | `openai/gpt-oss-20b` | Extremely fast, high-throughput reasoning model. By OpenAI. |
+| **Groq** | `groq` | GPT OSS 120b | `openai/gpt-oss-120b` | Fast, high-throughput OpenAI GPT reasoning model, great at tool calling. By OpenAI. |
+| **OpenAI** | `lk-inference` | GPT 5.4 Mini | `openai/gpt-5.4-mini` | Built for agentic workflows, fast latency, and excels in multimodal tasks. By OpenAI. |
+| **Google** | `lk-inference` | Gemini 4 31b | `google/gemma-4-31b-it` | Best for advanced reasoning, multimodal understanding, and agentic workflows. By Gemini. |
+| **Google** | `lk-inference` | Gemini 3.5 Flash Lite | `google/gemini-3.5-flash-lite` | Built for fast and efficient AI workflows. By Gemini. |
+| **Google** | `lk-inference` | Gemini 3.1 Flash Lite | `google/gemini-3.1-flash-lite` | Built for communication. By Gemini. |
+| **Kimi** | `lk-inference` | Kimi K2.6 | `moonshotai/kimi-k2.6` | Built for agents, multimodal capabilities, and fast inference. By Kimi. |
 
 ## Text-to-Speech (TTS)
 
-| Provider       | Model     | Best For                                                                     |
-| -------------- | --------- | ---------------------------------------------------------------------------- |
-| **ElevenLabs** | Turbo 2   | Fast, low-latency English TTS for real-time voice agents and IVR systems     |
-| **ElevenLabs** | Turbo 2.5 | Fast, low-latency multilingual TTS for real-time conversational AI           |
-| **Cartesia**   | Sonic 3   | Real-time conversational TTS with a wide range of expressive voices          |
-| **Cartesia**   | Sonic 3.5 | Next-generation real-time TTS with enhanced voice quality and expressiveness |
+| Provider | Provider Key | Model | Model ID | Description |
+| --- | --- | --- | --- | --- |
+| **ElevenLabs** | `elevenlabs` | Turbo 2 | `eleven_turbo_v2` | Low latency and fast English TTS |
+| **ElevenLabs** | `elevenlabs` | Turbo v2.5 | `eleven_turbo_v2_5` | Low latency and fast multilingual TTS |
+| **Cartesia** | `lk-inference` | Sonic 3 | `cartesia/sonic-3` | Best for streaming TTS |
+| **Cartesia** | `lk-inference` | Sonic 3.5 | `cartesia/sonic-3.5` | Next-generation real-time streaming TTS |
+| **Rime** | `lk-inference` | Mist v3 | `rime/mistv3` | Low latency and enterprise-grade TTS |
+| **Rime** | `lk-inference` | Coda | `rime/coda` | Low latency and enterprise-grade TTS |
+| **Fish Audio** | `lk-inference` | S2 Pro | `fishaudio/s2-pro` | State of the art expressive TTS |
+| **Fish Audio** | `lk-inference` | S2.1 Pro | `fishaudio/s2.1-pro` | State of the art expressive TTS |
+| **Inworld TTS** | `lk-inference` | Inworld TTS 1.5 Mini | `inworld/inworld-tts-1.5-mini` | State of the art character & interactive dialog TTS |
 
 <Note>
   New providers and model configurations are added regularly. Use the

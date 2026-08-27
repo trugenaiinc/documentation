@@ -3,7 +3,7 @@ title: "Multilingual Support"
 description: "Configure speech-to-text and text-to-speech across 60+ languages, with automatic language detection and dialect support."
 ---
 
-TruGen supports conversations in 60+ languages. The speech pipeline uses **ElevenLabs** and **Deepgram** for transcription (STT) and **ElevenLabs** and **Cartesia** for voice synthesis (TTS): all of which auto-adapt when you use `multi` mode.
+TruGen supports conversations in 60+ languages. The speech pipeline uses **Deepgram**, **AssemblyAI**, and **Speechmatics** for transcription (STT) and **ElevenLabs**, **Cartesia**, **Rime**, **Fish Audio**, and **Inworld TTS** for voice synthesis (TTS): all of which auto-adapt when you use `multi` mode.
 
 ## Quick start
 
@@ -97,26 +97,26 @@ For a specific language, use its code (see tables below):
 <CodeGroup>
 ```json Specific language
 "stt": {
-  "provider": "elevenlabs",
-  "model": "scribe_v2_realtime",
+  "provider": "lk-inference",
+  "model": "deepgram/nova-3",
   "language": "fr-CA"
 }
 ```
 
 ```json Multi-language (auto-detect)
 "stt": {
-  "provider": "elevenlabs",
-  "model": "scribe_v2_realtime",
+  "provider": "lk-inference",
+  "model": "deepgram/flux-general-multi",
   "language": "multi"
 }
 ```
 
 ```json With fallback
 "stt": {
-  "provider": "elevenlabs",
-  "model": "scribe_v2_realtime",
+  "provider": "lk-inference",
+  "model": "deepgram/flux-general-multi",
   "language": "en",
-  "fallback_model": "nova-2-general"
+  "fallback_model": "deepgram/flux-general-en"
 }
 ```
 </CodeGroup>
@@ -129,25 +129,25 @@ Provider language coverage evolves. Always check the source docs for the very la
 
 <CardGroup cols={3}>
 <Card
-  title="ElevenLabs Scribe"
-  icon="microphone-lines"
-  href="https://elevenlabs.io/docs/overview/capabilities/text-to-speech#supported-languages"
->
-Multilingual STT model: full language and voice list.
-</Card>
-<Card
   title="Deepgram Nova-3"
   icon="waveform-lines"
   href="https://developers.deepgram.com/docs/models-languages-overview#nova-3"
 >
-Broadest STT language coverage.
+  Broadest STT language coverage and high accuracy.
+</Card>
+<Card
+  title="AssemblyAI Universal"
+  icon="microphone-lines"
+  href="https://www.assemblyai.com/docs/speech-to-text/streaming"
+>
+  Real-time multilingual code-switching STT.
 </Card>
 <Card
   title="Cartesia Sonic"
   icon="volume-high"
   href="https://docs.cartesia.ai/build-with-cartesia/tts-models/latest"
 >
-Low-latency multilingual TTS.
+  Low-latency multilingual streaming TTS.
 </Card>
 </CardGroup>
 

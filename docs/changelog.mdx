@@ -2,6 +2,28 @@
 title: "Changelog"
 description: "Product updates and announcements"
 ---
+<Update label="2026-08-28" description="v0.6.0">
+Introducing Custom Avatars API, Updated AI Models, and New Voice Providers
+
+### Custom Avatars
+
+- **Introducing Custom Avatars API**: Programmatically generate custom neural avatars from a single source image using `POST /v2/custom-avatar`, and manage or poll generation status with `GET /v2/custom-avatar/{id}` and `DELETE /v2/custom-avatar/{id}`.
+
+### LLMs & Providers
+
+- **Refreshed LLM Catalog**: Updated Available LLMs to the latest generation of reasoning and multimodal models:
+  - **Google**: `Gemini 4 31b` (`google/gemma-4-31b-it`), `Gemini 3.5 Flash Lite`, `Gemini 3.1 Flash Lite`
+  - **Groq**: `GPT OSS 20b`, `GPT OSS 120b`
+  - **OpenAI**: `GPT 5.4 Mini` (`openai/gpt-5.4-mini`)
+  - **Kimi**: `Kimi K2.6` (`moonshotai/kimi-k2.6`)
+- **Expanded TTS Providers & Voice Library**:
+  - Added support for **Rime** (`Mist v3`, `Coda`), **Fish Audio** (`S2 Pro`, `S2.1 Pro`), and **Inworld TTS** (`Inworld TTS 1.5 Mini`) alongside **ElevenLabs** and **Cartesia**.
+  - Updated Voice Library with interactive audio previews and copyable voice IDs across all 5 TTS providers.
+- **Updated Speech-to-Text (STT) Providers**:
+  - Added **Deepgram Flux General** & **Flux General Multilingual**, **AssemblyAI Universal-Streaming** & **Universal-3.5 Pro**, and **Speechmatics Enhanced** & **Standard**.
+
+</Update>
+
 <Update label="2026-07-28" description="v0.5.0">
 Documentation overhaul: JavaScript SDK, External Meetings, Vision Understanding, Tools revamp, and more
 

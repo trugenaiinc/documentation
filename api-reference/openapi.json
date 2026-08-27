@@ -5597,17 +5597,17 @@
                       "display_name": {
                         "type": "string",
                         "description": "A user friendly name of the model or entity.",
-                        "example": "GPT OSS 120B"
+                        "example": "GPT OSS 120b"
                       },
                       "provider": {
                         "type": "string",
                         "description": "Name of the provider to be used while creating an agent.",
-                        "example": "groq or openai"
+                        "example": "groq or lk-inference"
                       },
                       "provider_name": {
                         "type": "string",
                         "description": "A user friendly name of the provider company..",
-                        "example": "Groq or OpenAI"
+                        "example": "Groq, OpenAI, Google, Cartesia, ElevenLabs, Rime, Fish Audio, Inworld TTS, Deepgram, AssemblyAI, Speechmatics"
                       },
                       "provider_type": {
                         "type": "string",
@@ -5617,7 +5617,7 @@
                       "model": {
                         "type": "string",
                         "description": "Name of the model to be used while creating an agent.",
-                        "example": "gpt-4.1-mini"
+                        "example": "openai/gpt-oss-120b"
                       },
                       "additional_fields": {
                         "type": "object",
@@ -5628,15 +5628,15 @@
                             "type": "ENUM",
                             "items": [
                               {
-                                "label": "Chole",
+                                "label": "Rachel",
                                 "value": "21m00Tcm4TlvDq8ikWAM"
                               },
                               {
-                                "label": "Lisa",
+                                "label": "Monika Sogam",
                                 "value": "ZUrEGyu8GFMwnHbvLhv2"
                               },
                               {
-                                "label": "Aman",
+                                "label": "Yatin",
                                 "value": "rFzjTA9NFWPsUdx39OwG"
                               }
                             ],
@@ -5805,6 +5805,11 @@
       }
     },
     "/v2/custom-avatar": {
+      "servers": [
+        {
+          "url": "https://api.trugen.ai"
+        }
+      ],
       "post": {
         "summary": "Create Custom Avatar",
         "description": "Submits a custom avatar generation job from a base64-encoded source image. Requires `x-api-key` authentication.",
@@ -5921,6 +5926,11 @@
       }
     },
     "/v2/custom-avatar/{id}": {
+      "servers": [
+        {
+          "url": "https://api.trugen.ai"
+        }
+      ],
       "get": {
         "summary": "Get Custom Avatar",
         "description": "Fetch a single custom avatar by its internal `id`. Use this to poll a job's `status` until it becomes `COMPLETED`. Requires `x-api-key` authentication.",
@@ -6037,6 +6047,11 @@
       }
     },
     "/v2/vision": {
+      "servers": [
+        {
+          "url": "https://api.trugen.ai"
+        }
+      ],
       "post": {
         "summary": "Start Vision Session",
         "description": "Attach Hawkeye-1 to a LiveKit room and begin real-time video analysis. Hawkeye joins as a subscriber, analyses the target participant's video, and streams alerts to your callback URL whenever a chosen class is detected. Billed at 1¢/minute. Requires `x-api-key` authentication.",
@@ -6127,6 +6142,11 @@
       }
     },
     "/v2/vision/{session_id}": {
+      "servers": [
+        {
+          "url": "https://api.trugen.ai"
+        }
+      ],
       "get": {
         "summary": "Get Vision Session",
         "description": "Fetch the current state of a Hawkeye vision session: queued, running, or ended. Each call refreshes from Hawkeye, so you always get the latest status. Requires `x-api-key` authentication.",
@@ -7227,6 +7247,11 @@
       }
     },
     "/v1/conversation/{conversation_id}/speak": {
+      "servers": [
+        {
+          "url": "https://api.trugen.ai"
+        }
+      ],
       "put": {
         "summary": "Speak",
         "description": "Send a text message to an active conversation and the agent will speak it aloud.",
@@ -7341,6 +7366,11 @@
       }
     },
     "/v1/conversation/{conversation_id}": {
+      "servers": [
+        {
+          "url": "https://api.trugen.ai"
+        }
+      ],
       "delete": {
         "summary": "Delete Conversation",
         "description": "End an ongoing conversation session.",

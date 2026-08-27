@@ -4,7 +4,7 @@ sidebarTitle: "Overview"
 description: "Choose the voice your agent speaks with: from stock voices, cloned voices, or a fully custom provider setup."
 ---
 
-Every agent speaks through a **Text-to-Speech (TTS)** engine that converts the LLM's text response into audio in real time. TruGen ships with **ElevenLabs** and **Cartesia** as the default providers: both deliver sub-150 ms first-audio latency across dozens of languages and voice styles.
+Every agent speaks through a **Text-to-Speech (TTS)** engine that converts the LLM's text response into audio in real time. TruGen supports industry-leading voice providers including **ElevenLabs**, **Cartesia**, **Rime**, **Fish Audio**, and **Inworld TTS** — delivering ultra-low first-audio latency across a wide range of voices, accents, and styles.
 
 The voice is configured per agent via `voice_id`. Copy an ID from the [Voice Library](/docs/agents/voices/library) and drop it into your agent config.
 
@@ -55,22 +55,29 @@ See the [full agent configuration reference](/api-reference/endpoint/agentcreate
 
 ## Choosing a voice
 
-| Goal | Recommendation |
-| --- | --- |
-| Professional, corporate tone | Chris, Will, Evan |
-| Warm, conversational tone | Rachel, Laura, Hope |
-| Broad multilingual coverage | Any voice with `language: "multi"`: providers auto-adapt |
-| Regional accent | Yatin (South Asian), Omar (Middle Eastern) |
-| Fastest first-audio latency | Cartesia Sonic voices |
+| Goal | Recommendation | Provider |
+| --- | --- | --- |
+| Professional, corporate tone | Chris, Will, Evan | ElevenLabs |
+| Warm, conversational tone | Rachel, Laura, Hope | ElevenLabs |
+| Streaming real-time conversations | Brooke, Blake, Katie | Cartesia |
+| Enterprise-grade clarity | Luna, Celeste, Orion | Rime |
+| Expressive & natural speech | Hannah, Adrian, Ethan | Fish Audio |
+| Interactive gaming & NPC personas | Ashley, Diego, Olivia | Inworld TTS |
+| Broad multilingual coverage | ElevenLabs Turbo v2.5 / Cartesia Sonic 3.5 | Auto-adaptive |
 
 ## Choosing a TTS provider
 
-| Provider | Model | Best for |
-| --- | --- | --- |
-| **ElevenLabs** | `eleven_turbo_v2_5` | Multilingual, expressive default |
-| **ElevenLabs** | `eleven_turbo_v2` | English-first with slightly lower latency |
-| **Cartesia** | `sonic-3.5` | Ultra-low latency real-time conversations |
-| **Cartesia** | `sonic-3` | Fastest voice quality trade-off |
+| Provider | Provider Key | Model | Best for |
+| --- | --- | --- | --- |
+| **ElevenLabs** | `elevenlabs` | `eleven_turbo_v2_5` (Turbo v2.5) | Low latency and fast multilingual TTS |
+| **ElevenLabs** | `elevenlabs` | `eleven_turbo_v2` (Turbo 2) | Low latency and fast English TTS |
+| **Cartesia** | `lk-inference` | `cartesia/sonic-3.5` (Sonic 3.5) | Next-generation real-time streaming TTS |
+| **Cartesia** | `lk-inference` | `cartesia/sonic-3` (Sonic 3) | Fast, low-latency streaming TTS |
+| **Rime** | `lk-inference` | `rime/mistv3` (Mist v3) | Low latency and enterprise-grade TTS |
+| **Rime** | `lk-inference` | `rime/coda` (Coda) | Low latency and enterprise-grade TTS |
+| **Fish Audio** | `lk-inference` | `fishaudio/s2.1-pro` (S2.1 Pro) | State of the art expressive TTS |
+| **Fish Audio** | `lk-inference` | `fishaudio/s2-pro` (S2 Pro) | State of the art expressive TTS |
+| **Inworld TTS** | `lk-inference` | `inworld/inworld-tts-1.5-mini` (Inworld TTS 1.5 Mini) | State of the art character & interactive TTS |
 
 Full provider list in [Providers](/docs/providers/overview).
 

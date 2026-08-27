@@ -4,7 +4,7 @@ sidebarTitle: "Library"
 description: "Preview all available voices and copy the voice ID for use in your agent configuration."
 ---
 
-Browse all available voices below, powered by **ElevenLabs** and **Cartesia**. ElevenLabs voices include an audio preview: click play to hear a sample. Copy the voice ID and paste it into your agent's `voice_id` field.
+Browse all available voices below across our supported Text-to-Speech (TTS) providers: **ElevenLabs**, **Cartesia**, **Rime**, **Fish Audio**, and **Inworld TTS**. ElevenLabs voices include an interactive audio preview. Copy any voice ID to use directly in your agent's `voice_id` configuration.
 
 export const playIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg>';
 export const pauseIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M6 4H10V20H6V4ZM14 4H18V20H14V4Z"/></svg>';
@@ -36,205 +36,180 @@ export const handleCopy = (e, id) => {
 
 ## ElevenLabs
 
-<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',maxWidth:'680px'}}>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Rachel</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/premade/voices/21m00Tcm4TlvDq8ikWAM/b4928a68-c03b-411f-8533-3d5c299fd451.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'21m00Tcm4TlvDq8ikWAM')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Laura</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/premade/voices/FGY2WhTYpPnrIDTdsKH5/67341759-ad08-41a5-be6e-de12fe448618.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'FGY2WhTYpPnrIDTdsKH5')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Chris</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/premade/voices/iP95p4xoKVk53GoZ742B/3f4bde72-cc48-40dd-829f-57fbf906f4d7.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'iP95p4xoKVk53GoZ742B')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Will</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/premade/voices/bIHbv24MWmeRgasZH58o/8caf8f3d-ad29-4980-af41-53f20c72d7a4.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'bIHbv24MWmeRgasZH58o')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Evan</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/user/WuASMIiYX8So7LRnHQW7Hli6tcW2/voices/TWutjvRaJqAX89preB4e/YLn3xNveCrO5n4SKme1j.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'TWutjvRaJqAX89preB4e')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Hope</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/user/sD92HnMHS9WZLXKNTKxmnC8XmJ32/voices/uYXf8XasLslADfZ2MB4u/M0UTfNFigInhz8LMb4DA.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'uYXf8XasLslADfZ2MB4u')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Jess</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/user/2HZcqzZEh4TnlwGwcKBhADheS652/voices/ys3XeJJA4ArWMhRpcX1D/6JG2cEI4neP1U46J3N8Z.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'ys3XeJJA4ArWMhRpcX1D')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Luca</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/custom/voices/4JVOFy4SLQs9my0OLhEw/zq6AigwWNtCP9qYg6t2N.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'4JVOFy4SLQs9my0OLhEw')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Sean</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/user/feEym2GpjtR3eSyK1MP4WwIeIFs1/voices/ztnpYzQJyWffPj1VC5Uw/b3def21c-9421-4a3e-a2e7-15627fe96930.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'ztnpYzQJyWffPj1VC5Uw')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Loral</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/workspace/004b3dfe804745649dc076e39835be9b/voices/bP6y87KyX5lwNEi7xOkX/xzywCfQGP9Hf31H3cEHx.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'bP6y87KyX5lwNEi7xOkX')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Yatin</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/workspace/ed9b05e6324c457685490352e9a1ec90/voices/rFzjTA9NFWPsUdx39OwG/gDmCfI3VgSum3hHYTp5I.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'rFzjTA9NFWPsUdx39OwG')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Monika Sogam</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/workspace/ed9b05e6324c457685490352e9a1ec90/voices/ZUrEGyu8GFMwnHbvLhv2/BnX4hQ0sCzHZblR3Y1Kd.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'ZUrEGyu8GFMwnHbvLhv2')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Sameer</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/workspace/ed9b05e6324c457685490352e9a1ec90/voices/SV61h9yhBg4i91KIBwdz/PLZeo5L48wtrkSLoFckQ.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'SV61h9yhBg4i91KIBwdz')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Laura (Alt)</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/user/8pws5EkTMLbOOx8VweZHMboGI432/voices/FGLJyeekUzxl8M3CTG9M/paw4kGU0kQR1ykU0Om0W.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'FGLJyeekUzxl8M3CTG9M')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Omar</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/workspace/2880368290f44bf499dfa706d753d4a2/voices/xvhpbk8otnNHtT3fjCpr/Ea3zQqqWvM74xwoqZUYm.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'xvhpbk8otnNHtT3fjCpr')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Kimber</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://storage.googleapis.com/eleven-public-prod/database/workspace/166480315eca4200b64accc7c353aeec/voices/fQ74DTbwd8TiAJFxu9v8/P8UmFU923FGm56UTYxEy.mp3')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'fQ74DTbwd8TiAJFxu9v8')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-  <div style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <span style={{fontWeight:600,fontSize:'14px'}}>Marcin</span>
-    <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
-      <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,'https://api.us.elevenlabs.io/v1/voices/QiGzezxBgMNKl98mjZiZ/previews/audio?payload=eyJ2b2ljZV9zb3VyY2UiOiJjdXN0b20iLCJ3b3Jrc3BhY2VfaWQiOiI3MTA5Y2M2OWM4NDc0ZDkwODMwODJlZWI4M2QzOTdlYyIsImZpbGVuYW1lIjoiMTFhOTg3MDQtYWZhZC00ZjI3LTkwYmUtMGQ1ZGNmNTE4MTY1Lm1wMyIsInRpbWVzdGFtcCI6MTc4MzUxOTIwMDAwMDAwMH0%3D')}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
-      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,'QiGzezxBgMNKl98mjZiZ')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-    </div>
-  </div>
-
-</div>
-
-## Cartesia
-
-Cartesia voices are available via the **Sonic 3** and **Sonic 3.5** models. Audio previews are not available for Cartesia voices: copy the voice ID directly into your agent config.
+Available via **Turbo 2** (`eleven_turbo_v2`) and **Turbo v2.5** (`eleven_turbo_v2_5`). Click play to hear a preview, and click the copy icon to copy the `voice_id`.
 
 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',maxWidth:'680px'}}>
 
   {[
-    ['Jessica - Clear Communicator','25d7abcb-4d6d-4aca-adce-8a1c85620c8b'],
-    ['Brooke - Big Sister','e07c00bc-4134-4eae-9ea4-1a55fb45746b'],
-    ['Katie - Friendly Fixer','f786b574-daa5-4673-aa0c-cbe3e8534c02'],
-    ['Jacqueline - Reassuring Agent','9626c31c-bec5-4cca-baa8-f8ba9e84c8bc'],
-    ['Caroline - Southern Guide','f9836c6e-a0bd-460e-9d3c-f7299fa60f94'],
-    ['Ronald - Thinker','5ee9feff-1265-424a-9d7f-8e4d431a12c7'],
-    ['Blake - Helpful Agent','a167e0f3-df7e-4d52-a9c3-f949145efdab'],
-    ['Riya - College Roommate','faf0731e-dfb9-4cfc-8119-259a79b27e12'],
-    ['Cathy - Coworker','e8e5fffb-252c-436d-b842-8879b84445b6'],
-    ['Arushi - Hinglish Speaker','95d51f79-c397-46f9-b49a-23763d3eaa2d'],
-    ['Theo - Modern Narrator','79f8b5fb-2cc8-479a-80df-29f7a7cf1a3e'],
-    ['Marian - Poised Narrator','26403c37-80c1-4a1a-8692-540551ca2ae5'],
-    ['Cory - Relaxed Voice','41468051-3a85-4b68-92ad-64add250d369'],
-    ['Kyle - Approachable Friend','c961b81c-a935-4c17-bfb3-ba2239de8c2f'],
-    ['Sarah - Mindful Woman','694f9389-aac1-45b6-b726-9d9369183238'],
-    ['Elizabeth - Manager','248be419-c632-4f23-adf1-5324ed7dbf1d'],
-    ['Sophie - Teacher','bf0a246a-8642-498a-9950-80c35e9276b5'],
-    ['Kira - Trusted Confidant','57dcab65-68ac-45a6-8480-6c4c52ec1cd1'],
-    ['Savannah - Magnolia Belle','78ab82d5-25be-4f7d-82b3-7ad64e5b85b2'],
-    ['Ellen - Welcome Agent','5c9e800f-2a92-4720-969b-99c4ab8fbc87'],
-    ['Barry - Helper','13524ffb-a918-499a-ae97-c98c7c4408c4'],
-    ['Silas - Nighttime Narrator','7e19344f-9f17-47d7-a13a-4366ad06ebf3'],
-    ['Ishan - Ally','fd2ada67-c2d9-4afe-b474-6386b87d8fc3'],
-    ['Stacy - Mentor','6d287143-8db3-434a-959c-df147192da27'],
-    ['Lexi - Fun Friend','56b87df1-594d-4135-992c-1112bb504c59'],
-    ['Paloma - Clear Presenter','d4db5fb9-f44b-4bd1-85fa-192e0f0d75f9'],
-    ['Liam - Guy Next Door','41f3c367-e0a8-4a85-89e0-c27bae9c9b6d'],
-    ['Daichi - Baritone Narrator','a759ecc5-ac21-487e-88c7-288bdfe76999'],
-    ['Kaori - Friendly Narrator','44863732-e415-4084-8ba1-deabe34ce3d2'],
-    ['Cees - Nordic Narrator','0caedb75-417f-4e36-9b64-c21354cb94c8'],
-    ['Fuji - Positive Colleague','97e7d7a9-dfaa-4758-a936-f5f844ac34cc'],
-    ['Murat - Anatolian Storyteller','5a31e4fb-f823-4359-aa91-82c0ae9a991c'],
-    ['Samantha - Support Leader','d3e03deb-5439-4203-add1-ca9a7501eaa7'],
-    ['Willow - Approachable Ally','5f621418-ab01-4bf4-9a9d-73d66032234e'],
-    ['Kate - Practical Voice','489b647b-5662-408f-8c95-82e26ef8d29e'],
-    ['Janet - Sunny Speaker','58fbaf73-d7de-4e82-a6b3-118180e7057c'],
-    ['Jane - Digital Guide','2a17e905-8f14-4db7-9b9d-9223a8e3f278'],
-    ['Evelyn - Digital Assistant','3c7dfd17-3fa8-47aa-aacc-6313fe025442'],
-    ['Aarav - Old Time Storyteller','39d518b7-fd0b-4676-9b8b-29d64ff31e12'],
-    ['Camila - Happy Conversationalist','bef2ba57-5c10-433b-b215-3bef35110a81'],
-    ['Harley - Comforting Voice','fdf6303b-4cfa-4f8e-b7ae-acb398984cf9'],
-    ['Logan - Approachable Friend','ea7c252f-6cb1-45f5-8be9-b4f6ac282242'],
-    ['Selene - Soothing Aura','63927f41-9616-4ac2-89cf-f3afa346e0ef'],
-    ['Tara - Confident Ally','3308b492-50cc-417e-89dd-1f446c574546'],
-    ['Zoey - Bright Voice','48369ca9-0645-40de-9821-0d55e18a03c2'],
-    ['Graham - Assured Helper','1628cfcd-a161-4e47-98ff-46bffa4ab290'],
-    ['Pooja - Everyday Assistant','59ba7dee-8f9a-432f-a6c0-ffb33666b654'],
-    ['Peter - Narrator Man','ca590fdc-df56-4d2e-94a4-ef5b423c7ddf'],
-    ['Oleh - Professional Guy','05ffab9c-d380-4909-8375-cd12f59238c3'],
-    ['Anneke - Trusted Guide','ac317dac-1b8f-434f-b198-a490e2a4914d'],
-    ['Arun - Lively Voice','d2870b91-1b4c-47ab-81a8-3718d8e9c222'],
-    ['Minh - Conversational Partner','0e58d60a-2f1a-4252-81bd-3db6af45fb41'],
+    ['Luca', '4JVOFy4SLQs9my0OLhEw', 'https://storage.googleapis.com/eleven-public-prod/custom/voices/4JVOFy4SLQs9my0OLhEw/zq6AigwWNtCP9qYg6t2N.mp3'],
+    ['Sean', 'ztnpYzQJyWffPj1VC5Uw', 'https://storage.googleapis.com/eleven-public-prod/database/user/feEym2GpjtR3eSyK1MP4WwIeIFs1/voices/ztnpYzQJyWffPj1VC5Uw/b3def21c-9421-4a3e-a2e7-15627fe96930.mp3'],
+    ['Hope', 'uYXf8XasLslADfZ2MB4u', 'https://storage.googleapis.com/eleven-public-prod/database/user/sD92HnMHS9WZLXKNTKxmnC8XmJ32/voices/uYXf8XasLslADfZ2MB4u/M0UTfNFigInhz8LMb4DA.mp3'],
+    ['Lauren', 'dGku3wKAuA20JBmsCsXv', 'https://storage.googleapis.com/eleven-public-prod/database/user/7DjHFR88qabm3C6f4NOxJYdJRCE2/voices/dGku3wKAuA20JBmsCsXv/tF5mmC4oGRHnAOBIfIwe.mp3'],
+    ['Jess', 'ys3XeJJA4ArWMhRpcX1D', 'https://storage.googleapis.com/eleven-public-prod/database/user/2HZcqzZEh4TnlwGwcKBhADheS652/voices/ys3XeJJA4ArWMhRpcX1D/6JG2cEI4neP1U46J3N8Z.mp3'],
+    ['Loral', 'bP6y87KyX5lwNEi7xOkX', 'https://storage.googleapis.com/eleven-public-prod/database/workspace/004b3dfe804745649dc076e39835be9b/voices/bP6y87KyX5lwNEi7xOkX/xzywCfQGP9Hf31H3cEHx.mp3'],
+    ['Rachel', '21m00Tcm4TlvDq8ikWAM', 'https://storage.googleapis.com/eleven-public-prod/premade/voices/21m00Tcm4TlvDq8ikWAM/b4928a68-c03b-411f-8533-3d5c299fd451.mp3'],
+    ['Laura', 'FGY2WhTYpPnrIDTdsKH5', 'https://storage.googleapis.com/eleven-public-prod/premade/voices/FGY2WhTYpPnrIDTdsKH5/67341759-ad08-41a5-be6e-de12fe448618.mp3'],
+    ['Yatin', 'rFzjTA9NFWPsUdx39OwG', 'https://storage.googleapis.com/eleven-public-prod/database/workspace/ed9b05e6324c457685490352e9a1ec90/voices/rFzjTA9NFWPsUdx39OwG/gDmCfI3VgSum3hHYTp5I.mp3'],
+    ['Monika Sogam', 'ZUrEGyu8GFMwnHbvLhv2', 'https://storage.googleapis.com/eleven-public-prod/database/workspace/ed9b05e6324c457685490352e9a1ec90/voices/ZUrEGyu8GFMwnHbvLhv2/BnX4hQ0sCzHZblR3Y1Kd.mp3'],
+    ['Evan', 'TWutjvRaJqAX89preB4e', 'https://storage.googleapis.com/eleven-public-prod/database/user/WuASMIiYX8So7LRnHQW7Hli6tcW2/voices/TWutjvRaJqAX89preB4e/YLn3xNveCrO5n4SKme1j.mp3'],
+    ['Chris', 'iP95p4xoKVk53GoZ742B', 'https://storage.googleapis.com/eleven-public-prod/premade/voices/iP95p4xoKVk53GoZ742B/3f4bde72-cc48-40dd-829f-57fbf906f4d7.mp3'],
+    ['Sameer', 'SV61h9yhBg4i91KIBwdz', 'https://storage.googleapis.com/eleven-public-prod/database/workspace/ed9b05e6324c457685490352e9a1ec90/voices/SV61h9yhBg4i91KIBwdz/PLZeo5L48wtrkSLoFckQ.mp3'],
+    ['Will', 'bIHbv24MWmeRgasZH58o', 'https://storage.googleapis.com/eleven-public-prod/premade/voices/bIHbv24MWmeRgasZH58o/8caf8f3d-ad29-4980-af41-53f20c72d7a4.mp3'],
+    ['Laura (Alt)', 'FGLJyeekUzxl8M3CTG9M', 'https://storage.googleapis.com/eleven-public-prod/database/user/8pws5EkTMLbOOx8VweZHMboGI432/voices/FGLJyeekUzxl8M3CTG9M/paw4kGU0kQR1ykU0Om0W.mp3'],
+    ['Laura Peeters', 'gC9jy9VUxaXAswovchvQ', 'https://storage.googleapis.com/eleven-public-prod/bQEHiPzPn3NBupyV7eFbpOkGiig2/voices/gC9jy9VUxaXAswovchvQ/dbc17780-c290-4508-b831-2296d8bc3e7c.mp3'],
+  ].map(([name, id, audioUrl]) => (
+    <div key={id} style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>{name}</span>
+      <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
+        <button title="Preview" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handlePlay(e,audioUrl)}><svg width="13" height="13" viewBox="0 0 24 24" fill="#16A34A"><path d="M5 3L19 12L5 21L5 3Z"/></svg></button>
+        <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'}} onClick={(e)=>handleCopy(e,id)}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
+  ))}
+
+</div>
+
+---
+
+## Cartesia
+
+Available via **Sonic 3** (`cartesia/sonic-3`) and **Sonic 3.5** (`cartesia/sonic-3.5`). Copy the voice ID directly into your agent config.
+
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',maxWidth:'680px'}}>
+
+  {[
+    ['Aarav - Old Time Storyteller', '39d518b7-fd0b-4676-9b8b-29d64ff31e12'],
+    ['Anneke - Trusted Guide', 'ac317dac-1b8f-434f-b198-a490e2a4914d'],
+    ['Arun - Lively Voice', 'd2870b91-1b4c-47ab-81a8-3718d8e9c222'],
+    ['Arushi - Hinglish Speaker', '95d51f79-c397-46f9-b49a-23763d3eaa2d'],
+    ['Barry - Helper', '13524ffb-a918-499a-ae97-c98c7c4408c4'],
+    ['Blake - Helpful Agent', 'a167e0f3-df7e-4d52-a9c3-f949145efdab'],
+    ['Brooke - Big Sister', 'e07c00bc-4134-4eae-9ea4-1a55fb45746b'],
+    ['Camila - Happy Conversationalist', 'bef2ba57-5c10-433b-b215-3bef35110a81'],
+    ['Caroline - Southern Guide', 'f9836c6e-a0bd-460e-9d3c-f7299fa60f94'],
+    ['Cathy - Coworker', 'e8e5fffb-252c-436d-b842-8879b84445b6'],
+    ['Cees - Nordic Narrator', '0caedb75-417f-4e36-9b64-c21354cb94c8'],
+    ['Cory - Relaxed Voice', '41468051-3a85-4b68-92ad-64add250d369'],
+    ['Daichi - Baritone Narrator', 'a759ecc5-ac21-487e-88c7-288bdfe76999'],
+    ['Dallas - Fireside Friend', '23e9e50a-4ea2-447b-b589-df90dbb848a2'],
+    ['Elizabeth - Manager', '248be419-c632-4f23-adf1-5324ed7dbf1d'],
+    ['Ellen - Welcome Agent', '5c9e800f-2a92-4720-969b-99c4ab8fbc87'],
+    ['Evelyn - Digital Assistante', '3c7dfd17-3fa8-47aa-aacc-6313fe025442'],
+    ['Fuji - Positive Colleague', '97e7d7a9-dfaa-4758-a936-f5f844ac34cc'],
+    ['Graham - Assured Helper', '1628cfcd-a161-4e47-98ff-46bffa4ab290'],
+    ['Harley - Comforting Voice', 'fdf6303b-4cfa-4f8e-b7ae-acb398984cf9'],
+    ['Ishan - Ally', 'fd2ada67-c2d9-4afe-b474-6386b87d8fc3'],
+    ['Jace - Cool Conversationalist', '6776173b-fd72-460d-89b3-d85812ee518d'],
+    ['Jacqueline - Reassuring Agent', '9626c31c-bec5-4cca-baa8-f8ba9e84c8bc'],
+    ['Jane - Digital Guide', '2a17e905-8f14-4db7-9b9d-9223a8e3f278'],
+    ['Janet - Sunny Speaker', '58fbaf73-d7de-4e82-a6b3-118180e7057c'],
+    ['Jing - Clear Coordinator', '6eb8965c-e295-47bd-a9e4-3eeebb3abcff'],
+    ['Kaori - Friendly Narrator', '44863732-e415-4084-8ba1-deabe34ce3d2'],
+    ['Kate - Practical Voice', '489b647b-5662-408f-8c95-82e26ef8d29e'],
+    ['Katie - Friendly Fixer', 'f786b574-daa5-4673-aa0c-cbe3e8534c02'],
+    ['Kira - Trusted Confidant', '57dcab65-68ac-45a6-8480-6c4c52ec1cd1'],
+    ['Kyle - Approachable Friend', 'c961b81c-a935-4c17-bfb3-ba2239de8c2f'],
+    ['Lexi - Fun Friend', '56b87df1-594d-4135-992c-1112bb504c59'],
+    ['Liam - Guy Next Door', '41f3c367-e0a8-4a85-89e0-c27bae9c9b6d'],
+    ['Logan - Approachable Friend', 'ea7c252f-6cb1-45f5-8be9-b4f6ac282242'],
+    ['Marian - Poised Narrator', '26403c37-80c1-4a1a-8692-540551ca2ae5'],
+    ['Minh - Conversational Partner', '0e58d60a-2f1a-4252-81bd-3db6af45fb41'],
+    ['Murat - Anatolian Storyteller', '5a31e4fb-f823-4359-aa91-82c0ae9a991c'],
+    ['Oleh - Professional Guy', '05ffab9c-d380-4909-8375-cd12f59238c3'],
+    ['Paloma - Clear Presenter Woman', 'd4db5fb9-f44b-4bd1-85fa-192e0f0d75f9'],
+    ['Peter - Narrator Man', 'ca590fdc-df56-4d2e-94a4-ef5b423c7ddf'],
+    ['Pooja - Everyday Assistant', '59ba7dee-8f9a-432f-a6c0-ffb33666b654'],
+    ['Riya - College Roommate', 'faf0731e-dfb9-4cfc-8119-259a79b27e12'],
+    ['Rohan - Steady Communicator', '4877b818-c7fe-4c89-b1cf-eadf8e23da72'],
+    ['Ronald - Thinker', '5ee9feff-1265-424a-9d7f-8e4d431a12c7'],
+    ['Samantha - Yelling Support Leader', 'd3e03deb-5439-4203-add1-ca9a7501eaa7'],
+    ['Sameer - Problem Solver', '638efaaa-4d0c-442e-b701-3fae16aad012'],
+    ['Sarah - Mindful Woman', '694f9389-aac1-45b6-b726-9d9369183238'],
+    ['Savannah - Magnolia Belle', '78ab82d5-25be-4f7d-82b3-7ad64e5b85b2'],
+    ['Selene - Soothing Aura', '63927f41-9616-4ac2-89cf-f3afa346e0ef'],
+    ['Shuwen - Precision Guide', 'f9a4b3a6-b44b-469f-90e3-c8e19bd30e99'],
+    ['Silas - Nighttime Narrator', '7e19344f-9f17-47d7-a13a-4366ad06ebf3'],
+    ['Skylar - Friendly Guide', 'db6b0ed5-d5d3-463d-ae85-518a07d3c2b4'],
+    ['Sophie - Teacher', 'bf0a246a-8642-498a-9950-80c35e9276b5'],
+    ['Stacy - Mentor', '6d287143-8db3-434a-959c-df147192da27'],
+    ['Suzanne - Laidback Aunt', '8634bd27-0acf-4056-b014-4fea0385ed9e'],
+    ['Tara - Confident Ally', '3308b492-50cc-417e-89dd-1f446c574546'],
+    ['Theo - Modern Narrator', '79f8b5fb-2cc8-479a-80df-29f7a7cf1a3e'],
+    ['Willow - Approachable Ally', '5f621418-ab01-4bf4-9a9d-73d66032234e'],
+    ['Zoey - Bright Voice', '48369ca9-0645-40de-9821-0d55e18a03c2']
+  ].map(([name, id]) => (
+    <div key={id} style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>{name}</span>
+      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%',flexShrink:0}} onClick={(e)=>handleCopy(e,id)}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+    </div>
+  ))}
+
+</div>
+
+---
+
+## Rime
+
+Available via **Mist v3** (`rime/mistv3`) and **Coda** (`rime/coda`). Built for low latency and enterprise-grade TTS.
+
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',maxWidth:'680px'}}>
+
+  {[
+    ['Luna', 'luna'],
+    ['Celeste', 'celeste'],
+    ['Orion', 'orion'],
+    ['Ursa', 'ursa'],
+    ['Astra', 'astra'],
+    ['Esther', 'esther'],
+    ['Estelle', 'estelle'],
+    ['Andromeda', 'andromeda']
+  ].map(([name, id]) => (
+    <div key={id} style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>{name}</span>
+      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%',flexShrink:0}} onClick={(e)=>handleCopy(e,id)}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+    </div>
+  ))}
+
+</div>
+
+---
+
+## Fish Audio
+
+Available via **S2 Pro** (`fishaudio/s2-pro`) and **S2.1 Pro** (`fishaudio/s2.1-pro`). State of the art TTS models.
+
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',maxWidth:'680px'}}>
+
+  {[
+    ['Adrian', 'bf322df2096a46f18c579d0baa36f41d'],
+    ['Ethan', '536d3a5e000945adb7038665781a4aca'],
+    ['Hannah', '9a9cf47702da476aa4629e2506d4a857'],
+    ['Jordan', '79d0bd3e4e5444b18f7b6d89b5927bf1'],
+    ['Laura', 'e3cd384158934cc9a01029cd7d278634'],
+    ['Sarah', '933563129e564b19a115bedd57b7406a'],
+    ['Selene', 'b347db033a6549378b48d00acb0d06cd']
+  ].map(([name, id]) => (
+    <div key={id} style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      <span style={{fontWeight:600,fontSize:'14px'}}>{name}</span>
+      <button title="Copy ID" style={{background:'rgba(128,128,128,0.12)',border:'none',cursor:'pointer',width:'30px',height:'30px',color:'inherit',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%',flexShrink:0}} onClick={(e)=>handleCopy(e,id)}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+    </div>
+  ))}
+
+</div>
+
+---
+
+## Inworld TTS
+
+Available via **Inworld TTS 1.5 Mini** (`inworld/inworld-tts-1.5-mini`). State of the art TTS models designed for character voices and interactive dialog.
+
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',maxWidth:'680px'}}>
+
+  {[
+    ['Ashley', 'Ashley'],
+    ['Diego', 'Diego'],
+    ['Edward', 'Edward'],
+    ['Olivia', 'Olivia']
   ].map(([name, id]) => (
     <div key={id} style={{borderRadius:'12px',border:'1px solid rgba(128,128,128,0.2)',background:'rgba(128,128,128,0.04)',padding:'20px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
       <span style={{fontWeight:600,fontSize:'14px'}}>{name}</span>
