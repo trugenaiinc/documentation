@@ -45,31 +45,6 @@ During a live session:
 
 The agent decides when to present. You don't have to script it.
 
-## Custom instruction
-
-Each presentation has a **custom instruction** that tells the LLM how to answer using the retrieved slide. The default is a strict, grounded template:
-
-```
-QUESTION
-{query}
-
-RESULTS
-{results}
-
-Using the provided RESULTS, answer the QUESTION. Select the most relevant result
-and present it as a slide. Keep your response strictly grounded in the RESULTS.
-If the answer is not clearly supported by the RESULTS, respond with "I don't know"
-and close the presentation. Do not make assumptions.
-```
-
-You can customize this per presentation from the upload modal. Common reasons to change it:
-
-- **Loosen groundedness**: allow the agent to elaborate beyond what's on the slide
-- **Change presentation style**: force the agent to summarize rather than quote
-- **Adjust fallback behavior**: change what the agent says when no slide matches
-
-The `{query}` and `{results}` placeholders are filled in at runtime.
-
 ## Attaching to an agent
 
 Presentations are attached via the `visual_presentations` array on the agent config:
