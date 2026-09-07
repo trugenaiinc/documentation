@@ -137,7 +137,11 @@
               {
                 "group": "Visual Presentations",
                 "icon": "presentation-screen",
-                "pages": ["docs/presentations/overview"]
+                "pages": [
+                  "docs/presentations/overview",
+                  "docs/presentations/creating",
+                  "docs/presentations/attaching"
+                ]
               },
               {
                 "group": "Knowledge Base",
@@ -359,6 +363,17 @@
               "api-reference/endpoint/knowledgebasedelete",
               "api-reference/endpoint/knowledgebaseadddoc",
               "api-reference/endpoint/knowledgebasedeletedoc"
+            ]
+          },
+          {
+            "group": "Visual Presentations",
+            "icon": "presentation-screen",
+            "pages": [
+              "api-reference/endpoint/presentationcreate",
+              "api-reference/endpoint/presentationget",
+              "api-reference/endpoint/presentationgetbyid",
+              "api-reference/endpoint/presentationupdate",
+              "api-reference/endpoint/presentationdelete"
             ]
           },
           {

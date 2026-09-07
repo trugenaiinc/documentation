@@ -1,0 +1,44 @@
+---
+title: 'Update Presentation'
+openapi: 'PATCH /ext/presentation/{id}'
+---
+
+Update the metadata (such as description) of an existing presentation deck.
+
+## When to update
+
+Update presentation details when you want to refine the description so the agent better understands when to trigger and present slides from this deck during user queries.
+
+## Parameters
+
+- `id` (path, required): unique identifier of the presentation
+
+## Request Body
+
+- `description` (string, optional): updated description detailing the topics covered in the deck
+
+## Example
+
+```bash
+curl --request PATCH \
+  --url https://api.trugen.ai/v1/ext/presentation/1411f164-fe94-4a4b-9b1b-027a9929f95d \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "description": "Updated sales pitch deck for Q3 & Q4"
+  }'
+```
+
+Response:
+
+```json
+{
+  "id": "1411f164-fe94-4a4b-9b1b-027a9929f95d",
+  "message": "Presentation details updated"
+}
+```
+
+## Next steps
+
+- [Get presentation status](/api-reference/endpoint/presentationgetbyid)
+- [Visual Presentations concepts](/docs/presentations/overview)

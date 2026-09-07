@@ -1,0 +1,52 @@
+---
+title: 'List All Presentations'
+openapi: 'GET /ext/presentation'
+---
+
+Retrieve all presentation decks available in your project workspace, including their resource details, page count, preview URLs, and processing status.
+
+## Response Fields
+
+- `id`: unique identifier of the presentation deck
+- `name`: title of the presentation
+- `status`: current processing state (`pending`, `processing`, `completed`, `failed`)
+- `resources`: array of uploaded document resources and preview links
+  - `id`: resource UUID
+  - `name`: original file name
+  - `page_count`: total number of slides/pages extracted
+  - `preview_url`: temporary signed S3 URL to preview the document
+  - `status`: resource processing status
+
+## Example
+
+```bash
+curl --request GET \
+  --url https://api.trugen.ai/v1/ext/presentation \
+  --header 'x-api-key: YOUR_API_KEY'
+```
+
+Response:
+
+```json
+[
+  {
+    "created_at": "2026-09-04T12:36:51.773302Z",
+    "id": "b3a3bc93-6b37-496e-989d-cf793792f428",
+    "name": "Q3 Sales Deck",
+    "resources": [
+      {
+        "created_at": "2026-09-04T12:36:51.773302Z",
+        "description": "Quarterly sales presentation for 2025",
+        "id": "65459261-d946-4889-9528-610e0770162d",
+        "name": "R Parthieshwar Resume.pdf",
+        "page_count": 2,
+        "preview_url": "https://trugen-agents-presentations-docs.s3.us-east-2.amazonaws.com/qaapp.trugen.ai/uploads/input/b3a3bc93-6b37-496e-989d-cf793792f428/65459261-d946-4889-9528-610e0770162d/R%20Parthieshwar%20Resume.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Checksum-Mode=ENABLED&X-Amz-Credential=AKIAY2F3GNLRMROY7MOZ%2F20260904%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20260904T123707Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&response-content-disposition=inline&response-content-type=application%2Fpdf&x-id=GetObject&X-Amz-Signature=e5fa6e304478c9803aa573bfd29aa1c57cff762438c34754352db57648f85e24",
+        "status": "processing",
+        "updated_at": "2026-09-04T12:37:02.030418Z"
+      }
+    ],
+    "status": "pending",
+    "updated_at": "2026-09-04T12:36:51.773302Z"
+  }
+]
+```

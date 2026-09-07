@@ -1,0 +1,62 @@
+---
+title: 'Upload Presentation'
+openapi: 'POST /ext/presentation'
+---
+
+Upload a presentation deck (`.pdf` or `.pptx`) to your library. When attached to an agent, the agent semantically searches the deck to present matching slides visually during live conversations.
+
+## When to upload a presentation
+
+Upload visual slide decks for content that requires visual demonstration alongside spoken explanations:
+
+- **Sales & Pitch Decks**: product feature decks, pricing slides, competitive comparisons
+- **Architecture & Technical Diagrams**: system architecture, data flow diagrams, technical setup
+- **Tutorials & Product Demos**: step-by-step onboarding slides, feature walkthroughs
+
+## Supported formats & size limits
+
+| Media | Formats | Max Size | Processing Notes |
+| --- | --- | --- | --- |
+| **PDF** | `.pdf` | **100 MB** | Extracted page-by-page into slide images and indexed. |
+| **PowerPoint** | `.pptx` | **100 MB** | Extracted slide-by-slide and indexed for semantic search. |
+
+## Required fields
+
+- `name`: a clear, descriptive title for the presentation deck
+- `input`: the `.pdf` or `.pptx` presentation file (`multipart/form-data`)
+
+## Optional fields
+
+- `description`: detailed summary explaining when the agent should select this presentation deck
+
+## Example
+
+```bash
+curl --request POST \
+  --url https://api.trugen.ai/v1/ext/presentation \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --form 'name="Q3 Sales Deck"' \
+  --form 'description="Quarterly sales presentation for 2025"' \
+  --form 'input=@/path/to/presentation.pdf'
+```
+
+Response:
+
+```json
+{
+  "id": "1411f164-fe94-4a4b-9b1b-027a9929f95d",
+  "message": "Presentation uploaded successfully"
+}
+```
+
+## Next steps
+
+After uploading, attach the presentation to an agent via the `visual_presentations` array:
+
+```json
+"visual_presentations": [
+  { "id": "1411f164-fe94-4a4b-9b1b-027a9929f95d" }
+]
+```
+
+See [Attaching to Agents](/docs/presentations/attaching) for detailed setup.

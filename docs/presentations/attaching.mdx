@@ -1,0 +1,55 @@
+---
+title: "Attach to Agents"
+sidebarTitle: "Attach to Agents"
+description: "Wire your Visual Presentations to one or many agents via the Studio or via the agent API."
+---
+
+A Visual Presentation sits idle until it's attached to an agent. Attach it in the Studio when creating or editing an agent, or via the API by including the presentation's ID in the agent's `visual_presentations` array.
+
+## In the Studio
+
+<Steps>
+  <Step title="Open the agent">
+    Open the agent you want to attach the presentation to in [app.trugen.ai](https://app.trugen.ai).
+  </Step>
+  <Step title="Go to the Presentations tab">
+    In the agent's configuration tabs, open **Visual Presentations**.
+  </Step>
+  <Step title="Select a presentation">
+    Pick a single presentation deck (`.pdf` or `.pptx`) from your library to attach to the agent.
+  </Step>
+  <Step title="Save">
+    Save the agent. The next session picks up the new presentation configuration automatically.
+  </Step>
+</Steps>
+
+## Via API
+
+Include a presentation reference in the agent's `visual_presentations` array when creating or updating an agent:
+
+```json
+{
+  "agent_name": "Sales Agent",
+  "agent_system_prompt": "You present products and answer sales questions.",
+  "visual_presentations": [
+    { "id": "5d7b525d-f7ef-44c5-9e49-422fdfdb9b2c" }
+  ]
+}
+```
+
+<Note>
+  An agent can be configured with one presentation deck (`.pdf` or `.pptx`) at a time.
+</Note>
+
+Full endpoint reference: [Create Agent](/api-reference/endpoint/agentcreate) and [Update Agent](/api-reference/endpoint/agentupdate).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Creating a Presentation" icon="plus" href="/docs/presentations/creating">
+    Create and manage presentation decks.
+  </Card>
+  <Card title="Presentations Overview" icon="presentation-screen" href="/docs/presentations/overview">
+    Learn how slide presentation works in live agent sessions.
+  </Card>
+</CardGroup>
