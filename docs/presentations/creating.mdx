@@ -1,0 +1,94 @@
+---
+title: "Setup"
+sidebarTitle: "Setup"
+description: "Create a Visual Presentation in the Studio or via the API and name it so the agent can find it."
+---
+
+Every Visual Presentation starts with a **name** and a **description**. Both fields matter because the agent reads them to decide *whether* to present this slide deck for a given user question. A vague name or an empty description means the LLM won't pick the presentation when relevant.
+
+## In the Studio
+
+<Steps>
+  <Step title="Open Presentations">
+    Go to [app.trugen.ai](https://app.trugen.ai) and click **Presentations** in the left panel under **Configure**.
+  </Step>
+  <Step title="Create a new presentation">
+    Click **Create New**. Give it a clear **Name** and a specific **Description**.
+  </Step>
+  <Step title="Upload your deck">
+    Upload your presentation file (`.pdf` or `.pptx`).
+  </Step>
+  <Step title="Save">
+    Click **Save & Create**. Content is queued for slide indexing. Once processing completes, the presentation is ready to attach to agents.
+  </Step>
+</Steps>
+
+## Via API
+
+Upload and create a presentation with a name, description, and file:
+
+```bash
+curl --location 'https://api.trugen.ai/v1/ext/presentation' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --form 'name="Q3 Sales Deck"' \
+  --form 'description="Quarterly sales presentation for 2025. Use when asked about sales metrics, product growth, revenue targets, or Q3 results."' \
+  --form 'input=@/path/to/presentation.pdf'
+```
+
+The response returns a Presentation `id`: save it to attach the presentation to agents.
+
+```json
+{
+  "id": "5d7b525d-f7ef-44c5-9e49-422fdfdb9b2c",
+  "name": "Q3 Sales Deck",
+  "description": "Quarterly sales presentation for 2025. Use when asked about sales metrics, product growth, revenue targets, or Q3 results.",
+  "status": "pending"
+}
+```
+
+<Note>
+  Requests use `multipart/form-data` because the endpoint accepts file uploads at creation time. Total request size is capped at **100 MB**.
+</Note>
+
+## Naming and describing well
+
+The Name and Description drive retrieval routing. Write them clearly so the agent knows when to pick this deck over another.
+
+### Good
+
+```
+Name: Sales-Deck-Q3
+Description: Use this whenever the user asks about sales performance, Q3 targets, revenue breakdown, or sales strategies.
+```
+
+```
+Name: Architecture-Overview
+Description: Use this when the user asks about system architecture, server infrastructure, API flow, or backend components.
+```
+
+### Bad
+
+```
+Name: Deck1
+Description: Slides
+```
+
+Both are too vague. The LLM has no signal to pick this presentation.
+
+## Managing your Presentations
+
+- **List all presentations**: `GET /v1/ext/presentation`
+- **Get a specific presentation**: `GET /v1/ext/presentation/{id}`
+- **Update presentation details**: `PATCH /v1/ext/presentation/{id}`
+- **Delete a presentation**: `DELETE /v1/ext/presentation/{id}`
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Presentations Overview" icon="presentation-screen" href="/docs/presentations/overview">
+    Learn how agents use presentations during live sessions.
+  </Card>
+  <Card title="Knowledge Base Overview" icon="database" href="/docs/agents/knowledge/overview">
+    Combine Visual Presentations with text Knowledge Bases.
+  </Card>
+</CardGroup>

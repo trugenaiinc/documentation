@@ -1,0 +1,42 @@
+---
+title: 'Get Presentation'
+openapi: 'GET /ext/presentation/{id}'
+---
+
+Fetch a single presentation deck by its unique ID. Returns metadata, processing status, and resource preview links.
+
+## Parameters
+
+- `id` (path, required): unique identifier of the presentation deck
+
+## Example
+
+```bash
+curl --request GET \
+  --url https://api.trugen.ai/v1/ext/presentation/b3a3bc93-6b37-496e-989d-cf793792f428 \
+  --header 'x-api-key: YOUR_API_KEY'
+```
+
+Response:
+
+```json
+{
+  "created_at": "2026-09-04T12:36:51.773302Z",
+  "id": "b3a3bc93-6b37-496e-989d-cf793792f428",
+  "name": "Q3 Sales Deck",
+  "resources": [
+    {
+      "created_at": "2026-09-04T12:36:51.773302Z",
+      "description": "Quarterly sales presentation for 2025",
+      "id": "65459261-d946-4889-9528-610e0770162d",
+      "name": "R Parthieshwar Resume.pdf",
+      "page_count": 2,
+      "preview_url": "https://trugen-agents-presentations-docs.s3.us-east-2.amazonaws.com/qaapp.trugen.ai/uploads/input/b3a3bc93-6b37-496e-989d-cf793792f428/65459261-d946-4889-9528-610e0770162d/R%20Parthieshwar%20Resume.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Checksum-Mode=ENABLED&X-Amz-Credential=AKIAY2F3GNLRMROY7MOZ%2F20260904%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20260904T123707Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&response-content-disposition=inline&response-content-type=application%2Fpdf&x-id=GetObject&X-Amz-Signature=e5fa6e304478c9803aa573bfd29aa1c57cff762438c34754352db57648f85e24",
+      "status": "processing",
+      "updated_at": "2026-09-04T12:37:02.030418Z"
+    }
+  ],
+  "status": "pending",
+  "updated_at": "2026-09-04T12:36:51.773302Z"
+}
+```

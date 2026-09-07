@@ -1,0 +1,32 @@
+---
+title: 'Delete Presentation'
+openapi: 'DELETE /ext/presentation/{id}'
+---
+
+Delete a presentation deck permanently from your workspace library.
+
+## Effects of deletion
+
+Deleting a presentation immediately removes all stored slides and indexed embeddings. Any active or future agent sessions referencing this presentation will no longer present slides from this deck.
+
+## Parameters
+
+- `id` (path, required): unique identifier of the presentation to delete
+
+## Example
+
+```bash
+curl --request DELETE \
+  --url https://api.trugen.ai/v1/ext/presentation/1411f164-fe94-4a4b-9b1b-027a9929f95d \
+  --header 'x-api-key: YOUR_API_KEY'
+```
+
+Response:
+
+```json
+{
+  "deleted": true,
+  "id": "1411f164-fe94-4a4b-9b1b-027a9929f95d",
+  "presentation_id": "4c42df84-f6f4-4f77-8d6c-124ad83df8bb"
+}
+```
