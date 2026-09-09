@@ -6302,7 +6302,7 @@
                     "type": "string",
                     "format": "binary",
                     "example": "HR_Policy.docx",
-                    "description": "Document file to upload (`.pdf`, `.docx` or `.txt`). Optional if text is provided."
+                    "description": "Document file to upload (`.pdf`, `.docx`, `.doc`, `.txt`, `.pptx`, `.png`, `.jpg`, `.jpeg`, `.md` or `.json`). Optional if text is provided."
                   },
                   "text": {
                     "type": "string",
@@ -6464,7 +6464,7 @@
                             },
                             "type": {
                               "type": "string",
-                              "description": "File extension indicating the document type (`.pdf`, `.docx` or `.txt`).",
+                              "description": "File extension indicating the document type (`.pdf`, `.docx`, `.doc`, `.txt`, `.pptx`, `.png`, `.jpg`, `.jpeg`, `.md` or `.json`).",
                               "example": ".pdf"
                             },
                             "preview_url": {
@@ -6620,7 +6620,7 @@
                           },
                           "type": {
                             "type": "string",
-                            "description": "File extension indicating the document type (`.pdf`, `.docx` or `.txt`).",
+                            "description": "File extension indicating the document type (`.pdf`, `.docx`, `.doc`, `.txt`, `.pptx`, `.png`, `.jpg`, `.jpeg`, `.md` or `.json`).",
                             "example": ".pdf"
                           },
                           "preview_url": {
@@ -7239,6 +7239,690 @@
                 },
                 "example": {
                   "error": "Failed to retrieve knowledge base"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ext/presentation": {
+      "post": {
+        "summary": "Upload Presentation",
+        "description": "Upload a presentation deck (`.pdf` or `.pptx`) to your library. When attached to an agent, the agent semantically searches the deck to present matching slides visually during live conversations.",
+        "operationId": "uploadPresentation",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Title of the presentation deck",
+                    "example": "Q3 Sales Deck"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Detailed description explaining topics covered",
+                    "example": "Quarterly sales presentation for 2025"
+                  },
+                  "input": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Presentation file (`.pdf` or `.pptx`)"
+                  }
+                },
+                "required": ["name", "input"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Presentation uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "1411f164-fe94-4a4b-9b1b-027a9929f95d"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Presentation uploaded successfully"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "1411f164-fe94-4a4b-9b1b-027a9929f95d",
+                  "message": "Presentation uploaded successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized – Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized: not a valid authorization api key"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Failed to upload presentation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List All Presentations",
+        "description": "Retrieve all presentation decks available in your project workspace, including their resource details, page count, preview URLs, and processing status.",
+        "operationId": "listPresentations",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of presentations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "b3a3bc93-6b37-496e-989d-cf793792f428"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Q3 Sales Deck"
+                      },
+                      "status": {
+                        "type": "string",
+                        "example": "pending"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-09-04T12:36:51.773302Z"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-09-04T12:36:51.773302Z"
+                      },
+                      "resources": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid",
+                              "example": "65459261-d946-4889-9528-610e0770162d"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "R Parthieshwar Resume.pdf"
+                            },
+                            "description": {
+                              "type": "string",
+                              "example": "Quarterly sales presentation for 2025"
+                            },
+                            "page_count": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "preview_url": {
+                              "type": "string",
+                              "format": "uri"
+                            },
+                            "status": {
+                              "type": "string",
+                              "example": "processing"
+                            },
+                            "created_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2026-09-04T12:36:51.773302Z"
+                            },
+                            "updated_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2026-09-04T12:37:02.030418Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized – Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized: not a valid authorization api key"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Failed to retrieve presentations"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ext/presentation/{id}": {
+      "get": {
+        "summary": "Get Presentation by ID",
+        "description": "Fetch a single presentation deck by its unique ID. Returns metadata, processing status, and resource preview links.",
+        "operationId": "getPresentationById",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique identifier of the presentation deck",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "b3a3bc93-6b37-496e-989d-cf793792f428"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Presentation details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "b3a3bc93-6b37-496e-989d-cf793792f428"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Q3 Sales Deck"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "pending"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2026-09-04T12:36:51.773302Z"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2026-09-04T12:36:51.773302Z"
+                    },
+                    "resources": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "65459261-d946-4889-9528-610e0770162d"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "R Parthieshwar Resume.pdf"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "Quarterly sales presentation for 2025"
+                          },
+                          "page_count": {
+                            "type": "integer",
+                            "example": 2
+                          },
+                          "preview_url": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "processing"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2026-09-04T12:36:51.773302Z"
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2026-09-04T12:37:02.030418Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized – Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized: not a valid authorization api key"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Presentation not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Presentation not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Failed to retrieve presentation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update Presentation Details",
+        "description": "Update the metadata (such as description) of an existing presentation deck.",
+        "operationId": "updatePresentationDetails",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique identifier of the presentation",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5d7b525d-f7ef-44c5-9e49-422fdfdb9b2c"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "example": "Updated sales pitch deck for Q3 & Q4"
+                  }
+                }
+              },
+              "example": {
+                "description": "Updated sales pitch deck for Q3 & Q4"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Presentation updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "1411f164-fe94-4a4b-9b1b-027a9929f95d"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Presentation details updated"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "1411f164-fe94-4a4b-9b1b-027a9929f95d",
+                  "message": "Presentation details updated"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized – Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized: not a valid authorization api key"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Presentation not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Presentation not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Failed to update presentation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Presentation",
+        "description": "Delete a presentation deck permanently from your workspace library.",
+        "operationId": "deletePresentation",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique identifier of the presentation to delete",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5d7b525d-f7ef-44c5-9e49-422fdfdb9b2c"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Presentation deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "1411f164-fe94-4a4b-9b1b-027a9929f95d"
+                    },
+                    "presentation_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "4c42df84-f6f4-4f77-8d6c-124ad83df8bb"
+                    }
+                  }
+                },
+                "example": {
+                  "deleted": true,
+                  "id": "1411f164-fe94-4a4b-9b1b-027a9929f95d",
+                  "presentation_id": "4c42df84-f6f4-4f77-8d6c-124ad83df8bb"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized – Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized: not a valid authorization api key"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Presentation not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Presentation not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Failed to delete presentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ext/providers": {
+      "get": {
+        "summary": "List All Providers",
+        "description": "Fetch a list of all available providers and their supported models.",
+        "operationId": "getProviders",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of available providers and models retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized – Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized: not a valid authorization api key"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Failed to retrieve providers"
                 }
               }
             }
