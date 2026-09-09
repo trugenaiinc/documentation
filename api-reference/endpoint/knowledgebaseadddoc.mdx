@@ -3,14 +3,13 @@ title: 'Add Documents to Knowledge Base'
 openapi: 'POST /ext/kb/{id}/doc'
 ---
 
-Add a document to an existing [knowledge base](/docs/agents/knowledge/overview). Supported formats: **PDF**, **DOCX**, plain text, and URLs (single page or full site crawl).
+Add a document to an existing [knowledge base](/docs/agents/knowledge/overview). Supported formats: **PDF**, **DOCX**, **DOC**, **TXT**, **PPTX**, **PNG**, **JPG**, **JPEG**, **MD**, **JSON**, plain text, and URLs (single page or full site crawl).
 
 ## Supported inputs
 
 | Input | Content-Type | Notes |
 | --- | --- | --- |
-| PDF file | `multipart/form-data` | Best for policies, manuals, structured content |
-| DOCX file | `multipart/form-data` | Cleanly-formatted Word documents |
+| Document file (`.pdf`, `.docx`, `.doc`, `.txt`, `.pptx`, `.png`, `.jpg`, `.jpeg`, `.md`, `.json`) | `multipart/form-data` | Best for policies, manuals, images, structured content |
 | Plain text | `multipart/form-data` or JSON | For FAQs and scripted content |
 | Single URL | JSON | TruGen fetches, parses, and indexes the page |
 | Root URL (crawl) | JSON | TruGen crawls the site up to N pages deep |

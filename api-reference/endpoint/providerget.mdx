@@ -2,4 +2,22 @@
 title: 'List All Providers'
 openapi: 'GET /ext/providers'
 ---
- 
+
+Fetch a list of all available providers and their supported models across LLM, TTS, STT, and Avatar services.
+
+## Overview
+
+Use this endpoint to inspect the available providers and models in your project workspace programmatically.
+
+## Example
+
+```bash
+curl --request GET \
+  --url https://api.trugen.ai/v1/ext/providers \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY'
+```
+
+## Response
+
+Returns a JSON dictionary of supported providers and model categories.
