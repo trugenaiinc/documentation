@@ -24,7 +24,7 @@ It's especially useful for:
 
 ## How It Works
 
-The system connects to a live video session, processes video frames in real time, and sends results instantly to dashboards, apps, or external systems.
+The system connects to a live video session, processes video frames in real time, and pushes results instantly to dashboards, apps, or external systems. The same events are also published directly into the LiveKit room on the `hawkeye-events` data-channel topic, so in-room clients can react without running a callback server.
 
 It can also trigger alerts or actions automatically when certain conditions are detected, such as:
 
@@ -72,6 +72,8 @@ The system supports custom triggers and automated actions. For example:
   - Send an alert
   - Trigger a webhook
   - Notify a moderator or proctor
+
+Events reach you over a WebSocket callback and the LiveKit data channel (`hawkeye-events` topic), so both backend services and in-room clients can act in real time. See [Event Delivery](/docs/agents/vision/start-session#event-delivery) for the exact formats.
 
 ## Built for Scale
 

@@ -4,7 +4,7 @@ sidebarTitle: "Start Session"
 description: "Attach Hawkeye-1 to any LiveKit room and start real-time video analysis with the modules you choose."
 ---
 
-`POST /v2/vision` starts a new Hawkeye session on a LiveKit room you already have. Hawkeye joins as a subscriber, analyses the target participant's video, and streams alerts to your callback URL whenever a class is detected.
+`POST /v2/vision` starts a new Hawkeye session on a LiveKit room you already have. Hawkeye joins as a subscriber, analyses the target participant's video, and pushes an event every time a class is detected: to your callback URL and into the LiveKit room itself over the data channel.
 
 <Note>Billing is a flat **1¢ per minute** per session. Sessions stop automatically once `max_duration` (in minutes) is reached.</Note>
 
@@ -44,7 +44,7 @@ For each module, you only pick the **classes** you care about. Everything else (
 | `livekit_url`   | ✅       | `wss://` URL of the LiveKit room Hawkeye should join.                                                                                                             |
 | `access_token`  | ✅       | LiveKit access token with `roomJoin: true` for that room. Hawkeye connects with this identity.                                                                     |
 | `participant`   | ➖       | Identity of the participant to analyse. Defaults to `"auto"`: Hawkeye picks the first non-agent participant in the room. Pass a specific LiveKit identity to lock analysis onto that participant instead. |
-| `callback_url`  | ➖       | WebSocket URL to receive real-time alerts. Omit if you only intend to poll the [Get Session Status](/docs/agents/vision/session-status) endpoint.                  |
+| `callback_url`  | ➖       | WebSocket URL to receive real-time alerts. Every event is also published to the LiveKit room's data channel, so this is optional: omit it if you only intend to consume the data channel or poll the [Get Session Status](/docs/agents/vision/session-status) endpoint. |
 | `max_duration`  | ✅       | Hard cap in **minutes**. Hawkeye disconnects when reached.                                                                                                          |
 | `modules`       | ➖       | Modules to enable, keyed by module name. Each value is a list of class names to alert on. Omit `modules` entirely for all modules with all default classes.        |
 
@@ -148,7 +148,11 @@ Just watch emotions and face count:
 | `max_duration`| Echoed back in minutes.                                                                          |
 | `modules`     | Sorted list of module names that were resolved for this session.                                 |
 
-## Alert Format
+## Event Delivery
+
+Every event is delivered over two channels: your `callback_url` (if you provided one) and the LiveKit room's data channel (always on). The event details are the same on both, so you can consume whichever fits your setup: or both.
+
+### WebSocket callback
 
 When a class is detected, Hawkeye pushes a JSON message to your `callback_url`:
 
@@ -161,7 +165,25 @@ When a class is detected, Hawkeye pushes a JSON message to your `callback_url`:
 }
 ```
 
-Use this to drive dashboards, escalate to a moderator, or feed downstream analytics. Hawkeye handles the vision, you handle the reaction.
+### LiveKit data channel
+
+Hawkeye also publishes each event into the room via `publish_data` with `reliable=True`, on the `hawkeye-events` topic. Any client in the room receives it through its SDK's data-received event: filter on the `hawkeye-events` topic and decode the JSON payload:
+
+```json
+{
+  "type": "alert",
+  "payload": {
+    "session_id": "8f2a1e5b-4c9d-4a3f-9c11-2c07be7d1c22",
+    "module": "emotion_recognition",
+    "class": "angry",
+    "timestamp": "2026-08-11T14:24:11Z"
+  }
+}
+```
+
+The `type` field identifies the event kind, and `payload` contains the same fields as the WebSocket callback. Data-channel delivery is best-effort: if a publish fails, Hawkeye logs the error and carries on, without interrupting analysis or the WebSocket callback.
+
+Use these events to drive dashboards, escalate to a moderator, or feed downstream analytics. Hawkeye handles the vision, you handle the reaction.
 
 ## What's Next?
 
