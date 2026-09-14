@@ -275,6 +275,10 @@
             "pages": ["docs/integrations/make"]
           },
           {
+            "item": "TruGen Skill",
+            "pages": ["docs/ai-tools/skill"]
+          },
+          {
             "item": "MCP Server",
             "pages": ["docs/ai-tools/mcp"]
           }

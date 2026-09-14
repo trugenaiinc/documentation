@@ -1,0 +1,147 @@
+---
+title: "TruGen Skill"
+description: "Install the TruGen skill so your AI coding agent can build with the full platform - agents, RAG, tools, Hawkeye vision, widget embedding, and LiveKit."
+icon: "wand-magic-sparkles"
+---
+
+The TruGen skill is a single markdown file that teaches any AI coding agent - Claude Code, Cursor, opencode, Codex, Windsurf - how to build with the entire TruGen platform.
+
+**Skill URL**
+```
+https://docs.trugen.ai/skill.md
+```
+
+## Install
+
+<Tabs>
+  <Tab title="One command (recommended)">
+    Install into every coding agent detected on your machine:
+
+    ```bash
+    npx skills add https://docs.trugen.ai/skill.md
+    ```
+
+    The installer writes the skill to each agent's expected location (Claude Code, Cursor, opencode, Codex, Windsurf, and others) and links it from their configs. Restart your agent after installing.
+  </Tab>
+
+  <Tab title="Claude Code">
+    Download the skill into your project's skills directory:
+
+    ```bash
+    mkdir -p .claude/skills/trugen-ai
+    curl -o .claude/skills/trugen-ai/SKILL.md https://docs.trugen.ai/skill.md
+    ```
+
+    For a machine-wide install, use `~/.claude/skills/trugen-ai/SKILL.md` instead. Claude Code picks the skill up on the next session.
+  </Tab>
+
+  <Tab title="Any agent">
+    Save the file anywhere your agent reads, and point your agent's rules file at it:
+
+    ```bash
+    curl -o SKILL.md https://docs.trugen.ai/skill.md
+    ```
+
+    Then add one line to `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, or the equivalent:
+
+    ```markdown
+    For any TruGen AI platform work, read and follow `SKILL.md`.
+    ```
+
+    No install at all also works: paste `https://docs.trugen.ai/skill.md` into the conversation and ask the agent to read it first.
+  </Tab>
+</Tabs>
+
+<Tip>
+Verify the install with a fresh conversation: ask **"What can you build with TruGen?"** An agent with the skill answers from it - agents, knowledge bases, Hawkeye vision, the LiveKit plugin, widget embedding - rather than from memory.
+</Tip>
+
+## What your agent can do
+
+The skill covers every platform capability as a ready-to-run workflow. Describe a goal and the agent maps it to the right combination:
+
+| You want... | The skill reaches for |
+| --- | --- |
+| An agent in your app, on-brand | `POST /v1/ext/agent` + React widget, iframe, or JS SDK |
+| Grounded, factual answers | Knowledge Base - Agentic or Traditional RAG |
+| An agent that presents slides | Visual Presentations (`visual_presentations`) |
+| Exam proctoring, interview monitoring, compliance | Hawkeye Vision Sessions (`POST /v2/vision`) + `hawkeye-events` |
+| Actions: CRM, booking, search, automations | Tools - API/webhook, MCP, Composio, client tools |
+| Off-limits topics, canned responses | Guardrails |
+| Rapport that survives across sessions | Memory custom instructions |
+| An agent that joins human meetings | External Meetings (`@agent.trugen.ai` email) |
+| Your own fine-tuned or self-hosted LLM | BYO LLM (`provider: "custom"`) |
+| A face on an existing LiveKit voice agent | LiveKit plugin (`AvatarSession`) |
+
+It also encodes the gotchas: client tool names are case-sensitive, SDK listeners must register before `connect()`, Hawkeye's `participant` is a LiveKit identity (not a display name), and detaching one guardrail means `PUT`-ing the full list minus that entry.
+
+## Example prompts
+
+Copy-paste these into an agent with the skill installed.
+
+### Sales SDR with a pitch deck
+
+```text
+Turn our pitch deck into a sales SDR:
+- Create an agent from the sales-agents example prompt, proactive turn handling
+- Upload decks/pitch.pdf as a visual presentation described as
+  "Use when asked about features, pricing, or architecture"
+- Add a tool that POSTs qualified leads to https://hooks.example.com/crm
+- Embed a right-side floating widget on our marketing site with our logo,
+  brand colors, and suggested topics "See pricing" and "Book a demo"
+- Send the transcript and lead details to our CRM webhook when the call ends
+```
+
+The agent uploads and indexes the deck so the right slide appears alongside the spoken answer, wires the lead-capture tool, brands the widget, and closes the loop on `call_ended`.
+
+### Personalize and brand an existing agent
+
+```text
+Upgrade my agent ag_123:
+- Switch turn handling to balanced and interruptability to medium
+- Enable memory with a custom instruction to remember each user's goals
+  and progress across sessions
+- Rebrand the widget to our dark theme, logo, and company name, and
+  restrict embedding to app.acme.com
+```
+
+A `PATCH /v1/ext/agent/{id}` one-liner for a human - the skill knows the exact config shape, and the change takes effect on the agent's next session with no redeploy.
+
+## LiveKit examples
+
+The skill covers both LiveKit integration paths:
+
+- **Voice to video** - the official plugin adds a TruGen avatar track to a room you already run in LiveKit. Your existing `AgentSession` config (LLM, STT, TTS, tools) stays untouched; the plugin never creates a TruGen agent resource.
+- **Vision** - Hawkeye attaches to any LiveKit room you bring and streams real-time detection alerts back over the `hawkeye-events` data channel.
+
+### Add a face to my voice agent
+
+The LiveKit example, as a single copy-paste prompt:
+
+```text
+Add a face to my voice agent:
+- My LiveKit AgentSession lives in agent.py
+- Pick a professional stock avatar from the TruGen gallery
+- Install the official TruGen plugin and wire it into my existing session
+- Keep my current LLM, STT, TTS, and tools untouched
+- Load the API key and avatar ID from environment variables
+```
+
+The agent installs `livekit-agents[trugen]`, sets `TRUGEN_API_KEY` and `TRUGEN_AVATAR_ID` in your `.env`, and inserts an `AvatarSession` start right before `session.start(...)` — your pipeline config stays untouched:
+
+<CardGroup cols={2}>
+
+<Card title="Quickstart" icon="flag" href="/docs/quickstart">
+  Create your first agent and embed it in minutes.
+</Card>
+<Card title="MCP Server" icon="plug" href="/docs/ai-tools/mcp">
+  Pair the skill with the docs MCP server for full-text search over every page.
+</Card>
+<Card title="LiveKit Integration" icon="headset" href="/docs/voice-to-video/livekit">
+  Full plugin reference: options, environment variables, and examples.
+</Card>
+<Card title="API Reference" icon="server" href="/api-reference/overview">
+  Every endpoint the skill puts at your agent's fingertips.
+</Card>
+
+</CardGroup>
