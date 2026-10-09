@@ -3224,6 +3224,161 @@
         }
       }
     },
+    "/ext/sessions": {
+      "get": {
+        "summary": "Retrieve all Sessions",
+        "description": "Retrieve all your sessions with their current status.",
+        "operationId": "getAllSessions",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "The number of sessions to skip before starting to return results.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "perpage",
+            "in": "query",
+            "required": false,
+            "description": "The number of sessions to return per page.",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Search criteria to filter sessions.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": false,
+            "description": "Filter sessions created on or after this date (YYYY-MM-DD).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": false,
+            "description": "Filter sessions created before this date plus one day (YYYY-MM-DD).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "room_name",
+            "in": "query",
+            "required": false,
+            "description": "Filter sessions by room name.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of sessions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Unique identifier for the session",
+                        "example": "e54fb2ca-9a4f-4c03-96ba-668726ce03a4"
+                      },
+                      "avatar_id": {
+                        "type": "string",
+                        "description": "Identifier of the avatar used in the session",
+                        "example": "33dc438b"
+                      },
+                      "room_name": {
+                        "type": "string",
+                        "description": "Name of the room for the session",
+                        "example": ""
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "INITIALIZING",
+                          "ENDED",
+                          "TERMINATED"
+                        ],
+                        "description": "Current status of the session",
+                        "example": "ENDED"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the session was created",
+                        "example": "2026-10-09T12:43:05.642516Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized \u2013 missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized: not a valid authorization api key"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Failed to retrieve sessions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ext/agent": {
       "get": {
         "summary": "Retrieve all Agents",

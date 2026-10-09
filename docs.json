@@ -18,6 +18,12 @@
     "thumbsRating": true,
     "suggestEdit": true
   },
+  "api": {
+    "openapi": ["api-reference/openapi.json"],
+    "playground": {
+      "display": "interactive"
+    }
+  },
   "seo": {
     "indexing": "navigable"
   },
@@ -350,6 +356,11 @@
               "api-reference/endpoint/conversationspeak",
               "api-reference/endpoint/conversationdelete"
             ]
+          },
+          {
+            "group": "Sessions",
+            "icon": "clock-rotate-left",
+            "pages": ["api-reference/endpoint/sessionget"]
           },
           {
             "group": "External Meetings",

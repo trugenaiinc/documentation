@@ -50,6 +50,7 @@ The API is organized around a small set of resources:
 | **Providers** | The set of LLM, STT, and TTS providers available in your environment |
 | **Avatars** | Visual identities: stock or custom |
 | **Conversations** | Session records: including full chat history, feedback, and usage |
+| **Sessions** | Live session records: status, avatar, and room info for every session |
 
 ## Common patterns
 
@@ -115,6 +116,9 @@ Ground answers in your documents and URLs.
 </Card>
 <Card title="Conversations" icon="messages" href="/api-reference/endpoint/conversationgetbyid">
 Session records, transcripts, and speak commands.
+</Card>
+<Card title="Sessions" icon="clock-rotate-left" href="/api-reference/endpoint/sessionget">
+Browse all your past and current sessions.
 </Card>
 <Card title="Tools" icon="screwdriver-wrench" href="/api-reference/endpoint/toolcreate">
 Register callable actions for agents.
